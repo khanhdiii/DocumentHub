@@ -8,4 +8,14 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Assets\Image\backgroundyellow.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Image\backgroundyellow.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
 </Project>
