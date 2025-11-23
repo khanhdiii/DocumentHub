@@ -46,8 +46,7 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="file:///D:/DocumentHub/Assets/backgroundyellow.png"
-            Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="/Assets/Image/backgroundyellow.png" Stretch="UniformToFill"/>
         </Grid.Background>
         <!-- Title -->
         <Label x:Name="lb_NameContent" Content="ĐĂNG NHẬP"
@@ -167,11 +166,14 @@
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
                     Foreground="#FFE20B0B"/>
-                <Label x:Name="lb_changePin" Content="Đổi mã pin"  FontFamily="Montserrat" Margin="0,58,64,0" Grid.Row="1" FontSize="14" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <Label x:Name="lb_changePin"  FontFamily="Montserrat" Margin="0,58,64,0" Grid.Row="1" FontSize="14" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Label x:Name="lb_changePin1" Content="Quên mã pin" Foreground="#FFA89847"/>
+                </Label>
 
 
             </Grid>
         </Border>
+        <Label Content="© K02 - 2025" HorizontalAlignment="Left" Margin="682,385,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.048,-0.815" FontFamily="Montserrat"/>
 
     </Grid>
 </Window>
