@@ -9,7 +9,7 @@
     <Window.Resources>
         <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#FFD966"/>
+            <Setter Property="BorderBrush" Value="#D4A017"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="4"/>
             <Setter Property="Foreground" Value="Black"/>
@@ -45,29 +45,26 @@
 
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="539*"/>
+            <ColumnDefinition Width="261*"/>
+        </Grid.ColumnDefinitions>
         <Grid.Background>
-            <ImageBrush ImageSource="/Assets/Image/backgroundyellow.png" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="/Assets/Image/backgroundred.jpg" Stretch="UniformToFill" Opacity="0.65"/>
         </Grid.Background>
+
         <!-- Title -->
-        <Label x:Name="lb_NameContent" Content="ĐĂNG NHẬP"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Top"
-               FontSize="40"
-               HorizontalContentAlignment="Center"
-               FontWeight="Bold"
-               Foreground="#FFD4BC1A"
-               FontFamily="montserrat" Margin="0,30,0,0"/>
 
         <!-- Second border-->
         <Border
             Opacity="0.7"
             BorderThickness="2"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Width="541" Height="250"
+            VerticalAlignment="Top"
+            Width="540" Height="250"
             CornerRadius="15"
-            Margin="0,40,0,0"
-            BorderBrush="#FFD966">
+            Margin="0,112,0,0"
+            BorderBrush="#FFD966" Grid.ColumnSpan="2">
 
             <Border.Effect>
                 <DropShadowEffect Color="#222" BlurRadius="25" ShadowDepth="6" Opacity="0.5"/>
@@ -75,8 +72,8 @@
 
             <Grid>
                 <Grid.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="White" Offset="1"/>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" Opacity="0.9">
+                        <GradientStop Color="#F7E7C3" Offset="1"/>
                     </LinearGradientBrush>
                 </Grid.Background>
                 <Grid.RowDefinitions>
@@ -85,17 +82,6 @@
                 </Grid.RowDefinitions>
 
                 <!-- LABEL Input PIN -->
-                <Label Content="NHẬP MÃ PIN"
-                   VerticalAlignment="Top"
-                   FontSize="26"
-                   FontWeight="Bold"
-                   FontFamily="Montserrat"
-                   Width="200"
-                   HorizontalAlignment="Center"
-                   Margin="0,35,0,0"
-                   HorizontalContentAlignment="Center"
-                   VerticalContentAlignment="Center"
-                   Foreground="#FFCFCD5E"/>
 
                 <!-- Input 6 number-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,112,0,0" Grid.RowSpan="2">
@@ -157,23 +143,19 @@
                 </StackPanel>
                 <Label Content="NHẬP MÃ PIN"
                     VerticalAlignment="Top"
-                    FontSize="26"
+                    FontSize="32"
                     FontWeight="Bold"
                     FontFamily="Montserrat"
-                    Width="200"
+                    Width="300"
                     HorizontalAlignment="Center"
-                    Margin="0,35,0,0"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
-                    Foreground="#FFE20B0B"/>
-                <Label x:Name="lb_changePin"  FontFamily="Montserrat" Margin="0,58,64,0" Grid.Row="1" FontSize="14" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <Label x:Name="lb_changePin1" Content="Quên mã pin" Foreground="#FFA89847"/>
-                </Label>
+                    Foreground="#FFE20B0B" Margin="0,30,0,0"/>
 
 
             </Grid>
         </Border>
-        <Label Content="© K02 - 2025" HorizontalAlignment="Left" Margin="682,385,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.048,-0.815" FontFamily="Montserrat"/>
+        <Label Content="© K02 - 2025" HorizontalAlignment="Left" Margin="143,385,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.048,-0.815" FontFamily="Montserrat" Grid.Column="1"/>
 
     </Grid>
 </Window>
