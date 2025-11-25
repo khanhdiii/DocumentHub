@@ -1,0 +1,9 @@
+<UserControl x:Class="DocumentHub.FrontEnd.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             MinHeight="200" MinWidth="200">
+    <Grid>
+        <TextBlock Text="Dashboard" FontSize="24" FontWeight="Bold" Margin="8"/>
+        <!-- Place dashboard content here -->
+    </Grid>
+</UserControl>
