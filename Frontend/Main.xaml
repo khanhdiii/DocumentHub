@@ -208,6 +208,7 @@
                 <!-- Menu -->
                 <StackPanel>
                     <Button x:Name="btnDashboard" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE80F;" Content="Dashboard" Click="BtnDashboard_Click" Margin="0,6,0,0"/>
+                    <Button x:Name="btnIncomingDoc" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE8A5;" Content="Incoming Doc" Click="btnIncomingDoc_Click" Margin="0,6,0,0"/>
 
                     <!-- spacer -->
                     <StackPanel Height="8"/>
