@@ -1,0 +1,132 @@
+﻿<UserControl x:Class="Frontend.Views.IncomingDocView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d"
+             MinHeight="600" MinWidth="900">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Top toolbar -->
+        <DockPanel Grid.Row="0" LastChildFill="True" Margin="0,0,0,8">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,8,0" >
+                <Button x:Name="BtnSave" Content="Lưu" Width="80" Height="30" Margin="0,0,8,0" Click="BtnSave_Click"/>
+                <Button x:Name="BtnEdit" Content="Sửa" Width="80" Height="30" Margin="0,0,8,0" Click="BtnEdit_Click"/>
+                <Button x:Name="BtnDelete" Content="Xóa" Width="80" Height="30" Margin="0,0,8,0" Click="BtnDelete_Click"/>
+                <Button x:Name="BtnExport" Content="Xuất CSV" Width="100" Height="30" Click="BtnExport_Click"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
+                <TextBox x:Name="TxtSearch" Width="300" Height="26" Margin="0,0,8,0" VerticalContentAlignment="Center" />
+                <Button x:Name="BtnSearch" Content="Tìm" Width="80" Height="30" Click="BtnSearch_Click"/>
+            </StackPanel>
+        </DockPanel>
+
+        <!-- Content: Form and grid -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Form group (row 0) -->
+            <GroupBox Header="Thông tin văn bản đi" Padding="8" FontWeight="Bold" Grid.Row="0">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Row 0 -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0,0,8,8">
+                        <Label Content="Số / Ký hiệu:" VerticalAlignment="Center" Width="110"/>
+                        <TextBox x:Name="TxtSoKyHieu" Width="220"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Margin="0,0,8,8">
+                        <Label Content="Ngày ban hành:" VerticalAlignment="Center" Width="110"/>
+                        <DatePicker x:Name="DpNgayBanHanh" Width="160" SelectedDate="{x:Static sys:DateTime.Now}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Margin="0,0,8,8">
+                        <Label Content="Loại văn bản:" VerticalAlignment="Center" Width="110"/>
+                        <ComboBox x:Name="CbLoaiVanBan" Width="200"/>
+                    </StackPanel>
+
+                    <!-- Row 1 -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Margin="0,0,8,8">
+                        <Label Content="Cán bộ xây dựng:" VerticalAlignment="Center" Width="110"/>
+                        <TextBox x:Name="TxtCanBoXayDung" Width="220"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="0,0,8,8">
+                        <Label Content="Người ký:" VerticalAlignment="Center" Width="110"/>
+                        <TextBox x:Name="TxtNguoiKy" Width="160"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Margin="0,0,8,8">
+                        <Label Content="Chức vụ:" VerticalAlignment="Center" Width="110"/>
+                        <TextBox x:Name="TxtChucVu" Width="200"/>
+                    </StackPanel>
+
+                    <!-- Row 2 -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Margin="0,0,8,0">
+                        <Label Content="Độ mật:" VerticalAlignment="Center" Width="110"/>
+                        <ComboBox x:Name="CbDoMat" Width="220"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Margin="0,0,8,0">
+                        <Label Content="Người nhận / Nơi nhận:" VerticalAlignment="Center" Width="130"/>
+                        <TextBox x:Name="TxtNguoiNhan" Width="230"/>
+                    </StackPanel>
+
+                    <!-- Nội dung (spans columns) - now uses Row 3 which exists -->
+                    <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,8,0,0">
+                        <Label Content="Nội dung văn bản:"/>
+                        <TextBox x:Name="TxtNoiDung" AcceptsReturn="True" Height="120" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+
+            <!-- spacer -->
+            <Border Grid.Row="1"/>
+
+            <!-- Data grid group -->
+            <GroupBox Header="Danh sách văn bản đi" Grid.Row="2" Padding="4" FontWeight="Bold">
+                <DataGrid x:Name="GridDocuments" AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                        <DataGridTextColumn Header="Số/Ký hiệu" Binding="{Binding SoKyHieu}" Width="130"/>
+                        <DataGridTextColumn Header="Ngày VB" Binding="{Binding NgayVB, StringFormat=d}" Width="110"/>
+                        <DataGridTextColumn Header="Loại VB" Binding="{Binding LoaiVB}" Width="120"/>
+                        <DataGridTextColumn Header="Độ mật" Binding="{Binding DoMat}" Width="80"/>
+                        <DataGridTextColumn Header="Cán bộ XD" Binding="{Binding CanBoXD}" Width="120"/>
+                        <DataGridTextColumn Header="Người ký" Binding="{Binding NguoiKy}" Width="120"/>
+                        <DataGridTextColumn Header="Chức vụ" Binding="{Binding ChucVu}" Width="120"/>
+                        <DataGridTextColumn Header="Người nhận/Nơi nhận" Binding="{Binding NguoiNhan}" Width="160"/>
+                        <DataGridTextColumn Header="Nội dung" Binding="{Binding NoiDung}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+        </Grid>
+
+        <!-- Status or footer could go here in Grid.Row=2 if needed -->
+    </Grid>
+</UserControl>

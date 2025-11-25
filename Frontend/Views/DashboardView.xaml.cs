@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace DocumentHub.FrontEnd.Views
+namespace Frontend.Views
 {
     public partial class DashboardView : UserControl
     {
