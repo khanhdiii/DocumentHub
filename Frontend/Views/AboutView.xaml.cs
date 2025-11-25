@@ -2,9 +2,9 @@ using System.Windows.Controls;
 
 namespace DocumentHub.FrontEnd.Views
 {
-    public partial class SettingsView : UserControl
+    public partial class AboutView : UserControl
     {
-        public SettingsView()
+        public AboutView()
         {
             InitializeComponent();
         }

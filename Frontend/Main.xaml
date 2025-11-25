@@ -208,14 +208,11 @@
                 <!-- Menu -->
                 <StackPanel>
                     <Button x:Name="btnDashboard" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE80F;" Content="Dashboard" Click="BtnDashboard_Click" Margin="0,6,0,0"/>
-                    <Button x:Name="btnFiles" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE8A5;" Content="Files" Margin="0,6,0,0"/>
-                    <Button x:Name="btnSettings" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE713;" Content="Settings" Click="BtnSettings_Click" Margin="0,12,0,0"/>
 
                     <!-- spacer -->
                     <StackPanel Height="8"/>
 
-                    <Line X1="0" Y1="0" X2="400" Y2="0" Stroke="#ffffff" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    <Button Style="{StaticResource SidebarButtonStyle}" Tag="&#xE77B;" Content="About" Margin="0,6,0,0"/>
+                    <Button x:Name="btnAbout" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE77B;" Content="About" Click="btnAbout_Click" Margin="0,6,0,0"/>
                 </StackPanel>
 
                 <!-- Footer area (docked bottom) -->

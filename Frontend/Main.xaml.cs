@@ -30,9 +30,9 @@ namespace DocumentHub.FrontEnd
             ContentArea.Content = new DashboardView();
         }
 
-        private void BtnSettings_Click(object sender, RoutedEventArgs e)
+        private void btnAbout_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new SettingsView();
+            ContentArea.Content = new AboutView();
         }
 
         private void BtnToggleSidebar_Checked(object sender, RoutedEventArgs e)
