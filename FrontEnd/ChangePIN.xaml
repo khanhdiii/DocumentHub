@@ -1,0 +1,205 @@
+﻿<Window x:Class="DocumentHub.FrontEnd.ChangePIN"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DocumentHub.FrontEnd"
+        mc:Ignorable="d"
+        Title="ĐỔI MÃ PIN" Height="550" Width="800"
+        WindowStartupLocation="CenterScreen">
+    
+    <Window.Resources>
+        <!-- Style for PasswordBox (adapted from TextBox style) -->
+        <Style x:Key="RoundedPasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D4A017"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="PasswordChar" Value="•"/>
+           
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border 
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="12" 
+                        SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Margin="0" 
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style for button -->
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+           <!-- <Setter Property="Padding" Value="10"/> -->
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover Button hand-->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                        
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!-- BACKGROUND  -->
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#2F5A3A" Offset="0.3"/>
+            <GradientStop Color="#4F8A54" Offset="0.5"/>
+            <GradientStop Color="#ffffff" Offset="0.7"/>
+            <GradientStop Color="#7BBF7B" Offset="0.8"/>
+        </LinearGradientBrush>
+    </Window.Background>
+
+
+    <Grid>
+        <!-- URL image -->
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/Image/backgroundred.jpg" Stretch="UniformToFill" Opacity="0.65"/>
+        </Grid.Background>
+
+        <!-- Second border  -->
+        <Border
+            Opacity="0.7"
+            Width="580" 
+            Height="400"
+            BorderBrush="#FFD966" 
+            Background="#F7E7C3"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            CornerRadius="15"
+            BorderThickness="2">
+
+            <StackPanel Orientation="Vertical">
+                <!-- Title change PIN -->
+                <Label Content="ĐỔI MÃ PIN"
+                    Foreground="#FFE20B0B"
+                    FontFamily="Montserrat"
+                    FontSize="32"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Center"
+                    Margin="0,20,0,25"/>
+
+                <!-- Input: Old PIN -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15" VerticalAlignment="Center">
+                    <Label Content="Nhập mã PIN cũ" 
+                           FontSize="18" 
+                           FontWeight="Bold" 
+                           FontFamily="Montserrat" 
+                           Width="180"
+                           VerticalAlignment="Center"/>
+                    <PasswordBox Style="{StaticResource RoundedPasswordBoxStyle}"
+                             x:Name="pb_OldPIN" 
+                             Width="180"
+                             Height="40" 
+                             FontSize="30"
+                             MaxLength="6"
+                             Margin="50,0,0,0"
+                             HorizontalContentAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             VerticalAlignment="Center"
+                             PreviewTextInput="PinTextBox_PreviewTextInput"
+                             PreviewKeyDown="PinTextBox_PreviewKeyDown"  />
+                </StackPanel>
+
+                <!-- Input: New PIN -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                    <Label Content="Nhập mã PIN mới" 
+                           FontSize="18" FontWeight="Bold" 
+                           FontFamily="Montserrat" Width="180"/>
+                    <PasswordBox Style="{StaticResource RoundedPasswordBoxStyle}"
+                             x:Name="pb_NewPIN" Width="180" Height="40" FontSize="30" 
+                             MaxLength="6"
+                             HorizontalContentAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             PreviewTextInput="PinTextBox_PreviewTextInput"
+                             PreviewKeyDown="PinTextBox_PreviewKeyDown" Margin="50,0,0,0"/>
+                </StackPanel>
+
+                <!-- Input: Confirm New PIN -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,25">
+                    <Label Content="Nhập lại PIN mới" 
+                           FontSize="18"
+                           FontWeight="Bold" 
+                           FontFamily="Montserrat"
+                           Width="180"/>
+                    <PasswordBox Style="{StaticResource RoundedPasswordBoxStyle}"
+                             x:Name="pb_ConfirmNewPIN" 
+                             Width="180" 
+                             Height="40" 
+                             FontSize="30"
+                             MaxLength="6"
+                             Margin="50,0,0,0"
+                             HorizontalContentAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             PreviewTextInput="PinTextBox_PreviewTextInput"
+                             PreviewKeyDown="PinTextBox_PreviewKeyDown" />
+                </StackPanel>
+
+                <!-- Message/Error Block -->
+                <TextBlock x:Name="tb_Message" 
+                           Text=""
+                           FontFamily="Montserrat"
+                           Foreground="#FFE20B0B" 
+                           HorizontalAlignment="Center" 
+                           FontWeight="Bold"
+                           FontSize="14"/>
+
+                <!-- Action Buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
+                    <Button x:Name="btn_ChangePIN" 
+                            Content="Đổi Mã PIN"
+                            FontFamily="Montserrat"
+                            Width="150"
+                            Height="45" 
+                            Background="#D4A017" 
+                            Foreground="White" 
+                            BorderBrush="#A08013"
+                            BorderThickness="2"
+                            Click="btn_ChangePIN_Click"/>
+
+                    <Button x:Name="btn_Cancel" 
+                            Content="Hủy Bỏ" 
+                            Width="150"
+                            Height="45"
+                            FontFamily="Montserrat"
+                            Background="#FF222020" 
+                            Foreground="White" 
+                            BorderBrush="#A08013"
+                            BorderThickness="2"
+                            Click="btn_Cancel_Click"/>
+                </StackPanel>
+
+            </StackPanel>
+
+        </Border>
+        <Label Content="© K02 - 2025" 
+               HorizontalAlignment="Right"
+               VerticalAlignment="Bottom"
+               FontFamily="Montserrat" Margin="0,0,50,0"/>
+
+    </Grid>
+</Window>
