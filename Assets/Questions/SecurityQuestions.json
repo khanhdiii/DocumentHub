@@ -1,0 +1,28 @@
+﻿{
+  "textQuestions": [
+    "Họ và tên của bạn là gì?",
+    "Ngày tháng năm sinh của bạn là gì?",
+    "Ngày vào CAND của bạn là gì?",
+    "Ngày vào Đảng chính thức ngày gì?",
+    "Số hiệu CAND của bạn là gì?",
+    "Số CCCD của bạn là gì?",
+    "Tên trường đại học bạn đã học là gì?",
+    "Bạn tốt nghiệp đại học loại gì?",
+    "Chuyên ngành của bạn là gì?",
+    "Giấy phép lái xe máy hạng gì?",
+    "Giấy phép lái ô tô hạng gì?",
+    
+  ],
+  "numberQuestions": [
+    "Bạn sinh năm bao nhiêu?",
+    "Ngày sinh của bạn là ngày mấy?",
+    "Tháng sinh của bạn là tháng mấy?",
+    "Năm bạn vào ngành là bao nhiêu?",
+    "Năm tốt nghiệp ra trường là bao nhiêu?",
+    "Năm bạn được phong cấp bậc đầu tiên là bao nhiêu?",
+    "Năm bạn chuyển công tác lần đầu là bao nhiêu?",
+    "Năm bạn nhận nhiệm vụ độc lập đầu tiên là bao nhiêu?",
+    "Năm bạn nhận bằng khen đầu tiên là bao nhiêu?",
+    "Năm hoàn thành nghĩa vụ đào tạo là bao nhiêu?"
+  ]
+}
