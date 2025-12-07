@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d"
-             d:DesignHeight="720" d:DesignWidth="1200">
+             d:DesignHeight="720" d:DesignWidth="1200"
+             xmlns:local="clr-namespace:DocumentHub.ViewModel">
 
     <!--
       English comments and element names only.
@@ -53,38 +54,85 @@
         </Style>
 
         <!-- ComboBox style -->
-        <Style TargetType="ComboBox" x:Key="ModernComboBox">
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
             <Setter Property="Background" Value="#FFF7F9FC"/>
             <Setter Property="BorderBrush" Value="#FFE6EDF8"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="6"/>
             <Setter Property="Margin" Value="4"/>
             <Setter Property="FontSize" Value="13"/>
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
-                            <Border Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="6"/>
-                            <DockPanel Margin="6,0">
-                                <ContentPresenter x:Name="ContentSite"
-                                                  VerticalAlignment="Center"
-                                                  Margin="4,0,24,0"
-                                                  Content="{TemplateBinding SelectionBoxItem}"/>
-                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Foreground="{StaticResource MutedTextBrush}" Margin="0,0,6,0" VerticalAlignment="Center" DockPanel.Dock="Right"/>
-                            </DockPanel>
+                            <!-- Toggle button (required part) -->
+                            <ToggleButton
+                        x:Name="ToggleButton"
+                        Grid.Column="2"
+                        Focusable="False"
+                        ClickMode="Press"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+
+                                <DockPanel Margin="6,0">
+                                    <ContentPresenter
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                VerticalAlignment="Center"
+                                Margin="4,0,24,0"/>
+
+                                    <TextBlock
+                                DockPanel.Dock="Right"
+                                FontFamily="Segoe MDL2 Assets"
+                                Text=""
+                                Foreground="Gray"
+                                VerticalAlignment="Center"
+                                Margin="0,0,6,0"/>
+                                </DockPanel>
+                            </ToggleButton>
+
+                            <!-- Popup -->
+                            <Popup
+                        x:Name="PART_Popup"
+                        Placement="Bottom"
+                        IsOpen="{TemplateBinding IsDropDownOpen}"
+                        AllowsTransparency="True"
+                        Focusable="False"
+                        PopupAnimation="Slide">
+
+                                <Border
+                            Background="White"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Margin="0,2,0,0">
+
+                                    <ScrollViewer>
+                                        <ItemsPresenter />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
                         </Grid>
+
                         <ControlTemplate.Triggers>
+
+                            <!-- Open dropdown -->
                             <Trigger Property="IsDropDownOpen" Value="True">
-                                <Setter Property="Background" Value="#FFFFFFFF" />
+                                <Setter TargetName="ToggleButton" Property="Background" Value="White"/>
                             </Trigger>
+
+                            <!-- Disabled -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="#AAA"/>
+                            </Trigger>
+
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
 
         <!-- DatePicker style -->
         <Style TargetType="DatePicker" x:Key="ModernDatePicker">
@@ -152,161 +200,32 @@
         </Style>
     </UserControl.Resources>
 
+    <UserControl.DataContext>
+        <local:IncomingDocViewModel />
+    </UserControl.DataContext>
+
     <Grid Background="#FFF2F5FB" Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Top toolbar -->
-        <DockPanel Grid.Row="0" Margin="0,0,0,12" LastChildFill="False">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" DockPanel.Dock="Left">
-                <TextBlock Style="{StaticResource CardHeader}" Text="Quản lý văn bản đến" VerticalAlignment="Center"/>
-                <TextBlock Text="  " />
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
-                <Button Style="{StaticResource PrimaryButton}" MinWidth="88" Height="34">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,6,0"/>
-                        <TextBlock Text="Thêm mới"/>
-                    </StackPanel>
-                </Button>
-
-                <Button Style="{StaticResource PrimaryButton}" Background="{StaticResource AccentBrush}" MinWidth="88" Height="34">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,6,0"/>
-                        <TextBlock Text="Lưu"/>
-                    </StackPanel>
-                </Button>
-
-                <Button MinWidth="88" Height="34" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource MutedTextBrush}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,6,0"/>
-                        <TextBlock Text="Xóa"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-        </DockPanel>
-
         <!-- Main content: left form, right list -->
         <!-- NOTE: removed ColumnSpacing (not supported in WPF). spacing is handled with margins below. -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="420"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
-            <!-- Left card: form (add right margin to create spacing between columns) -->
-            <Border Grid.Column="0" Margin="0,0,12,0" Background="{StaticResource SurfaceBrush}" CornerRadius="{StaticResource CardCornerRadius}" Padding="{StaticResource CardPadding}">
-                <Border.Effect>
-                    <!-- explicit DropShadowEffect instead of DynamicResource/SystemParameters key -->
-                    <DropShadowEffect Color="#40000000" BlurRadius="12" ShadowDepth="3" Opacity="0.25"/>
-                </Border.Effect>
-
-                <StackPanel>
-                    <TextBlock Style="{StaticResource CardHeader}" Text="Thông tin văn bản đến"/>
-                    <TextBlock Foreground="{StaticResource MutedTextBrush}" FontSize="12" Margin="0,6,0,12" Text="Nhập thông tin chi tiết cho văn bản đến"/>
-
-                    <!-- Input grid -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Số đến:" Foreground="{StaticResource MutedTextBrush}" Margin="0,6"/>
-                        <TextBox x:Name="ArrivalNumberTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource ModernTextBox}"/>
-
-                        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Ngày đến:" Foreground="{StaticResource MutedTextBrush}" Margin="0,6"/>
-                        <DatePicker x:Name="ArrivalDatePicker" Grid.Row="1" Grid.Column="1" Style="{StaticResource ModernDatePicker}" SelectedDate="{x:Static sys:DateTime.Now}"/>
-
-                        <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Số/Ký hiệu VB:" Foreground="{StaticResource MutedTextBrush}" Margin="0,6"/>
-                        <TextBox x:Name="DocumentNumberTextBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource ModernTextBox}"/>
-
-                        <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Text="Ngày VB:" Foreground="{StaticResource MutedTextBrush}" Margin="0,6"/>
-                        <TextBox x:Name="DocumentDateTextBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource ModernTextBox}"/>
-
-                        <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Text="Độ mật:" Foreground="{StaticResource MutedTextBrush}" Margin="0,6"/>
-                        <ComboBox x:Name="SecurityLevelComboBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource ModernComboBox}" IsEditable="True">
-                            <ComboBoxItem Content="Bình thường"/>
-                            <ComboBoxItem Content="Mật"/>
-                            <ComboBoxItem Content="Tối mật"/>
-                        </ComboBox>
-
-                        <TextBlock Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Text="Loại VB:" Foreground="{StaticResource MutedTextBrush}" Margin="0,6"/>
-                        <ComboBox x:Name="DocumentTypeComboBox" Grid.Row="5" Grid.Column="1" Style="{StaticResource ModernComboBox}" IsEditable="True">
-                            <ComboBoxItem Content="Công văn"/>
-                            <ComboBoxItem Content="Thông báo"/>
-                            <ComboBoxItem Content="Quyết định"/>
-                            <ComboBoxItem Content="Khác"/>
-                        </ComboBox>
-
-                        <TextBlock Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" Text="Nơi gửi:" Foreground="{StaticResource MutedTextBrush}" Margin="0,6"/>
-                        <TextBox x:Name="SenderTextBox" Grid.Row="6" Grid.Column="1" Style="{StaticResource ModernTextBox}" />
-                    </Grid>
-
-                    <!-- Compact two-column fields -->
-                    <Grid Margin="0,12,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel Grid.Column="0" Orientation="Vertical">
-                            <TextBlock Foreground="{StaticResource MutedTextBrush}" Text="Người ký:" Margin="4,0"/>
-                            <TextBox x:Name="SignerTextBox" Style="{StaticResource ModernTextBox}" />
-                            <TextBlock Foreground="{StaticResource MutedTextBrush}" Text="Chức vụ:" Margin="4,6,4,0"/>
-                            <TextBox x:Name="PositionTextBox" Style="{StaticResource ModernTextBox}" />
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="1" Orientation="Vertical">
-                            <TextBlock Foreground="{StaticResource MutedTextBrush}" Text="Người nhận:" Margin="4,0"/>
-                            <TextBox x:Name="RecipientTextBox" Style="{StaticResource ModernTextBox}" />
-                            <TextBlock Foreground="{StaticResource MutedTextBrush}" Text="Người xử lý:" Margin="4,6,4,0"/>
-                            <TextBox x:Name="HandlerTextBox" Style="{StaticResource ModernTextBox}" />
-                        </StackPanel>
-                    </Grid>
-
-                    <TextBlock Foreground="{StaticResource MutedTextBrush}" Text="Trích yếu nội dung:" Margin="4,10,4,4"/>
-                    <TextBox x:Name="SummaryTextBox" AcceptsReturn="True" TextWrapping="Wrap" Height="120" Style="{StaticResource ModernTextBox}"/>
-
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
-                        <Button MinWidth="88" Height="34" Background="Transparent" BorderBrush="#FFE6EDF8" Foreground="{StaticResource MutedTextBrush}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,6,0"/>
-                                <TextBlock Text="Clear"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{StaticResource PrimaryButton}" MinWidth="100" Height="34">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,6,0"/>
-                                <TextBlock Text="Lưu"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
 
             <!-- Right card: list -->
             <Border Grid.Column="1" Background="{StaticResource SurfaceBrush}" CornerRadius="{StaticResource CardCornerRadius}" Padding="{StaticResource CardPadding}">
                 <StackPanel>
                     <TextBlock Style="{StaticResource CardHeader}" Text="Danh sách văn bản đến"/>
-                    <TextBlock Foreground="{StaticResource MutedTextBrush}" FontSize="12" Margin="0,6,0,8" Text="Sử dụng bảng để duyệt, sửa và thêm nhanh"/>
-
+                    
                     <!-- Quick filter and search row -->
                     <DockPanel Margin="0,0,0,8">
                         <!-- Search box with watermark implemented (PlaceholderText not available in WPF) -->
-                        <Grid Width="280" DockPanel.Dock="Left" Margin="0,4">
+                        <Grid DockPanel.Dock="Right" Margin="0,4">
                             <TextBox x:Name="SearchBox" Style="{StaticResource ModernTextBox}" VerticalContentAlignment="Center"/>
                             <TextBlock Text="Tìm kiếm theo Số đến, Người gửi..." Foreground="{StaticResource MutedTextBrush}" Margin="12,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False">
                                 <TextBlock.Style>
@@ -324,22 +243,13 @@
                                 </TextBlock.Style>
                             </TextBlock>
                         </Grid>
-
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
-                            <Button MinWidth="88" Height="34" Background="Transparent" BorderBrush="{StaticResource MutedTextBrush}" Foreground="{StaticResource MutedTextBrush}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,6,0"/>
-                                    <TextBlock Text="Bộ lọc"/>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
                     </DockPanel>
 
                     <DataGrid x:Name="IncomingDocsDataGrid"
                               Style="{StaticResource ModernDataGrid}"
                               AutoGenerateColumns="False"
-                              IsReadOnly="False"
-                              CanUserAddRows="True"
+                              IsReadOnly="True"
+                              CanUserAddRows="False"
                               ItemsSource="{Binding IncomingDocs}"
                               EnableRowVirtualization="True"
                               SelectionMode="Extended"
@@ -347,7 +257,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
                             <DataGridTextColumn Header="Số đến" Binding="{Binding ArrivalNumber}" Width="120"/>
-                            <DataGridTextColumn Header="Ngày đến" Binding="{Binding ArrivalDate, StringFormat=d}" Width="110"/>
+                            <DataGridTextColumn Header="Ngày đến" Binding="{Binding ArrivalDate, StringFormat={}{0:dd/MM/yyyy}}" Width="110"/>
                             <DataGridTextColumn Header="Số/Ký hiệu VB" Binding="{Binding DocumentNumber}" Width="140"/>
                             <DataGridTextColumn Header="Ngày VB" Binding="{Binding DocumentDate}" Width="110"/>
                             <DataGridTextColumn Header="Độ mật" Binding="{Binding SecurityLevel}" Width="100"/>
