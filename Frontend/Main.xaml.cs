@@ -1,4 +1,5 @@
 using Frontend.Views;
+using FrontEnd.Views;
 using System.Windows;
 using System.Windows.Media.Animation;
 
@@ -38,6 +39,11 @@ namespace DocumentHub.FrontEnd
         private void btnIncomingDoc_Click(object sender, RoutedEventArgs e)
         {
             ContentArea.Content = new IncomingDocView();
+        }
+
+        private void btnOutgoing_Click(object sender, RoutedEventArgs e)
+        {
+            ContentArea.Content = new OutgoingDocView();
         }
 
         private void BtnToggleSidebar_Checked(object sender, RoutedEventArgs e)
