@@ -255,19 +255,19 @@
                               SelectionMode="Extended"
                               HorizontalScrollBarVisibility="Auto">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
-                            <DataGridTextColumn Header="Số đến" Binding="{Binding ArrivalNumber}" Width="120"/>
-                            <DataGridTextColumn Header="Ngày đến" Binding="{Binding ArrivalDate, StringFormat={}{0:dd/MM/yyyy}}" Width="110"/>
-                            <DataGridTextColumn Header="Số/Ký hiệu VB" Binding="{Binding DocumentNumber}" Width="140"/>
-                            <DataGridTextColumn Header="Ngày VB" Binding="{Binding DocumentDate}" Width="110"/>
-                            <DataGridTextColumn Header="Độ mật" Binding="{Binding SecurityLevel}" Width="100"/>
-                            <DataGridTextColumn Header="Loại VB" Binding="{Binding DocumentType}" Width="100"/>
-                            <DataGridTextColumn Header="Nơi gửi" Binding="{Binding Sender}" Width="140"/>
-                            <DataGridTextColumn Header="Người ký" Binding="{Binding Signer}" Width="120"/>
-                            <DataGridTextColumn Header="Chức vụ" Binding="{Binding Position}" Width="120"/>
-                            <DataGridTextColumn Header="Người nhận" Binding="{Binding Recipient}" Width="120"/>
-                            <DataGridTextColumn Header="Người xử lý" Binding="{Binding Handler}" Width="120"/>
-                            <DataGridTextColumn Header="Trích yếu nội dung" Binding="{Binding Summary}" Width="2*" />
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                            <DataGridTextColumn Header="Số đến" Binding="{Binding ArrivalNumber}" Width="Auto"/>
+                            <DataGridTextColumn Header="Ngày đến" Binding="{Binding ArrivalDate, StringFormat={}{0:dd/MM/yyyy}}" Width="Auto"/>
+                            <DataGridTextColumn Header="Số/Ký hiệu VB" Binding="{Binding DocumentNumber}" Width="Auto"/>
+                            <DataGridTextColumn Header="Ngày VB" Binding="{Binding DocumentDate, StringFormat={}{0:dd/MM/yyyy}}" Width="Auto"/>
+                            <DataGridTextColumn Header="Độ mật" Binding="{Binding SecurityLevel}" Width="Auto"/>
+                            <DataGridTextColumn Header="Loại VB" Binding="{Binding DocumentType}" Width="Auto"/>
+                            <DataGridTextColumn Header="Nơi gửi" Binding="{Binding Sender}" Width="Auto"/>
+                            <DataGridTextColumn Header="Người ký" Binding="{Binding Signer}" Width="Auto"/>
+                            <DataGridTextColumn Header="Chức vụ" Binding="{Binding Position}" Width="Auto"/>
+                            <DataGridTextColumn Header="Người nhận" Binding="{Binding Recipient}" Width="Auto"/>
+                            <DataGridTextColumn Header="Người xử lý" Binding="{Binding Handler}" Width="Auto"/>
+                            <DataGridTextColumn Header="Trích yếu nội dung" Binding="{Binding Summary}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>

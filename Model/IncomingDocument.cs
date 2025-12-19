@@ -4,9 +4,9 @@
     {
         public int Id { get; set; }
         public string ArrivalNumber { get; set; } = "";
-        public DateTime ArrivalDate { get; set; }
+        public DateOnly ArrivalDate { get; set; }
         public string DocumentNumber { get; set; } = "";
-        public DateTime DocumentDate { get; set; }
+        public DateOnly DocumentDate { get; set; }
         public string SecurityLevel { get; set; } = "";
         public string DocumentType { get; set; } = "";
         public string Sender { get; set; } = "";

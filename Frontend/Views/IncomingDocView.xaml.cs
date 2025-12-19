@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿using DocumentHub.Data;
+using DocumentHub.ViewModel;
+using Microsoft.EntityFrameworkCore;
+using System.Windows.Controls;
 
 namespace Frontend.Views
 {
