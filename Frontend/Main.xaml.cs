@@ -1,3 +1,4 @@
+﻿using DocumentHub.FrontEnd.Views;
 using Frontend.Views;
 using FrontEnd.Views;
 using System.Windows;
@@ -45,6 +46,26 @@ namespace DocumentHub.FrontEnd
         {
             ContentArea.Content = new OutgoingDocView();
         }
+
+        private void btnProcess_Click(object sender, RoutedEventArgs e)
+        {
+            ContentArea.Content = new ProcessView();
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show(
+                "Bạn có chắc chắn muốn thoát?",
+                "Thoát",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
+        }
+
 
         private void BtnToggleSidebar_Checked(object sender, RoutedEventArgs e)
         {
