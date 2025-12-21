@@ -171,9 +171,9 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Ellipse Width="40" Height="40" Fill="{StaticResource AccentBrush}" />
+                        <!--<Ellipse Width="40" Height="40" Fill="{StaticResource AccentBrush}" />-->
 
-                            <StackPanel x:Name="BrandPanel" Margin="10,0,0,0" VerticalAlignment="Center">
+                        <StackPanel x:Name="BrandPanel" Margin="10,0,0,0" VerticalAlignment="Center">
                             <StackPanel.Style>
                                 <Style TargetType="StackPanel">
                                     <Setter Property="Visibility" Value="Visible"/>
@@ -185,8 +185,7 @@
                                 </Style>
                             </StackPanel.Style>
 
-                            <TextBlock Text="DocumentHub" FontWeight="Bold" Foreground="{StaticResource TextBrush}" FontSize="16"/>
-                            <TextBlock Text="Manage your documents" FontSize="11" Foreground="#FF9CA3AF"/>
+                            <TextBlock Text="Quản Lý Văn Bản" FontWeight="Bold" Foreground="{StaticResource TextBrush}" FontSize="16"/>
                         </StackPanel>
                     </StackPanel>
 
@@ -208,10 +207,12 @@
 
                 <!-- Menu -->
                 <StackPanel>
-                    <Button x:Name="btnDashboard" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE80F;" Content="Dashboard" Click="BtnDashboard_Click" Margin="0,6,0,0"/>
-                    <Button x:Name="btnIncomingDoc" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE8A5;" Content="Incoming Doc" Click="btnIncomingDoc_Click" Margin="0,6,0,0"/>
-                    <Button x:Name="btnOutgoingDoc" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE724;" Content="Outgoing" Click="btnOutgoing_Click" Margin="0,6,0,0"/>
-                    <Button x:Name="btnAbout" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE77B;" Content="About" Click="btnAbout_Click" Margin="0,6,0,0"/>
+                    <Button x:Name="btnDashboard" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE80F;" Content="Bảng Điều Khiển" Click="BtnDashboard_Click" Margin="0,6,0,0"/>
+                    <Button x:Name="btnIncomingDoc" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE715;" Content="Văn Bản Đến" Click="btnIncomingDoc_Click" Margin="0,6,0,0"/>
+                    <Button x:Name="btnOutgoingDoc" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE724;" Content="Văn Bản Đi" Click="btnOutgoing_Click" Margin="0,6,0,0"/>
+                    <Button x:Name="btnProcess" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE94C;" Content="Tiến Độ Công Việc" Click="btnProcess_Click" Margin="0,6,0,0"/>
+                    <Button x:Name="btnAbout" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE77B;" Content="Về Chúng Tôi" Click="btnAbout_Click" Margin="0,6,0,0"/>
+                    <Button x:Name="btnExit" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE7E8;" Content="Thoát" Click="btnExit_Click" Margin="0,6,0,0"/>
                 </StackPanel>
 
                 <!-- Footer area (docked bottom) -->

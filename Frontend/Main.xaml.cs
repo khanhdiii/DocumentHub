@@ -1,3 +1,4 @@
+using DocumentHub.FrontEnd.Views;
 using Frontend.Views;
 using FrontEnd.Views;
 using System.Windows;
@@ -45,6 +46,17 @@ namespace DocumentHub.FrontEnd
         {
             ContentArea.Content = new OutgoingDocView();
         }
+
+        private void btnProcess_Click(object sender, RoutedEventArgs e)
+        {
+            ContentArea.Content = new ProcessView();
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            ContentArea.Content = new ProcessView();
+        }
+
 
         private void BtnToggleSidebar_Checked(object sender, RoutedEventArgs e)
         {
