@@ -1,9 +1,178 @@
-<UserControl x:Class="Frontend.Views.DashboardView"
+﻿<UserControl x:Class="Frontend.Views.DashboardView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             MinHeight="200" MinWidth="200">
-    <Grid>
-        <TextBlock Text="Dashboard" FontSize="24" FontWeight="Bold" Margin="8"/>
-        <!-- Place dashboard content here -->
+             xmlns:vm="clr-namespace:DocumentHub.ViewModel"
+             xmlns:conv="clr-namespace:DocumentHub.FrontEnd.Converters"
+             Loaded="UserControl_Loaded"
+             MinHeight="500" MinWidth="800">
+
+    <UserControl.DataContext>
+        <vm:DashboardViewModel />
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <conv:ViewModeToVisibilityConverter x:Key="ViewModeToVisibilityConverter"/>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid Background="#F5F7FA" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+            <Button Content="←" Command="{Binding PreviousPeriodCommand}" Width="40" Height="40"
+                    Background="#4A90E2" Foreground="White" FontSize="18" FontWeight="Bold"
+                    BorderThickness="0" Margin="5"/>
+            <TextBlock Text="{Binding CurrentPeriodDisplay}" FontSize="24" FontWeight="Bold"
+                       Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button Content="→" Command="{Binding NextPeriodCommand}" Width="40" Height="40"
+                    Background="#4A90E2" Foreground="White" FontSize="18" FontWeight="Bold"
+                    BorderThickness="0" Margin="5"/>
+            <ComboBox Width="100" Foreground="#4A90E2"
+                      ItemsSource="{Binding ViewModes}"
+                      SelectedValue="{Binding SelectedViewMode}"
+                      SelectedValuePath="Value"
+                      DisplayMemberPath="Display"
+                      VerticalContentAlignment="Center"
+                      HorizontalContentAlignment="Center"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Margin="20,0,0,0"
+                      FontWeight="Bold"
+                      Height="30"/>
+        </StackPanel>
+
+        <!-- Day of week header -->
+        <UniformGrid Grid.Row="1" Columns="7" Rows="1" Margin="0,0,0,10">
+            <TextBlock Text="Mon" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Tue" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Wed" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Thu" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Fri" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Sat" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Red"/>
+            <TextBlock Text="Sun" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Red"/>
+        </UniformGrid>
+
+        <!-- Calendar for Week -->
+        <ScrollViewer x:Name="DaysScrollViewer" Grid.Row="2" VerticalScrollBarVisibility="Auto"
+                      Visibility="{Binding SelectedViewMode, Converter={StaticResource ViewModeToVisibilityConverter}, ConverterParameter=Week}">
+            <ItemsControl ItemsSource="{Binding CalendarDays}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="7"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border x:Name="DayBorder"
+                            Visibility="{Binding IsPlaceholder, Converter={StaticResource BoolToVisibilityConverter}}"
+                            CornerRadius="8"
+                            BorderBrush="#DDD"
+                            BorderThickness="1"
+                            Background="White"
+                            Width="120"
+                            Height="80"
+                            Margin="4">
+                            <StackPanel ToolTip="{Binding TaskDetail}" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding DayNumber}" FontSize="18" FontWeight="Bold" Foreground="#4A90E2" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding TaskSummary}" FontSize="12" Foreground="#666" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Calendar for Month -->
+        <ScrollViewer x:Name="MonthScrollViewer" Grid.Row="2" VerticalScrollBarVisibility="Auto"
+              Visibility="{Binding SelectedViewMode, Converter={StaticResource ViewModeToVisibilityConverter}, ConverterParameter=Month}">
+            <ItemsControl ItemsSource="{Binding CalendarDays}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="7"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border x:Name="DayBorder"
+                            Visibility="{Binding IsPlaceholder, Converter={StaticResource BoolToVisibilityConverter}}"
+                            CornerRadius="8"
+                            BorderBrush="#DDD"
+                            BorderThickness="1"
+                            Background="White"
+                            Width="120"
+                            Height="80"
+                            Margin="4">
+                            <StackPanel ToolTip="{Binding TaskDetail}" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding DayNumber}" FontSize="18" FontWeight="Bold" Foreground="#4A90E2" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding TaskSummary}" FontSize="12" Foreground="#666" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsPlaceholder}" Value="True">
+                                <Setter TargetName="DayBorder" Property="Background" Value="Transparent"/>
+                                <Setter TargetName="DayBorder" Property="BorderBrush" Value="Transparent"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                <Setter TargetName="DayBorder" Property="BorderBrush" Value="Red"/>
+                                <Setter TargetName="DayBorder" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="DayBorder" Property="Background" Value="#FFF3CD"/>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+
+        <!-- Calendar for Quarter -->
+        <ScrollViewer x:Name="MonthsScrollViewer" Grid.Row="2" VerticalScrollBarVisibility="Auto"
+                      Visibility="{Binding SelectedViewMode, Converter={StaticResource ViewModeToVisibilityConverter}, ConverterParameter=Quarter}">
+            <ItemsControl x:Name="QuarterItemsControl" ItemsSource="{Binding CalendarMonths}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,10">
+                            <TextBlock Text="{Binding MonthName}" FontSize="18" FontWeight="Bold" Foreground="#4A90E2" Margin="0,0,0,10"/>
+                            <ItemsControl ItemsSource="{Binding Days}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="7"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border x:Name="DayBorder"
+                                            CornerRadius="8"
+                                            BorderBrush="#DDD"
+                                            BorderThickness="1"
+                                            Background="White"
+                                            Width="120"
+                                            Height="80"
+                                            Margin="4">
+                                            <StackPanel ToolTip="{Binding TaskDetail}" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding DayNumber}" FontSize="18" FontWeight="Bold" Foreground="#4A90E2" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="{Binding TaskSummary}" FontSize="12" Foreground="#666" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                                <Setter TargetName="DayBorder" Property="BorderBrush" Value="Red"/>
+                                                <Setter TargetName="DayBorder" Property="BorderThickness" Value="3"/>
+                                                <Setter TargetName="DayBorder" Property="Background" Value="#FFF3CD"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>
