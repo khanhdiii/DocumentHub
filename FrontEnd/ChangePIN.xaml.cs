@@ -102,8 +102,6 @@ namespace DocumentHub.FrontEnd
             pb_NewPIN.Clear();
             pb_ConfirmNewPIN.Clear();
 
-            // Đóng cửa sổ sau 2 giây (sử dụng Dispatcher.Invoke vì đang dùng Task.Delay)
-            //Task.Delay(2000).ContinueWith(_ => Dispatcher.Invoke(Close));
         }
 
         /// Handle Cancel
