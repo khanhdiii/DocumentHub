@@ -1,4 +1,4 @@
-using DocumentHub.FrontEnd.Views;
+﻿using DocumentHub.FrontEnd.Views;
 using Frontend.Views;
 using FrontEnd.Views;
 using System.Windows;
@@ -54,7 +54,16 @@ namespace DocumentHub.FrontEnd
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new ProcessView();
+            var result = MessageBox.Show(
+                "Bạn có chắc chắn muốn thoát?",
+                "Thoát",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
         }
 
 
