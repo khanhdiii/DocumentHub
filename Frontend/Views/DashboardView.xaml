@@ -48,13 +48,13 @@
 
         <!-- Day of week header -->
         <UniformGrid Grid.Row="1" Columns="7" Rows="1" Margin="0,0,0,10">
-            <TextBlock Text="Mon" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <TextBlock Text="Tue" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <TextBlock Text="Wed" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <TextBlock Text="Thu" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <TextBlock Text="Fri" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <TextBlock Text="Sat" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Red"/>
-            <TextBlock Text="Sun" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Red"/>
+            <TextBlock Text="Thứ 2" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Thứ 3" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Thứ 4" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Thứ 5" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Thứ 6" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Thứ 7" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Red"/>
+            <TextBlock Text="Chủ nhật" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Red"/>
         </UniformGrid>
 
         <!-- Calendar for Week -->
