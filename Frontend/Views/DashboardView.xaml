@@ -69,19 +69,26 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border x:Name="DayBorder"
-                            Visibility="{Binding IsPlaceholder, Converter={StaticResource BoolToVisibilityConverter}}"
-                            CornerRadius="8"
-                            BorderBrush="#DDD"
-                            BorderThickness="1"
-                            Background="White"
-                            Width="120"
-                            Height="80"
-                            Margin="4">
+            Visibility="{Binding IsPlaceholder, Converter={StaticResource BoolToVisibilityConverter}}"
+            CornerRadius="8"
+            BorderBrush="#DDD"
+            BorderThickness="1"
+            Background="White"
+            Width="120"
+            Height="80"
+            Margin="4">
                             <StackPanel ToolTip="{Binding TaskDetail}" VerticalAlignment="Center">
                                 <TextBlock Text="{Binding DayNumber}" FontSize="18" FontWeight="Bold" Foreground="#4A90E2" HorizontalAlignment="Center"/>
                                 <TextBlock Text="{Binding TaskSummary}" FontSize="12" Foreground="#666" TextWrapping="Wrap" HorizontalAlignment="Center"/>
                             </StackPanel>
                         </Border>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                <Setter TargetName="DayBorder" Property="BorderBrush" Value="Red"/>
+                                <Setter TargetName="DayBorder" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="DayBorder" Property="Background" Value="#FFF3CD"/>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
