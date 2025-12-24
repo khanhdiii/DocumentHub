@@ -100,10 +100,10 @@ namespace DocumentHub.FrontEnd
             };
         }
 
-        private void BtnClearSearch_Click(object sender, RoutedEventArgs e)
-        {
-            SearchBox.Text = string.Empty;
-            SearchBox.Focus();
-        }
+        //    private void BtnClearSearch_Click(object sender, RoutedEventArgs e)
+        //    {
+        //        SearchBox.Text = string.Empty;
+        //        SearchBox.Focus();
+        //    }
     }
 }

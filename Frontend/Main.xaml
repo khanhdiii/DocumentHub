@@ -230,63 +230,6 @@
             </Grid.RowDefinitions>
 
             <!-- Top bar -->
-            <Grid Grid.Row="0" Height="48" Margin="0,0,0,12">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="240"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Text="Welcome to DocumentHub" VerticalAlignment="Center" FontSize="20" FontWeight="SemiBold" Foreground="#FF111827"/>
-
-                <Border Grid.Column="1" Background="#FFF6F7FB" CornerRadius="8" Padding="8" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <!-- Watermark implementation for WPF TextBox (PlaceholderText is invalid in WPF) -->
-                        <Grid Width="160" Margin="0,0,8,0" VerticalAlignment="Center">
-                            <TextBox x:Name="SearchBox" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Foreground="#FF374151" Padding="6,0,26,0"/>
-                            <TextBlock Text="Search..." Foreground="#FF9CA3AF" Margin="6,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            <!-- Clear button shown when there's text -->
-                            <Button x:Name="BtnClearSearch" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,4,0" ToolTip="Clear search" FontSize="12" Padding="0"
-                                    Background="Transparent" BorderThickness="0" Visibility="Collapsed" Click="BtnClearSearch_Click">
-                                <TextBlock Text="✕" Foreground="#FF6B7280"/>
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                        <Style.Triggers>
-                                            <!-- Hide when text is empty or null; visible otherwise -->
-                                            <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-                        </Grid>
-
-                        <!-- Use the RoundedButtonStyle instead of CornerRadius attribute -->
-                        <Button Width="36" Height="28" Style="{StaticResource RoundedButtonStyle}" ToolTip="Open search">
-                            <TextBlock FontFamily="{StaticResource IconFont}" Text="&#xE11A;" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Button>
-                    </StackPanel>
-                </Border>
-            </Grid>
 
             <!-- Main content card -->
             <Border Grid.Row="1" Background="White" CornerRadius="12" Padding="18">
