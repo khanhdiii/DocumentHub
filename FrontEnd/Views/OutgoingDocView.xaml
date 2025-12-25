@@ -740,9 +740,9 @@
                                                         </DataGridTextColumn>
                                                     
                                                         <!-- Cán bộ xử lý -->
-                                                        <DataGridTextColumn Header="Cán Bộ XD"
+                                                        <DataGridTextColumn Header="Cán Bộ xử lý"
                                                                             Binding="{Binding Handler}"
-                                                                            Width="90">
+                                                                            Width="100">
                                                                 <DataGridTextColumn.ElementStyle>
                                                                         <Style TargetType="{x:Type TextBlock}">
                                                                                 <Setter Property="HorizontalAlignment"
