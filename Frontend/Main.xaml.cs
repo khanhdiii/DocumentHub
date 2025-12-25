@@ -32,6 +32,11 @@ namespace DocumentHub.FrontEnd
             ContentArea.Content = new DashboardView();
         }
 
+        private void BtnAnalytics_Click(object sender, RoutedEventArgs e)
+        {
+            ContentArea.Content = new AnalyticsView();
+        }
+
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {
             ContentArea.Content = new AboutView();

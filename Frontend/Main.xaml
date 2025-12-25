@@ -208,6 +208,7 @@
                 <!-- Menu -->
                 <StackPanel>
                     <Button x:Name="btnDashboard" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE80F;" Content="Bảng Điều Khiển" Click="BtnDashboard_Click" Margin="0,6,0,0"/>
+                    <Button x:Name="btnAnalytics" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE9D2;" Content="Phân tích" Click="BtnAnalytics_Click" Margin="0,6,0,0"/>
                     <Button x:Name="btnIncomingDoc" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE715;" Content="Văn Bản Đến" Click="btnIncomingDoc_Click" Margin="0,6,0,0"/>
                     <Button x:Name="btnOutgoingDoc" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE724;" Content="Văn Bản Đi" Click="btnOutgoing_Click" Margin="0,6,0,0"/>
                     <Button x:Name="btnProcess" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE94C;" Content="Tiến Độ Công Việc" Click="btnProcess_Click" Margin="0,6,0,0"/>

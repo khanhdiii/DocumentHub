@@ -6,13 +6,15 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
+		<EnableXamlMarkupCompile>false</EnableXamlMarkupCompile>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="ClosedXML" Version="0.105.0" />
-	  <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
-	  <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-	  <PackageReference Include="PdfSharp-MigraDoc-GDI" Version="6.2.3" />
+		<PackageReference Include="ClosedXML" Version="0.105.0" />
+		<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+		<PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="PdfSharp-MigraDoc-GDI" Version="6.2.3" />
 	</ItemGroup>
 
 	<ItemGroup>
