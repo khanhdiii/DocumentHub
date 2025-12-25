@@ -181,7 +181,8 @@
                         <Setter Property="Padding"
                                 Value="4"/>
                 </Style>
-
+                
+                <!-- Style button function-->
                 <Style TargetType="Button"
                        x:Key="ModernActionButton">
                         <Setter Property="Foreground"
