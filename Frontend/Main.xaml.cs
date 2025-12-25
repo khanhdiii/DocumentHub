@@ -52,6 +52,21 @@ namespace DocumentHub.FrontEnd
             ContentArea.Content = new OutgoingDocView();
         }
 
+        private void btnConstructionStaff_Click(object sender, RoutedEventArgs e)
+        {
+            ContentArea.Content = new AboutView();
+        }
+
+        private void btnSigner_Click(object sender, RoutedEventArgs e)
+        {
+            ContentArea.Content = new ProcessView();
+        }
+
+        private void btnPosition_Click(object sender, RoutedEventArgs e)
+        {
+            ContentArea.Content = new ProcessView();
+        }
+
         private void btnProcess_Click(object sender, RoutedEventArgs e)
         {
             ContentArea.Content = new ProcessView();
