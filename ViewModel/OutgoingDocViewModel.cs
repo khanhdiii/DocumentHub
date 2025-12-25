@@ -13,7 +13,6 @@ namespace DocumentHub.ViewModel
 
     //Interface notification when data change
     public class OutgoingDocViewModel : INotifyPropertyChanged
-
     {
         public ICommand AddCommand { get; }
         public ICommand EditCommand { get; }
@@ -212,7 +211,7 @@ namespace DocumentHub.ViewModel
             {
                 _searchKeyword = value;
                 OnPropertyChanged(nameof(SearchKeyword));
-                ApplyFilter(); // gọi lọc mỗi khi text thay đổi
+                ApplyFilter();
             }
         }
 
