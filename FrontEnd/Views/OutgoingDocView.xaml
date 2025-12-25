@@ -211,7 +211,6 @@
                                                                         Value="Yellow"/>
                                                                 <Setter Property="Cursor"
                                                                         Value="Hand"/>
-                                                                <!-- xanh lá -->
                                                         </Trigger>
                                                         <!-- Click -->
                                                         <Trigger Property="IsPressed"
@@ -220,23 +219,20 @@
                                                                         Value="Yellow"/>
                                                                 <Setter Property="Cursor"
                                                                         Value="Hand"/>
-                                                                <!-- xanh đậm -->
                                                         </Trigger>
                                                 </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                 </Setter.Value>
                         </Setter>
-                        <!-- Màu nền mặc định -->
+                        <!-- Default background color -->
                         <Setter Property="Background">
                                 <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,0"
                                                              EndPoint="1,1">
                                                 <GradientStop Color="#FF2196F3"
                                                               Offset="0"/>
-                                                <!-- xanh dương -->
                                                 <GradientStop Color="#FF1976D2"
                                                               Offset="1"/>
-                                                <!-- xanh đậm -->
                                         </LinearGradientBrush>
                                 </Setter.Value>
                         </Setter>
@@ -546,7 +542,7 @@
                                                          TextWrapping="Wrap"/>
                                         </Grid>
 
-                                        <!-- Nút lưu -->
+                                        <!-- Button Save -->
                                         <Button Style="{StaticResource PrimaryButton}"
                                                 Content="Lưu"
                                                 Command="{Binding SaveCommand}"/>
@@ -854,7 +850,7 @@
                                                                         <DataTemplate>
                                                                                 <StackPanel Orientation="Horizontal"
                                                                                             HorizontalAlignment="Center">
-                                                                                        <!-- Nút Sửa -->
+                                                                                        <!-- Button edit -->
                                                                                         <Button Style="{StaticResource ModernActionButton}"
                                                                                                 Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
                                                                                                 CommandParameter="{Binding}"
@@ -868,7 +864,7 @@
                                                                                                 </StackPanel>
                                                                                         </Button>
 
-                                                                                        <!-- Nút Xóa -->
+                                                                                        <!-- Button delete -->
                                                                                         <Button Style="{StaticResource ModernActionButton}"
                                                                                                 Background="Red"
                                                                                                 Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"

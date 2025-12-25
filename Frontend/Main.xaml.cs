@@ -54,7 +54,7 @@ namespace DocumentHub.FrontEnd
 
         private void btnConstructionStaff_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new AboutView();
+            ContentArea.Content = new ConstructionStaffView();
         }
 
         private void btnSigner_Click(object sender, RoutedEventArgs e)
