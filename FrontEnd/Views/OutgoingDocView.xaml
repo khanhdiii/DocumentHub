@@ -448,25 +448,6 @@
                                                           DisplayMemberPath="Name"/>
                                         </Grid>
 
-                                        <!-- Nơi gửi -->
-                                        <Grid Margin="0,4">
-                                                <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="80"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <TextBlock Grid.Column="0"
-                                                           Text="Nơi gửi"
-                                                           Foreground="{StaticResource MutedTextBrush}"
-                                                           FontSize="12"
-                                                           VerticalAlignment="Center"
-                                                           Margin="0,0,8,0"/>
-
-                                                <TextBox Grid.Column="1"
-                                                         Style="{StaticResource ModernTextBox}"
-                                                         Text="{Binding SelectedDocument.Sender}"/>
-                                        </Grid>
-
                                         <!-- Cán bộ xử lý -->
                                         <Grid Margin="0,4">
                                                 <Grid.ColumnDefinitions>
@@ -757,29 +738,7 @@
                                                                         </Style>
                                                                 </DataGridTextColumn.EditingElementStyle>
                                                         </DataGridTextColumn>
-
-                                                        <!-- Bộ phận gửi / Cơ quan gửi -->
-                                                        <DataGridTextColumn Header="Nơi gửi"
-                                                                            Binding="{Binding Sender}"
-                                                                            Width="140">
-                                                                <DataGridTextColumn.ElementStyle>
-                                                                        <Style TargetType="{x:Type TextBlock}">
-                                                                                <Setter Property="HorizontalAlignment"
-                                                                                        Value="Center"/>
-                                                                                <Setter Property="VerticalAlignment"
-                                                                                        Value="Center"/>
-                                                                        </Style>
-                                                                </DataGridTextColumn.ElementStyle>
-                                                                <DataGridTextColumn.EditingElementStyle>
-                                                                        <Style TargetType="{x:Type TextBox}">
-                                                                                <Setter Property="HorizontalContentAlignment"
-                                                                                        Value="Center"/>
-                                                                                <Setter Property="VerticalContentAlignment"
-                                                                                        Value="Center"/>
-                                                                        </Style>
-                                                                </DataGridTextColumn.EditingElementStyle>
-                                                        </DataGridTextColumn>
-
+                                                    
                                                         <!-- Cán bộ xử lý -->
                                                         <DataGridTextColumn Header="Cán Bộ XD"
                                                                             Binding="{Binding Handler}"
