@@ -88,6 +88,20 @@ namespace DocumentHub.ViewModel
             new SecurityLevelItem { Name = "Thường", Abbreviation = "4" },
         };
 
+        //List Construction Staff
+        public ObservableCollection<ConstructionStaff> StaffList { get; } = new ObservableCollection<ConstructionStaff>
+        {
+            new ConstructionStaff { Id = 1, FullName = "Nguyễn Văn A", Position = "Chuyên viên" },
+            new ConstructionStaff { Id = 2, FullName = "Trần Thị B", Position = "Giám đốc" },
+            new ConstructionStaff { Id = 3, FullName = "Lê Văn C", Position = "Phó phòng" },
+            new ConstructionStaff { Id = 4, FullName = "Lê Thị C", Position = "Chuyên viên" },
+            new ConstructionStaff { Id = 5, FullName = "Nguyễn Thị E", Position = "Chuyên viên" },
+            new ConstructionStaff { Id = 6, FullName = "Trần Thị G", Position = "Chuyên viên" },
+            new ConstructionStaff { Id = 7, FullName = "Phạm Thị I", Position = "Chuyên viên" },
+            new ConstructionStaff { Id = 8, FullName = "Nguyễn Văn L", Position = "Chuyên viên" }
+        };
+
+
         //Constructor
         public OutgoingDocViewModel()
         {
@@ -101,7 +115,7 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Công điện",
                 SecurityLevel = "Tuyệt mật",
                 Sender = "Phòng Hành chính",
-                Handler = "Nguyễn Văn A",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Nguyễn Văn A"),
                 Signer = "Trần Văn B",
                 SignerPosition = "Giám đốc",
                 Recipient = "Sở Nội vụ",
@@ -116,7 +130,7 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Thông báo",
                 SecurityLevel = "Mật",
                 Sender = "Văn phòng UBND",
-                Handler = "Lê Thị C",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Lê Thị C"),
                 Signer = "Phạm Minh D",
                 SignerPosition = "Phó Chủ tịch",
                 Recipient = "Các đơn vị trực thuộc",
@@ -131,7 +145,7 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Phiếu báo",
                 SecurityLevel = "Tối mật",
                 Sender = "Ban Giám đốc",
-                Handler = "Nguyễn Thị E",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Nguyễn Thị E"),
                 Signer = "Lê Văn F",
                 SignerPosition = "Chủ tịch",
                 Recipient = "Phòng Nhân sự",
@@ -146,7 +160,7 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Hướng dẫn",
                 SecurityLevel = "Mật",
                 Sender = "Phòng Kỹ thuật",
-                Handler = "Trần Thị G",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Trần Thị G"),
                 Signer = "Nguyễn Văn H",
                 SignerPosition = "Trưởng phòng",
                 Recipient = "Các đơn vị trực thuộc",
@@ -161,7 +175,7 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Báo cáo",
                 SecurityLevel = "Mật",
                 Sender = "Phòng Tài chính",
-                Handler = "Phạm Thị I",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Phạm Thị I"),
                 Signer = "Đỗ Văn K",
                 SignerPosition = "Kế toán trưởng",
                 Recipient = "Ban Giám đốc",
@@ -176,7 +190,7 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Giấy mời",
                 SecurityLevel = "Mật",
                 Sender = "Văn phòng UBND",
-                Handler = "Nguyễn Văn L",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Nguyễn Văn L"),
                 Signer = "Trần Thị M",
                 SignerPosition = "Chánh văn phòng",
                 Recipient = "Các cơ quan ban ngành",
@@ -234,7 +248,7 @@ namespace DocumentHub.ViewModel
                     (d.DocumentType?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.SecurityLevel?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.Sender?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (d.Handler?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (d.Handler?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.Signer?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.SignerPosition?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.Recipient?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
@@ -257,7 +271,7 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Mới",
                 SecurityLevel = "Bình thường",
                 Sender = "Người gửi",
-                Handler = "Cán bộ",
+                Handler = StaffList.FirstOrDefault(),
                 Signer = "Người ký",
                 SignerPosition = "Chức vụ",
                 Recipient = "Người nhận",
@@ -318,7 +332,7 @@ namespace DocumentHub.ViewModel
                         ws.Cell(row, 4).Value = doc.DocumentType;
                         ws.Cell(row, 5).Value = doc.SecurityLevel;
                         ws.Cell(row, 6).Value = doc.Sender;
-                        ws.Cell(row, 7).Value = doc.Handler;
+                        ws.Cell(row, 7).Value = doc.Handler?.FullName;
                         ws.Cell(row, 8).Value = doc.Signer;
                         ws.Cell(row, 9).Value = doc.SignerPosition;
                         ws.Cell(row, 10).Value = doc.Recipient;

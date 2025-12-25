@@ -15,7 +15,7 @@ namespace DocumentHub.Model
         public string DocumentType { get; set; } = "";
         public string SecurityLevel { get; set; } = "";
         public string Sender { get; set; } = "";
-        public string Handler { get; set; } = "";
+        public ConstructionStaff Handler { get; set; }
         public string Signer { get; set; } = "";
         public string SignerPosition { get; set; } = "";
         public string Recipient { get; set; } = "";
