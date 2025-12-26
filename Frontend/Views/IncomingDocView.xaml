@@ -240,7 +240,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <!--  Form input  -->
-                <ColumnDefinition Width="0.85*" />
+                <ColumnDefinition Width="1.1*" />
                 <!--  List Table  -->
                 <ColumnDefinition Width="3*" />
 
@@ -342,7 +342,7 @@
                             VerticalAlignment="Center"
                             FontSize="12"
                             Foreground="{StaticResource MutedTextBrush}"
-                            Text="Số/ Ký hiệu VB" />
+                            Text="Số/ Ký hiệu" />
 
 
                         <TextBox
@@ -351,7 +351,7 @@
                             Text="{Binding SelectedDocument.DocumentNumber}" />
                     </Grid>
 
-                    <!--  Ngày văn bản  -->
+                    <!--  Ngày Văn bản  -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
@@ -366,7 +366,7 @@
                             VerticalAlignment="Center"
                             FontSize="12"
                             Foreground="{StaticResource MutedTextBrush}"
-                            Text="Ngày đến" />
+                            Text="Ngày văn bản" />
                         <DatePicker
                             Grid.Column="1"
                             SelectedDate="{Binding SelectedDocument.DocumentDate}"
@@ -514,7 +514,7 @@
 
                     </Grid>
 
-                    <!--  Người nhận  -->
+                    <!--  Nơi nhận  -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
@@ -527,7 +527,7 @@
                             VerticalAlignment="Center"
                             FontSize="12"
                             Foreground="{StaticResource MutedTextBrush}"
-                            Text="Người nhận" />
+                            Text="Nơi nhận" />
 
                         <TextBox
                             Grid.Column="1"
@@ -733,7 +733,7 @@
                             <DataGridTextColumn
                                 Width="110"
                                 Binding="{Binding ArrivalDate, StringFormat=\{0:dd/MM/yyyy\}}"
-                                Header="Ngày VB">
+                                Header="Ngày đến">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -767,11 +767,11 @@
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
 
-                            <!--  Ngày VB  -->
+                            <!--  Ngày văn bản  -->
                             <DataGridTextColumn
                                 Width="110"
                                 Binding="{Binding DocumentDate, StringFormat=\{0:dd/MM/yyyy\}}"
-                                Header="Ngày VB">
+                                Header="Ngày văn bản">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -805,11 +805,11 @@
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
 
-                            <!--  Loại VB  -->
+                            <!--  Loại văn bản  -->
                             <DataGridTextColumn
-                                Width="90"
+                                Width="120"
                                 Binding="{Binding DocumentType}"
-                                Header="Loại VB">
+                                Header="Loại văn bản">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -826,7 +826,7 @@
 
                             <!--  Nơi gửi  -->
                             <DataGridTextColumn
-                                Width="90"
+                                Width="120"
                                 Binding="{Binding Sender}"
                                 Header="Nơi gửi">
                                 <DataGridTextColumn.ElementStyle>
@@ -845,7 +845,7 @@
 
                             <!--  Người ký  -->
                             <DataGridTextColumn
-                                Width="120"
+                                Width="150"
                                 Binding="{Binding Signer.FullName}"
                                 Header="Người ký">
                                 <DataGridTextColumn.ElementStyle>
@@ -902,9 +902,9 @@
 
                             <!--  Cán bộ xử lý  -->
                             <DataGridTextColumn
-                                Width="120"
+                                Width="150"
                                 Binding="{Binding ConstructionStaff.FullName}"
-                                Header="Cán Bộ xử lý">
+                                Header="Cán bộ xử lý">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -932,7 +932,7 @@
                             </DataGridTextColumn>
 
                             <!--  Button function  -->
-                            <DataGridTemplateColumn Width="60" Header="Thao tác">
+                            <DataGridTemplateColumn Width="100" Header="Thao tác">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
