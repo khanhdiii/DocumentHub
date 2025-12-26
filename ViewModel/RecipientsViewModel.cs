@@ -7,14 +7,6 @@ namespace DocumentHub.ViewModel
 {
     public class RecipientsViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Recipient> RecipientList { get; }
-            = new ObservableCollection<Recipient>
-            {
-                new Recipient { Id = 1, Name = "Sở Nội vụ" },
-                new Recipient { Id = 2, Name = "Phòng Tài chính" },
-                new Recipient { Id = 3, Name = "Ban Giám đốc" }
-            };
-
         private Recipient _selectedRecipient;
         public Recipient SelectedRecipient
         {
@@ -39,13 +31,6 @@ namespace DocumentHub.ViewModel
 
         private void SaveRecipient()
         {
-            if (SelectedRecipient == null) return;
-            var existing = RecipientList.FirstOrDefault(r => r.Id == SelectedRecipient.Id);
-            if (existing != null)
-            {
-                existing.Name = SelectedRecipient.Name;
-                OnPropertyChanged(nameof(RecipientList));
-            }
         }
 
         private void EditRecipient(Recipient recipient)
@@ -56,8 +41,7 @@ namespace DocumentHub.ViewModel
 
         private void DeleteRecipient(Recipient recipient)
         {
-            if (recipient != null)
-                RecipientList.Remove(recipient);
+           
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
