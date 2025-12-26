@@ -131,6 +131,57 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Margin" Value="8,8,0,4"/>
         </Style>
+
+        <!-- Style for Advanced Management -->
+        <Style x:Key="SidebarExpanderStyle" TargetType="Expander">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Expander">
+                        <StackPanel>
+                            <!-- Header -->
+                            <ToggleButton IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent" BorderThickness="0" FocusVisualStyle="{StaticResource ButtonFocusVisual}">
+                                <Border x:Name="HeaderBorder" Background="Transparent" CornerRadius="8" Padding="10,8" SnapsToDevicePixels="True">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="36"/>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <!-- Icon Arrow -->
+                                        <TextBlock x:Name="ExpanderIcon" FontFamily="{StaticResource IconFont}" FontSize="16" Text="&#xE70D;" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0"/> 
+                                        <!--Hide icon when click navbar-->
+                                        <TextBlock Grid.Column="1" Text="{TemplateBinding Header}" FontSize="14" Margin="10,0,6,0" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=BtnToggleSidebar}" Value="True">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style> </TextBlock> </Grid>
+                                </Border>
+                            </ToggleButton>
+                            <!-- Sumary more -->
+                            <ContentPresenter x:Name="ExpandSite" Visibility="Collapsed" Content="{TemplateBinding Content}" Margin="20,4,0,0"/>
+                        </StackPanel>
+                        <!-- Trigger change icon sumary more -->
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="ExpanderIcon" Property="Text" Value="&#xE70E;"/>
+                                <!-- Arrow top -->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Window.Resources>
 
     <Grid>
@@ -212,13 +263,33 @@
                     <Button x:Name="btnIncomingDoc" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE715;" Content="Văn Bản Đến" Click="btnIncomingDoc_Click" Margin="0,6,0,0"/>
                     <Button x:Name="btnOutgoingDoc" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE724;" Content="Văn Bản Đi" Click="btnOutgoing_Click" Margin="0,6,0,0"/>
                     <Button x:Name="btnProcess" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE94C;" Content="Tiến Độ Công Việc" Click="btnProcess_Click" Margin="0,6,0,0"/>
-                    <Button x:Name="btnAbout" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE77B;" Content="Về Chúng Tôi" Click="btnAbout_Click" Margin="0,6,0,0"/>
+                    <Expander Header="Quản lý nâng cao"
+                          Margin="0,6,0,0">
+                        <Expander.Style>
+                            <Style TargetType="Expander" BasedOn="{StaticResource SidebarExpanderStyle}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsChecked, ElementName=BtnToggleSidebar}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
+
+                        <StackPanel>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Tag="&#xE77B;" Content="Cán bộ xây dựng" Click="btnConstructionStaff_Click" Margin="0,4,0,0"/>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Tag="&#xE70F;" Content="Người ký" Click="btnSigner_Click" Margin="0,4,0,0"/>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Tag="&#xE707;" Content="Nơi nhận" Click="btnRecpient_Click" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Expander>
+
+                    <Button x:Name="btnAbout" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE902;" Content="Về Chúng Tôi" Click="btnAbout_Click" Margin="0,6,0,0"/>
                     <Button x:Name="btnExit" Style="{StaticResource SidebarButtonStyle}" Tag="&#xE7E8;" Content="Thoát" Click="btnExit_Click" Margin="0,6,0,0"/>
                 </StackPanel>
 
                 <!-- Footer area (docked bottom) -->
-                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,10,0,0">
-                    <TextBlock Text="v1.0.0" Foreground="#FF9CA3AF" VerticalAlignment="Center" />
+                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,30,0,0">
+                    <TextBlock Text="v1.0.0" Foreground="#FF9CA3AF" VerticalAlignment="Center" Margin="0,0,50,0" />
                 </StackPanel>
             </DockPanel>
         </Border>
@@ -229,8 +300,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
-            <!-- Top bar -->
 
             <!-- Main content card -->
             <Border Grid.Row="1" Background="White" CornerRadius="12" Padding="18">

@@ -1,19 +1,18 @@
-﻿using DocumentHub.Model;
+﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentHub.Model;
+using Microsoft.Win32;
+using PdfSharp.Drawing;
+using PdfSharp.Snippets.Drawing;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using ClosedXML.Excel;
-using PdfSharp.Drawing;
-using Microsoft.Win32;
-using PdfSharp.Snippets.Drawing;
 
 namespace DocumentHub.ViewModel
 {
 
-    //Interface notification when data change
     public class OutgoingDocViewModel : INotifyPropertyChanged
-
     {
         public ICommand AddCommand { get; }
         public ICommand EditCommand { get; }
@@ -28,19 +27,6 @@ namespace DocumentHub.ViewModel
 
         //Event of INotifyPropertyChanged 
         public event PropertyChangedEventHandler PropertyChanged;
-
-
-        //Selected data when choose in table
-        private OutgoingDocument _selectedDocument;
-        public OutgoingDocument SelectedDocument
-        {
-            get => _selectedDocument;
-            set
-            {
-                _selectedDocument = value;
-                OnPropertyChanged(nameof(SelectedDocument));
-            }
-        }
 
         //Event notification when name changed
         protected void OnPropertyChanged(string name)
@@ -89,11 +75,87 @@ namespace DocumentHub.ViewModel
             new SecurityLevelItem { Name = "Thường", Abbreviation = "4" },
         };
 
+        //List Construction Staff
+        public ObservableCollection<ConstructionStaff> StaffList { get; } = new ObservableCollection<ConstructionStaff>
+        {
+            new ConstructionStaff { Id = 1, FullName = "Nguyễn Văn A" },
+            new ConstructionStaff { Id = 2, FullName = "Trần Thị B"},
+            new ConstructionStaff { Id = 3, FullName = "Lê Văn C" },
+            new ConstructionStaff { Id = 4, FullName = "Lê Thị C" },
+            new ConstructionStaff { Id = 5, FullName = "Nguyễn Thị E" },
+            new ConstructionStaff { Id = 6, FullName = "Trần Thị G" },
+            new ConstructionStaff { Id = 7, FullName = "Phạm Thị I" },
+            new ConstructionStaff { Id = 8, FullName = "Nguyễn Văn L"}
+        };
+
+        //List Signer
+        public ObservableCollection<Signer> SignerList { get; } = new ObservableCollection<Signer>
+        {
+            new Signer { Id = 1, FullName = "Trần Văn B", Position = "Giám đốc" },
+            new Signer { Id = 2, FullName = "Phạm Minh D", Position = "Phó Chủ tịch" }, 
+            new Signer { Id = 3, FullName = "Lê Văn F", Position = "Chủ tịch" },
+            new Signer { Id = 4, FullName = "Nguyễn Văn H", Position = "Trưởng phòng" },
+            new Signer { Id = 5, FullName = "Đỗ Văn K", Position = "Kế toán trưởng" }, 
+            new Signer { Id = 6, FullName = "Trần Thị M", Position = "Chánh văn phòng" } 
+        };
+
+        // Property SelectedStaff 
+        private ConstructionStaff _selectedStaff;
+        public ConstructionStaff SelectedStaff
+        {
+            get => _selectedStaff;
+            set
+            {
+                _selectedStaff = value;
+                OnPropertyChanged(nameof(SelectedStaff));
+
+                if (SelectedDocument != null)
+                {
+                    SelectedDocument.Handler = _selectedStaff;
+                    OnPropertyChanged(nameof(SelectedDocument));
+                }
+            }
+        }
+
+        //Event Selected Signer
+        private OutgoingDocument _selectedDocument;
+        public OutgoingDocument SelectedDocument
+        {
+            get => _selectedDocument;
+            set
+            {
+                if (_selectedDocument?.Signer != null)
+                    _selectedDocument.Signer.PropertyChanged -= Signer_PropertyChanged;
+
+                _selectedDocument = value;
+                OnPropertyChanged(nameof(SelectedDocument));
+                OnPropertyChanged(nameof(CurrentSignerPosition));
+
+                if (_selectedDocument?.Signer != null)
+                    _selectedDocument.Signer.PropertyChanged += Signer_PropertyChanged;
+            }
+        }
+
+        private void Signer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Signer.Position))
+                OnPropertyChanged(nameof(CurrentSignerPosition));
+        }
+
+        public string CurrentSignerPosition => SelectedDocument?.Signer?.Position ?? "";
+
+
         //Constructor
         public OutgoingDocViewModel()
         {
             ExportExcelCommand = new RelayCommand(param => ExportToExcel());
-            //Data test
+
+            //Defind value for Signer
+            SelectedDocument = new OutgoingDocument
+            {
+                Signer = SignerList.FirstOrDefault() 
+            }; 
+            //Data test for outgoing doc
             OutgoingDocs.Add(new OutgoingDocument
             {
                 Id = 1,
@@ -102,9 +164,8 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Công điện",
                 SecurityLevel = "Tuyệt mật",
                 Sender = "Phòng Hành chính",
-                Handler = "Nguyễn Văn A",
-                Signer = "Trần Văn B",
-                SignerPosition = "Giám đốc",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Nguyễn Văn A"),
+                Signer = SignerList.FirstOrDefault(s => s.FullName == "Trần Văn B"),
                 Recipient = "Sở Nội vụ",
                 Summary = "Công văn gửi Sở Nội vụ về việc đề xuất bổ sung nhân lực."
             });
@@ -117,9 +178,8 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Thông báo",
                 SecurityLevel = "Mật",
                 Sender = "Văn phòng UBND",
-                Handler = "Lê Thị C",
-                Signer = "Phạm Minh D",
-                SignerPosition = "Phó Chủ tịch",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Lê Thị C"),
+                Signer = SignerList.FirstOrDefault(s => s.FullName == "Phạm Minh D"),
                 Recipient = "Các đơn vị trực thuộc",
                 Summary = "Thông báo về kế hoạch triển khai quy định bảo mật thông tin."
             });
@@ -132,9 +192,8 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Phiếu báo",
                 SecurityLevel = "Tối mật",
                 Sender = "Ban Giám đốc",
-                Handler = "Nguyễn Thị E",
-                Signer = "Lê Văn F",
-                SignerPosition = "Chủ tịch",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Nguyễn Thị E"),
+                Signer = SignerList.FirstOrDefault(s => s.FullName == "Lê Văn F"),
                 Recipient = "Phòng Nhân sự",
                 Summary = "Quyết định bổ nhiệm cán bộ phụ trách an ninh thông tin."
             });
@@ -147,9 +206,8 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Hướng dẫn",
                 SecurityLevel = "Mật",
                 Sender = "Phòng Kỹ thuật",
-                Handler = "Trần Thị G",
-                Signer = "Nguyễn Văn H",
-                SignerPosition = "Trưởng phòng",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Trần Thị G"),
+                Signer = SignerList.FirstOrDefault(s => s.FullName == "Nguyễn Văn H"),
                 Recipient = "Các đơn vị trực thuộc",
                 Summary = "Hướng dẫn triển khai hệ thống quản lý văn bản điện tử."
             });
@@ -162,9 +220,8 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Báo cáo",
                 SecurityLevel = "Mật",
                 Sender = "Phòng Tài chính",
-                Handler = "Phạm Thị I",
-                Signer = "Đỗ Văn K",
-                SignerPosition = "Kế toán trưởng",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Phạm Thị I"),
+                Signer = SignerList.FirstOrDefault(s => s.FullName == "Đỗ Văn K"),
                 Recipient = "Ban Giám đốc",
                 Summary = "Báo cáo tình hình ngân sách quý IV năm 2025."
             });
@@ -177,9 +234,8 @@ namespace DocumentHub.ViewModel
                 DocumentType = "Giấy mời",
                 SecurityLevel = "Mật",
                 Sender = "Văn phòng UBND",
-                Handler = "Nguyễn Văn L",
-                Signer = "Trần Thị M",
-                SignerPosition = "Chánh văn phòng",
+                Handler = StaffList.FirstOrDefault(s => s.FullName == "Nguyễn Văn L"),
+                Signer = SignerList.FirstOrDefault(s => s.FullName == "Trần Thị M"),
                 Recipient = "Các cơ quan ban ngành",
                 Summary = "Giấy mời tham dự hội nghị tổng kết cuối năm."
             });
@@ -203,7 +259,6 @@ namespace DocumentHub.ViewModel
             }
         }
 
-
         //Keyword when search
         public string SearchKeyword
         {
@@ -212,7 +267,7 @@ namespace DocumentHub.ViewModel
             {
                 _searchKeyword = value;
                 OnPropertyChanged(nameof(SearchKeyword));
-                ApplyFilter(); // gọi lọc mỗi khi text thay đổi
+                ApplyFilter();
             }
         }
 
@@ -235,9 +290,8 @@ namespace DocumentHub.ViewModel
                     (d.DocumentType?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.SecurityLevel?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.Sender?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (d.Handler?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (d.Signer?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (d.SignerPosition?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (d.Handler?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (d.Signer?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.Recipient?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.Summary?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false)
                 ).ToList();
@@ -255,17 +309,19 @@ namespace DocumentHub.ViewModel
                 Id = OutgoingDocs.Count + 1,
                 DocumentNumber = "NEW-" + DateTime.Now.Ticks,
                 DocumentDate = DateTime.Today,
-                DocumentType = "Mới",
-                SecurityLevel = "Bình thường",
+                DocumentType = DocumentTypes.FirstOrDefault()?.Name ?? "Mới",
+                SecurityLevel = SecurityLevel.FirstOrDefault()?.Name ?? "Thường",
                 Sender = "Người gửi",
-                Handler = "Cán bộ",
-                Signer = "Người ký",
-                SignerPosition = "Chức vụ",
+                Handler = StaffList.FirstOrDefault(),
+                Signer = SignerList.FirstOrDefault(),
                 Recipient = "Người nhận",
                 Summary = "Nội dung mới"
             };
+
+            SelectedDocument = newDoc;
             OutgoingDocs.Add(newDoc);
         }
+
 
         //Function Edit
         private void EditDocument()
@@ -281,6 +337,7 @@ namespace DocumentHub.ViewModel
             if (SelectedDocument != null)
                 OutgoingDocs.Remove(SelectedDocument);
         }
+
 
         //Function Export excel
         private void ExportToExcel()
@@ -319,9 +376,8 @@ namespace DocumentHub.ViewModel
                         ws.Cell(row, 4).Value = doc.DocumentType;
                         ws.Cell(row, 5).Value = doc.SecurityLevel;
                         ws.Cell(row, 6).Value = doc.Sender;
-                        ws.Cell(row, 7).Value = doc.Handler;
-                        ws.Cell(row, 8).Value = doc.Signer;
-                        ws.Cell(row, 9).Value = doc.SignerPosition;
+                        ws.Cell(row, 7).Value = doc.Handler?.FullName;
+                        ws.Cell(row, 8).Value = doc.Signer?.FullName;
                         ws.Cell(row, 10).Value = doc.Recipient;
                         ws.Cell(row, 11).Value = doc.Summary;
                         row++;
