@@ -99,6 +99,16 @@ namespace DocumentHub.ViewModel
             new Signer { Id = 6, FullName = "Trần Thị M", Position = "Chánh văn phòng" } 
         };
 
+        //List Recipients
+        public ObservableCollection<Recipient> RecipientList { get; }
+        = new ObservableCollection<Recipient>
+    {
+        new Recipient { Id = 1, Name = "Sở Nội vụ" },
+        new Recipient { Id = 2, Name = "Phòng Tài chính" },
+        new Recipient { Id = 3, Name = "Ban Giám đốc" }
+    };
+
+
         // Property SelectedStaff 
         private ConstructionStaff _selectedStaff;
         public ConstructionStaff SelectedStaff
@@ -143,6 +153,20 @@ namespace DocumentHub.ViewModel
         }
 
         public string CurrentSignerPosition => SelectedDocument?.Signer?.Position ?? "";
+
+
+        //Recipient
+        private Recipient _recipient;
+        public Recipient Recipient
+        {
+            get => _recipient;
+            set
+            {
+                _recipient = value;
+                OnPropertyChanged(nameof(Recipient));
+            }
+        }
+        public string RecipientName => Recipient?.Name;
 
 
         //Constructor

@@ -416,7 +416,7 @@
 
                     </Grid>
 
-                    <!--  Nơi nhận  -->
+                    <!-- Nơi nhận -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
@@ -431,11 +431,14 @@
                             Foreground="{StaticResource MutedTextBrush}"
                             Text="Nơi nhận" />
 
-                        <TextBox
+                        <ComboBox
                             Grid.Column="1"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="{Binding SelectedDocument.Recipient}" />
+                            ItemsSource="{Binding RecipientList}"
+                            SelectedItem="{Binding SelectedDocument.Recipient, Mode=TwoWay}"
+                            DisplayMemberPath="Name"
+                            Style="{StaticResource ModernComboBox}" />
                     </Grid>
+
 
                     <!--  Nội dung  -->
                     <Grid Margin="0,4">
@@ -681,7 +684,7 @@
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
 
-                            <!--  Người nhận  -->
+                            <!--  Nơi nhận  -->
                             <DataGridTextColumn
                                 Width="150"
                                 Binding="{Binding Recipient}"
