@@ -12,6 +12,7 @@ namespace FrontEnd.Views
         public OutgoingDocView()
         {
             InitializeComponent();
+            this.DataContext = new OutgoingDocViewModel();
         }
     }
 }
