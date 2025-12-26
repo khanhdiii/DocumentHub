@@ -6,13 +6,13 @@
     xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
     xmlns:local="clr-namespace:DocumentHub.FrontEnd.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:DocumentHub.ViewModel"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    xmlns:vm="clr-namespace:DocumentHub.ViewModel"
     mc:Ignorable="d">
 
     <UserControl.DataContext>
-        <vm:ConstructionStaffViewModel/>
+        <vm:ConstructionStaffViewModel />
     </UserControl.DataContext>
 
     <UserControl.Resources>
@@ -90,58 +90,43 @@
             </Setter>
         </Style>
 
-        <!-- Style button function-->
-        <Style TargetType="Button"
-           x:Key="ModernActionButton">
-            <Setter Property="Foreground"
-                    Value="White"/>
-            <Setter Property="FontWeight"
-                    Value="SemiBold"/>
-            <Setter Property="Padding"
-                    Value="4,4"/>
-            <Setter Property="Margin"
-                    Value="4"/>
-            <Setter Property="Cursor"
-                    Value="Hand"/>
+        <!--  Style button function  -->
+        <Style x:Key="ModernActionButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="4,4" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="8"
-                                            Background="{TemplateBinding Background}"
-                                            Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                                              VerticalAlignment="Center"/>
+                        <Border
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
-                            <!-- Hover -->
-                            <Trigger Property="IsMouseOver"
-                                                     Value="True">
-                                <Setter Property="Background"
-                                                            Value="Yellow"/>
-                                <Setter Property="Cursor"
-                                                            Value="Hand"/>
+                            <!--  Hover  -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Yellow" />
+                                <Setter Property="Cursor" Value="Hand" />
                             </Trigger>
-                            <!-- Click -->
-                            <Trigger Property="IsPressed"
-                                                     Value="True">
-                                <Setter Property="Background"
-                                                            Value="Yellow"/>
-                                <Setter Property="Cursor"
-                                                            Value="Hand"/>
+                            <!--  Click  -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="Yellow" />
+                                <Setter Property="Cursor" Value="Hand" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <!-- Default background color -->
+            <!--  Default background color  -->
             <Setter Property="Background">
                 <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0"
-                                                 EndPoint="1,1">
-                        <GradientStop Color="#FF2196F3"
-                                                  Offset="0"/>
-                        <GradientStop Color="#FF1976D2"
-                                                  Offset="1"/>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#FF2196F3" />
+                        <GradientStop Offset="1" Color="#FF1976D2" />
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
@@ -163,7 +148,7 @@
             <Setter Property="ColumnHeaderHeight" Value="40" />
             <Setter Property="RowHeight" Value="38" />
             <Setter Property="Margin" Value="8" />
-            <Setter Property="Width" Value="600" />
+            <Setter Property="Width" Value="500" />
         </Style>
     </UserControl.Resources>
 
@@ -180,7 +165,7 @@
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
 
-            <!--  Left card  -->
+            <!--  Left Form  -->
             <Border
                 Grid.Column="0"
                 Margin="0,0,12,0"
@@ -198,8 +183,8 @@
                     <Grid Margin="6,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
-                            <ColumnDefinition Width="48*" />
-                            <ColumnDefinition Width="49*"/>
+                            <ColumnDefinition Width="300" />
+                            
                         </Grid.ColumnDefinitions>
                         <TextBlock
                             Grid.Column="0"
@@ -208,17 +193,17 @@
                             FontSize="12"
                             Foreground="{StaticResource MutedTextBrush}"
                             Text="Cán bộ xử lý" />
-                        <TextBox
-                            Grid.Column="1"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="{Binding SelectedDocument.Handler}" Grid.ColumnSpan="2" Margin="4,4,4,4" />
+                        <TextBox Grid.Column="1"
+                             Style="{StaticResource ModernTextBox}"
+                             Text="{Binding SelectedStaff.FullName, Mode=TwoWay}" Width="NaN" />
                     </Grid>
 
                     <!--  Save button  -->
                     <Button
+                        Margin="6,20,0,0"
                         Command="{Binding SaveCommand}"
                         Content="Lưu"
-                        Style="{StaticResource PrimaryButton}" Margin="6,20,0,0" />
+                        Style="{StaticResource PrimaryButton}" />
                 </StackPanel>
             </Border>
 
@@ -272,8 +257,8 @@
                         HorizontalScrollBarVisibility="Visible"
                         IsReadOnly="False"
                         ItemsSource="{Binding StaffList}"
+                        SelectedItem="{Binding SelectedStaff, Mode=TwoWay}"
                         ScrollViewer.CanContentScroll="False"
-                        SelectedItem="{Binding SelectedDocument, Mode=TwoWay}"
                         SelectionMode="Extended"
                         Style="{StaticResource ModernDataGrid}"
                         VerticalScrollBarVisibility="Auto">
@@ -285,7 +270,7 @@
                                 <Setter Property="HorizontalContentAlignment" Value="Center" />
                             </Style>
                         </DataGrid.Resources>
-                        
+
                         <DataGrid.Columns>
                             <!--  ID  -->
                             <DataGridTextColumn
@@ -326,7 +311,7 @@
                             </DataGridTextColumn>
 
                             <!--  Actions  -->
-                            <DataGridTemplateColumn Width="100" Header="Thao tác">
+                            <DataGridTemplateColumn Width="200" Header="Thao tác">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
