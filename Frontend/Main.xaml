@@ -279,7 +279,7 @@
                         <StackPanel>
                             <Button Style="{StaticResource SidebarButtonStyle}" Tag="&#xE77B;" Content="Cán bộ xây dựng" Click="btnConstructionStaff_Click" Margin="0,4,0,0"/>
                             <Button Style="{StaticResource SidebarButtonStyle}" Tag="&#xE70F;" Content="Người ký" Click="btnSigner_Click" Margin="0,4,0,0"/>
-                            <Button Style="{StaticResource SidebarButtonStyle}" Tag="&#xE734;" Content="Chức vụ" Click="btnPosition_Click" Margin="0,4,0,0"/>
+                            <Button Style="{StaticResource SidebarButtonStyle}" Tag="&#xE707;" Content="Nơi nhận" Click="btnRecpient_Click" Margin="0,4,0,0"/>
                         </StackPanel>
                     </Expander>
 

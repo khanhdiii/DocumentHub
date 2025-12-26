@@ -62,9 +62,9 @@ namespace DocumentHub.FrontEnd
             ContentArea.Content = new SignerView();
         }
 
-        private void btnPosition_Click(object sender, RoutedEventArgs e)
+        private void btnRecpient_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new ProcessView();
+            ContentArea.Content = new RecipientsView();
         }
 
         private void btnProcess_Click(object sender, RoutedEventArgs e)
