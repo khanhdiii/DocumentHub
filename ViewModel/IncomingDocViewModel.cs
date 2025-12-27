@@ -150,7 +150,7 @@ namespace DocumentHub.ViewModel
             };
 
             // Sample data
-            for (int i = 3; i <= 22; i++)
+            for (int i = 1; i <= 22; i++)
             {
                 IncomingDocs.Add(new IncomingDocument
                 {
@@ -173,7 +173,7 @@ namespace DocumentHub.ViewModel
 
 
             FilteredDocs = new ObservableCollection<IncomingDocument>(IncomingDocs);
-
+            UpdatePagedDocs();
             AddCommand = new RelayCommand(param => AddDocument());
             EditCommand = new RelayCommand(param => EditDocument());
             DeleteCommand = new RelayCommand(param => DeleteDocument());
@@ -204,9 +204,12 @@ namespace DocumentHub.ViewModel
                 ).ToList();
 
                 FilteredDocs = new ObservableCollection<IncomingDocument>(results);
-                UpdatePagedDocs();
             }
+
+            CurrentPage = 1; 
+            UpdatePagedDocs();
         }
+
 
         //Function pagination
         // Pagination
@@ -234,17 +237,14 @@ namespace DocumentHub.ViewModel
 
         private void UpdatePagedDocs()
         {
-            PagedDocs.Clear();
             if (FilteredDocs == null) return;
 
             var items = FilteredDocs
                 .Skip((CurrentPage - 1) * PageSize)
-                .Take(PageSize);
+                .Take(PageSize)
+                .ToList();
 
-            foreach (var item in items)
-            {
-                PagedDocs.Add(item);
-            }
+            PagedDocs = new ObservableCollection<IncomingDocument>(items);
 
             OnPropertyChanged(nameof(PagedDocs));
             OnPropertyChanged(nameof(TotalPages));

@@ -734,14 +734,14 @@
                     </DockPanel>
                     <DataGrid
                         x:Name="IncomingDocsDataGrid"
-                        Height="500"
+                        Height="450"
                         AutoGenerateColumns="False"
                         CanUserAddRows="False"
                         EnableRowVirtualization="True"
                         FontFamily="Montserrat"
                         HorizontalScrollBarVisibility="Visible"
                         IsReadOnly="False"
-                        ItemsSource="{Binding FilteredDocs}"
+                        ItemsSource="{Binding PagedDocs}"
                         ScrollViewer.CanContentScroll="False"
                         SelectedItem="{Binding SelectedDocument, Mode=TwoWay}"
                         SelectionMode="Extended"
