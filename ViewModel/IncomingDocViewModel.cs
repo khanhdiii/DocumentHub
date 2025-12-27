@@ -16,6 +16,17 @@ namespace DocumentHub.ViewModel
         public ICommand DeleteCommand { get; }
         public ICommand ExportExcelCommand { get; }
 
+        // Call to RecipientsViewModel
+        public RecipientsViewModel RecipientsVM { get; } = new RecipientsViewModel();
+        // Take List RecipientList from RecipientsViewModel
+        public ObservableCollection<Recipient> RecipientList => RecipientsVM.RecipientList;
+
+        // Call to ReceivingOfficerViewModel
+        public ReceivingOfficerViewModel ReceivingOfficerVM { get; } = new ReceivingOfficerViewModel();
+        // Take List ReceivingOfficer from ReceivingOfficerViewModel
+        public ObservableCollection<ReceivingOfficer> StaffReceivingOfficerList => ReceivingOfficerVM.StaffReceivingOfficerList;
+
+
         // List Incoming Doc
         public ObservableCollection<IncomingDocument> IncomingDocs { get; }
            = new ObservableCollection<IncomingDocument>();
@@ -58,6 +69,7 @@ namespace DocumentHub.ViewModel
             new Signer { Id = 1, FullName = "Trần Văn B", Position = "Giám đốc" },
             new Signer { Id = 2, FullName = "Phạm Minh D", Position = "Phó Chủ tịch" }
         };
+
 
         // Property SelectedStaff 
         private ConstructionStaff _selectedStaff;
@@ -137,6 +149,7 @@ namespace DocumentHub.ViewModel
                 Signer = SignerList.FirstOrDefault()
             };
             // Sample data
+            // Sample data
             IncomingDocs.Add(new IncomingDocument
             {
                 Id = 1,
@@ -149,7 +162,7 @@ namespace DocumentHub.ViewModel
                 Sender = "Sở Nội vụ",
                 Signer = SignerList.FirstOrDefault(),
                 Position = "Giám đốc",
-                Recipient = "UBND tỉnh",
+                Recipient = RecipientList.FirstOrDefault(r => r.Name == "Sở Nội vụ"),
                 ConstructionStaff = StaffList.FirstOrDefault(),
                 Summary = "Công văn đề nghị bổ sung nhân sự."
             });
@@ -166,10 +179,31 @@ namespace DocumentHub.ViewModel
                 Sender = "Phòng Tài chính",
                 Signer = SignerList.LastOrDefault(),
                 Position = "Trưởng phòng",
-                Recipient = "Ban Giám đốc",
+                Recipient = RecipientList.FirstOrDefault(),
                 ConstructionStaff = StaffList.LastOrDefault(),
                 Summary = "Thông báo tình hình ngân sách quý IV."
             });
+            // Data test
+            for (int i = 3; i <= 22; i++)
+            {
+                IncomingDocs.Add(new IncomingDocument
+                {
+                    Id = i,
+                    ArrivalNumber = $"ĐN-{i:000}/2025",
+                    ArrivalDate = DateTime.Today.AddDays(-i),
+                    DocumentNumber = $"VB-{100 + i}",
+                    DocumentDate = DateTime.Today.AddDays(-(i + 1)),
+                    DocumentType = DocumentTypes[(i % DocumentTypes.Count)].Name,
+                    SecurityLevel = SecurityLevel[(i % SecurityLevel.Count)].Name,
+                    Sender = $"Đơn vị gửi {i}",
+                    Signer = SignerList[(i % SignerList.Count)],
+                    Position = SignerList[(i % SignerList.Count)].Position,
+                    Recipient = RecipientList[(i % RecipientList.Count)],
+                    ConstructionStaff = StaffList[(i % StaffList.Count)],
+                    Summary = $"Nội dung văn bản mẫu số {i}"
+                });
+            }
+
 
             FilteredDocs = new ObservableCollection<IncomingDocument>(IncomingDocs);
 
@@ -197,14 +231,71 @@ namespace DocumentHub.ViewModel
                     (d.Sender?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.Signer?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.Position?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (d.Recipient?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (d.Recipient?.Name?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.ConstructionStaff?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.Summary?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false)
                 ).ToList();
 
                 FilteredDocs = new ObservableCollection<IncomingDocument>(results);
+                UpdatePagedDocs();
             }
         }
+
+        //Function pagination
+        // Pagination
+        private int _currentPage = 1;
+
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                if (_currentPage == value) return;
+                _currentPage = value;
+                OnPropertyChanged(nameof(CurrentPage));
+                UpdatePagedDocs();
+            }
+        }
+
+        public int PageSize { get; set; } = 10;
+
+        public int TotalPages =>
+            (int)Math.Ceiling((double)(FilteredDocs?.Count ?? 0) / PageSize);
+
+        public ObservableCollection<IncomingDocument> PagedDocs { get; set; }
+            = new ObservableCollection<IncomingDocument>();
+
+        private void UpdatePagedDocs()
+        {
+            PagedDocs.Clear();
+            if (FilteredDocs == null) return;
+
+            var items = FilteredDocs
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize);
+
+            foreach (var item in items)
+            {
+                PagedDocs.Add(item);
+            }
+
+            OnPropertyChanged(nameof(PagedDocs));
+            OnPropertyChanged(nameof(TotalPages));
+        }
+
+
+        public ICommand NextPageCommand => new RelayCommand(param =>
+        {
+            if (CurrentPage < TotalPages)
+                CurrentPage++;
+        });
+
+        public ICommand PrevPageCommand => new RelayCommand(param =>
+        {
+            if (CurrentPage > 1)
+                CurrentPage--;
+        });
+
 
         // Add
         private void AddDocument()
@@ -221,7 +312,7 @@ namespace DocumentHub.ViewModel
                 Sender = "Người gửi",
                 Signer = SignerList.FirstOrDefault(),
                 Position = "Chức vụ",
-                Recipient = "Người nhận",
+                Recipient = RecipientList.FirstOrDefault(),
                 ConstructionStaff = StaffList.FirstOrDefault(),
                 Summary = "Nội dung mới"
             };
@@ -290,7 +381,7 @@ namespace DocumentHub.ViewModel
                         ws.Cell(row, 8).Value = doc.Sender;
                         ws.Cell(row, 9).Value = doc.Signer?.FullName;
                         ws.Cell(row, 10).Value = doc.Signer?.Position;
-                        ws.Cell(row, 11).Value = doc.Recipient;
+                        ws.Cell(row, 11).Value = doc.Recipient?.Name;
                         ws.Cell(row, 12).Value = doc.ConstructionStaff?.FullName;
                         ws.Cell(row, 13).Value = doc.Summary;
                         row++;
