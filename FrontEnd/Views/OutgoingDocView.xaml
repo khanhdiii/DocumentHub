@@ -224,6 +224,43 @@
             <Setter Property="RowHeight" Value="38" />
             <Setter Property="Margin" Value="8" />
         </Style>
+        <!--Style for button pagination-->
+        <Style x:Key="PagingButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF2B6BEA" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="8,8" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="BorderBrush" Value="#FF1E5AA8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="6">
+                            <ContentPresenter
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="{TemplateBinding Padding}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF1E5AA8" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF164A90" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
 
     <Grid Margin="4" Background="#FFF2F5FB">
@@ -410,7 +447,7 @@
 
                     </Grid>
 
-                    <!--  Nơi nhận  -->
+                    <!-- Nơi nhận -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
@@ -425,11 +462,14 @@
                             Foreground="{StaticResource MutedTextBrush}"
                             Text="Nơi nhận" />
 
-                        <TextBox
+                        <ComboBox
                             Grid.Column="1"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="{Binding SelectedDocument.Recipient}" />
+                            ItemsSource="{Binding RecipientList}"
+                            SelectedItem="{Binding SelectedDocument.Recipient, Mode=TwoWay}"
+                            DisplayMemberPath="Name"
+                            Style="{StaticResource ModernComboBox}" />
                     </Grid>
+
 
                     <!--  Nội dung  -->
                     <Grid Margin="0,4">
@@ -515,7 +555,7 @@
                         FontFamily="Montserrat"
                         HorizontalScrollBarVisibility="Visible"
                         IsReadOnly="False"
-                        ItemsSource="{Binding FilteredDocs}"
+                        ItemsSource="{Binding PagedDocs}"
                         ScrollViewer.CanContentScroll="False"
                         SelectedItem="{Binding SelectedDocument, Mode=TwoWay}"
                         SelectionMode="Extended"
@@ -675,7 +715,7 @@
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
 
-                            <!--  Người nhận  -->
+                            <!--  Nơi nhận  -->
                             <DataGridTextColumn
                                 Width="150"
                                 Binding="{Binding Recipient}"
@@ -756,6 +796,38 @@
                         </DataGrid.Columns>
 
                     </DataGrid>
+
+                    <!--Pagination datagrid-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                        <!-- Go first page -->
+                        <Button Command="{Binding GoToFirstPageCommand}" Style="{StaticResource PagingButtonStyle}">
+                            <fa:ImageAwesome Icon="StepBackward" Width="16" Height="16" Foreground="White"/>
+                        </Button>
+
+                        <!-- Prev page -->
+                        <Button Command="{Binding PrevPageCommand}" Style="{StaticResource PagingButtonStyle}">
+                            <fa:ImageAwesome Icon="ChevronLeft" Width="16" Height="16" Foreground="White"/>
+                        </Button>
+
+                        <!-- Show page number -->
+                        <TextBlock Text="{Binding CurrentPage}" Margin="10,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" />
+                        <TextBlock Text="/" Margin="2,0" VerticalAlignment="Center" FontSize="14" />
+                        <TextBlock Text="{Binding TotalPages}" Margin="2,0" VerticalAlignment="Center" FontSize="14" />
+
+                        <!-- Next page -->
+                        <Button Command="{Binding NextPageCommand}" Style="{StaticResource PagingButtonStyle}">
+                            <fa:ImageAwesome Icon="ChevronRight" Width="16" Height="16" Foreground="White"/>
+                        </Button>
+
+                        <!-- Last page -->
+                        <Button Command="{Binding GoToLastPageCommand}" Style="{StaticResource PagingButtonStyle}">
+                            <fa:ImageAwesome Icon="StepForward" Width="16" Height="16" Foreground="White"/>
+                        </Button>
+                    </StackPanel>
+
+
+
+
                     <Button Command="{Binding ExportExcelCommand}" Style="{StaticResource ExportButtonStyle}">
                         <StackPanel Orientation="Horizontal">
                             <!--  Icon FontAwesome  -->

@@ -18,8 +18,19 @@ namespace DocumentHub.ViewModel
         public ICommand EditCommand { get; }
         public ICommand DeleteCommand { get; }
 
+        //Command export excel
         public ICommand ExportExcelCommand { get; }
 
+        //Command go first page
+        public ICommand GoToFirstPageCommand => new RelayCommand(param =>
+        {
+            CurrentPage = 1;
+        });
+        //Command go last page
+        public ICommand GoToLastPageCommand => new RelayCommand(param =>
+        {
+            CurrentPage = TotalPages;
+        });
 
         // List Outgoing Doc
         public ObservableCollection<OutgoingDocument> OutgoingDocs { get; }
@@ -99,6 +110,16 @@ namespace DocumentHub.ViewModel
             new Signer { Id = 6, FullName = "Trần Thị M", Position = "Chánh văn phòng" } 
         };
 
+        //List Recipients
+        public ObservableCollection<Recipient> RecipientList { get; }
+        = new ObservableCollection<Recipient>
+    {
+        new Recipient { Id = 1, Name = "Sở Nội vụ" },
+        new Recipient { Id = 2, Name = "Phòng Tài chính" },
+        new Recipient { Id = 3, Name = "Ban Giám đốc" }
+    };
+
+
         // Property SelectedStaff 
         private ConstructionStaff _selectedStaff;
         public ConstructionStaff SelectedStaff
@@ -135,7 +156,7 @@ namespace DocumentHub.ViewModel
                     _selectedDocument.Signer.PropertyChanged += Signer_PropertyChanged;
             }
         }
-
+        //  Event Signer change
         private void Signer_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Signer.Position))
@@ -143,6 +164,20 @@ namespace DocumentHub.ViewModel
         }
 
         public string CurrentSignerPosition => SelectedDocument?.Signer?.Position ?? "";
+
+
+        //Recipient
+        private Recipient _recipient;
+        public Recipient Recipient
+        {
+            get => _recipient;
+            set
+            {
+                _recipient = value;
+                OnPropertyChanged(nameof(Recipient));
+            }
+        }
+        public string RecipientName => Recipient?.Name;
 
 
         //Constructor
@@ -245,6 +280,8 @@ namespace DocumentHub.ViewModel
             ExportExcelCommand = new RelayCommand(param => ExportToExcel());
 
             FilteredDocs = new ObservableCollection<OutgoingDocument>(OutgoingDocs);
+            //Show page 1 in pagination
+            UpdatePagedDocs();
         }
 
         //Search and filtered
@@ -298,8 +335,66 @@ namespace DocumentHub.ViewModel
 
                 FilteredDocs = new ObservableCollection<OutgoingDocument>(results);
                 OnPropertyChanged(nameof(FilteredDocs));
+                CurrentPage = 1;
+                // reset first page
+                 UpdatePagedDocs(); 
+                // Update Doc
             }
         }
+
+        //Function pagination
+        // Pagination
+        private int _currentPage = 1;
+
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                if (_currentPage == value) return;
+                _currentPage = value;
+                OnPropertyChanged(nameof(CurrentPage));
+                UpdatePagedDocs();
+            }
+        }
+
+        public int PageSize { get; set; } = 5; // số bản ghi mỗi trang
+
+        public int TotalPages =>
+            (int)Math.Ceiling((double)(FilteredDocs?.Count ?? 0) / PageSize);
+
+        public ObservableCollection<OutgoingDocument> PagedDocs { get; set; }
+            = new ObservableCollection<OutgoingDocument>();
+
+        private void UpdatePagedDocs()
+        {
+            PagedDocs.Clear();
+            if (FilteredDocs == null) return;
+
+            var items = FilteredDocs
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize);
+
+            foreach (var item in items)
+            {
+                PagedDocs.Add(item);
+            }
+
+            OnPropertyChanged(nameof(PagedDocs));
+            OnPropertyChanged(nameof(TotalPages));
+        }
+
+        public ICommand NextPageCommand => new RelayCommand(param =>
+        {
+            if (CurrentPage < TotalPages)
+                CurrentPage++;
+        });
+
+        public ICommand PrevPageCommand => new RelayCommand(param =>
+        {
+            if (CurrentPage > 1)
+                CurrentPage--;
+        });
 
         //Function Add
         private void AddDocument()
