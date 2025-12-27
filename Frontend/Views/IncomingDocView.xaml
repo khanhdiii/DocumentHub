@@ -505,8 +505,9 @@
 
                         <TextBox
                             Grid.Column="1"
-                            Height="100"
                             AcceptsReturn="True"
+                            MinLines="3"
+                            MaxLines="4"
                             Style="{StaticResource ModernTextBox}"
                             Text="{Binding SelectedDocument.Summary}"
                             TextWrapping="Wrap" />
