@@ -12,7 +12,9 @@
         public string Sender { get; set; } = "";
         public Signer Signer { get; set; }
         public string Position { get; set; } = "";
-        public string Recipient { get; set; } = "";
+        public Recipient Recipient { get; set; }
+        public ReceivingOfficer ReceivingOfficer { get; set; }
+        
         public ConstructionStaff ConstructionStaff { get; set; }
         public string Summary { get; set; } = "";
     }
