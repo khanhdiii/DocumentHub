@@ -1,4 +1,5 @@
 ﻿using DocumentHub.FrontEnd.Views;
+using DocumentHub.Model;
 using Frontend.Views;
 using FrontEnd.Views;
 using System.Windows;
@@ -55,6 +56,11 @@ namespace DocumentHub.FrontEnd
         private void btnConstructionStaff_Click(object sender, RoutedEventArgs e)
         {
             ContentArea.Content = new ConstructionStaffView();
+        }
+
+        private void btnReceivingOfficer_Click(object sender, RoutedEventArgs e)
+        {
+            ContentArea.Content = new ReceivingOfficerView();
         }
 
         private void btnSigner_Click(object sender, RoutedEventArgs e)
