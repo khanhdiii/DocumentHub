@@ -148,42 +148,8 @@ namespace DocumentHub.ViewModel
             {
                 Signer = SignerList.FirstOrDefault()
             };
-            // Sample data
-            // Sample data
-            IncomingDocs.Add(new IncomingDocument
-            {
-                Id = 1,
-                ArrivalNumber = "ĐN-001/2025",
-                ArrivalDate = DateTime.Today.AddDays(-1),
-                DocumentNumber = "CV-123",
-                DocumentDate = DateTime.Today.AddDays(-2),
-                DocumentType = "Công văn",
-                SecurityLevel = "Mật",
-                Sender = "Sở Nội vụ",
-                Signer = SignerList.FirstOrDefault(),
-                Position = "Giám đốc",
-                Recipient = RecipientList.FirstOrDefault(r => r.Name == "Sở Nội vụ"),
-                ConstructionStaff = StaffList.FirstOrDefault(),
-                Summary = "Công văn đề nghị bổ sung nhân sự."
-            });
 
-            IncomingDocs.Add(new IncomingDocument
-            {
-                Id = 2,
-                ArrivalNumber = "ĐN-002/2025",
-                ArrivalDate = DateTime.Today.AddDays(-3),
-                DocumentNumber = "TB-456",
-                DocumentDate = DateTime.Today.AddDays(-4),
-                DocumentType = "Thông báo",
-                SecurityLevel = "Thường",
-                Sender = "Phòng Tài chính",
-                Signer = SignerList.LastOrDefault(),
-                Position = "Trưởng phòng",
-                Recipient = RecipientList.FirstOrDefault(),
-                ConstructionStaff = StaffList.LastOrDefault(),
-                Summary = "Thông báo tình hình ngân sách quý IV."
-            });
-            // Data test
+            // Sample data
             for (int i = 3; i <= 22; i++)
             {
                 IncomingDocs.Add(new IncomingDocument
@@ -200,6 +166,7 @@ namespace DocumentHub.ViewModel
                     Position = SignerList[(i % SignerList.Count)].Position,
                     Recipient = RecipientList[(i % RecipientList.Count)],
                     ConstructionStaff = StaffList[(i % StaffList.Count)],
+                    ReceivingOfficer = StaffReceivingOfficerList[(i % StaffReceivingOfficerList.Count)],
                     Summary = $"Nội dung văn bản mẫu số {i}"
                 });
             }
@@ -314,6 +281,7 @@ namespace DocumentHub.ViewModel
                 Position = "Chức vụ",
                 Recipient = RecipientList.FirstOrDefault(),
                 ConstructionStaff = StaffList.FirstOrDefault(),
+                ReceivingOfficer = StaffReceivingOfficerList.FirstOrDefault(),
                 Summary = "Nội dung mới"
             };
 
@@ -360,12 +328,16 @@ namespace DocumentHub.ViewModel
                     ws.Cell(1, 5).Value = "Ngày VB";
                     ws.Cell(1, 6).Value = "Độ mật";
                     ws.Cell(1, 7).Value = "Loại VB";
-                    ws.Cell(1, 8).Value = "Nơi gửi";
-                    ws.Cell(1, 9).Value = "Người ký";
-                    ws.Cell(1, 10).Value = "Chức vụ";
-                    ws.Cell(1, 11).Value = "Người nhận";
-                    ws.Cell(1, 12).Value = "Người xử lý";
-                    ws.Cell(1, 13).Value = "Trích yếu nội dung";
+                    ws.Cell(1, 8).Value = "Trích yếu nội dung";
+                    ws.Cell(1, 9).Value = "Nơi gửi";
+                    ws.Cell(1, 10).Value = "Người ký";
+                    ws.Cell(1, 11).Value = "Chức vụ";
+                    ws.Cell(1, 12).Value = "Nơi nhận";
+                    ws.Cell(1, 13).Value = "Cán bộ tiếp nhận";
+                    ws.Cell(1, 14).Value = "Cán bộ xử lý";
+                   
+                   
+
 
                     // Data
                     int row = 2;
@@ -378,24 +350,27 @@ namespace DocumentHub.ViewModel
                         ws.Cell(row, 5).Value = doc.DocumentDate.HasValue ? doc.DocumentDate.Value.ToString("dd/MM/yyyy") : "";
                         ws.Cell(row, 6).Value = doc.SecurityLevel;
                         ws.Cell(row, 7).Value = doc.DocumentType;
-                        ws.Cell(row, 8).Value = doc.Sender;
-                        ws.Cell(row, 9).Value = doc.Signer?.FullName;
-                        ws.Cell(row, 10).Value = doc.Signer?.Position;
-                        ws.Cell(row, 11).Value = doc.Recipient?.Name;
-                        ws.Cell(row, 12).Value = doc.ConstructionStaff?.FullName;
-                        ws.Cell(row, 13).Value = doc.Summary;
+                        ws.Cell(row, 8).Value = doc.Summary;
+                        ws.Cell(row, 9).Value = doc.Sender;
+                        ws.Cell(row, 10).Value = doc.Signer?.FullName;
+                        ws.Cell(row, 11).Value = doc.Signer?.Position;
+                        ws.Cell(row, 12).Value = doc.Recipient?.Name;
+                        ws.Cell(row, 13).Value = doc.ReceivingOfficer?.FullName;
+                        ws.Cell(row, 14).Value = doc.ConstructionStaff?.FullName;
+                     
+
                         row++;
                     }
 
                     // Style header
-                    var headerRange = ws.Range("A1:M1");
+                    var headerRange = ws.Range("A1:N1");
                     headerRange.Style.Font.Bold = true;
                     headerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     headerRange.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     headerRange.Style.Fill.BackgroundColor = XLColor.LightGray;
 
                     // Border
-                    var dataRange = ws.Range($"A1:M{row - 1}");
+                    var dataRange = ws.Range($"A1:N{row - 1}");
                     dataRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     dataRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
 
