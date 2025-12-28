@@ -275,7 +275,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <!--  Form input  -->
-                <ColumnDefinition Width="0.85*" />
+                <ColumnDefinition Width="1.2*" />
                 <!--  List Table  -->
                 <ColumnDefinition Width="3*" />
 
@@ -297,7 +297,7 @@
                     <!--  Số/Ký hiệu  -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="100" />
                             <!--  Label  -->
                             <ColumnDefinition Width="*" />
                             <!--  Input  -->
@@ -321,7 +321,7 @@
                     <!--  Ngày văn bản  -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="100" />
                             <!--  Label  -->
                             <ColumnDefinition Width="*" />
                             <!--  Input  -->
@@ -345,7 +345,7 @@
                     <!--  Loại văn bản  -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="100" />
                             <!--  Label  -->
                             <ColumnDefinition Width="*" />
                             <!--  Input  -->
@@ -371,10 +371,35 @@
 
                     </Grid>
 
+                    <!--  Nội dung  -->
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                             Grid.Column="0"
+                             Margin="0,0,8,0"
+                             VerticalAlignment="Top"
+                             FontSize="12"
+                             Foreground="{StaticResource MutedTextBrush}"
+                             Text="Nội dung" />
+
+                        <TextBox
+                             Grid.Column="1"
+                             AcceptsReturn="True"
+                             MinLines="3"
+                             MaxLines="4"
+                             Style="{StaticResource ModernTextBox}"
+                             Text="{Binding SelectedDocument.Summary}"
+                             TextWrapping="Wrap" />
+                    </Grid>
+
                     <!--  Độ mật  -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="51*" />
                             <ColumnDefinition Width="259*" />
                         </Grid.ColumnDefinitions>
@@ -398,10 +423,12 @@
                             Style="{StaticResource ModernComboBox}" />
                     </Grid>
 
+                    
+
                     <!--  Cán bộ xử lý  -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock
@@ -420,10 +447,32 @@
                             Style="{StaticResource ModernComboBox}" />
                     </Grid>
 
+                    <!--  Cán bộ tiếp nhận  -->
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+        Grid.Column="0"
+        Margin="0,0,8,0"
+        VerticalAlignment="Center"
+        FontSize="12"
+        Foreground="{StaticResource MutedTextBrush}"
+        Text="Cán bộ tiếp nhận" />
+                        <ComboBox
+         Grid.Column="1"
+         DisplayMemberPath="FullName"
+         ItemsSource="{Binding StaffReceivingOfficerList}"
+         SelectedItem="{Binding SelectedDocument.ReceivingOfficer, Mode=TwoWay}"
+         Style="{StaticResource ModernComboBox}" />
+
+                    </Grid>
+
                     <!-- Người ký -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Người ký" Foreground="{StaticResource MutedTextBrush}" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -436,7 +485,7 @@
                     <!-- Chức vụ -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Chức vụ" Foreground="{StaticResource MutedTextBrush}" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -447,10 +496,10 @@
 
                     </Grid>
 
-                    <!-- Nơi nhận -->
+                    <!--  Nơi nhận  -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
@@ -464,36 +513,17 @@
 
                         <ComboBox
                             Grid.Column="1"
+                            DisplayMemberPath="Name"
                             ItemsSource="{Binding RecipientList}"
                             SelectedItem="{Binding SelectedDocument.Recipient, Mode=TwoWay}"
-                            DisplayMemberPath="Name"
                             Style="{StaticResource ModernComboBox}" />
+
+
+
                     </Grid>
 
 
-                    <!--  Nội dung  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
 
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Top"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Nội dung" />
-
-                        <TextBox
-                            Grid.Column="1"
-                            Height="100"
-                            AcceptsReturn="True"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="{Binding SelectedDocument.Summary}"
-                            TextWrapping="Wrap" />
-                    </Grid>
 
                     <!--  Button Save  -->
                     <Button
@@ -648,6 +678,24 @@
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
 
+                            <!--  Nội dung  -->
+                            <DataGridTextColumn
+                                 Width="300"
+                                 Binding="{Binding Summary}"
+                                 Header="Nội dung">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.EditingElementStyle>
+                            </DataGridTextColumn>
+
                             <!--  Độ mật  -->
                             <DataGridTextColumn
                                 Width="100"
@@ -667,11 +715,26 @@
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
 
+                         
+
                             <!--  Cán bộ xử lý  -->
                             <DataGridTextColumn
-                                Width="120"
-                                Binding="{Binding Handler.FullName}"
-                                Header="Cán Bộ xử lý">
+                                     Width="150"
+                                     Binding="{Binding ConstructionStaff.FullName}"
+                                     Header="Cán bộ xử lý">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <!--  Cán bộ tiếp nhận  -->
+                            <DataGridTextColumn
+                                  Width="150"
+                                  Binding="{Binding ReceivingOfficer.FullName}"
+                                  Header="Cán bộ tiếp nhận">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -718,7 +781,7 @@
                             <!--  Nơi nhận  -->
                             <DataGridTextColumn
                                 Width="150"
-                                Binding="{Binding Recipient}"
+                                Binding="{Binding Recipient.Name}"
                                 Header="Nơi nhận">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
@@ -734,23 +797,7 @@
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
 
-                            <!--  Nội dung  -->
-                            <DataGridTextColumn
-                                Width="300"
-                                Binding="{Binding Summary}"
-                                Header="Nội dung">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
+                           
 
                             <!--  Button function  -->
                             <DataGridTemplateColumn Width="60" Header="Thao tác">
