@@ -1,4 +1,5 @@
-﻿using DocumentHub.FrontEnd.Views;
+﻿using DocumentHub.Data;
+using DocumentHub.FrontEnd.Views;
 using DocumentHub.Model;
 using Frontend.Views;
 using FrontEnd.Views;
@@ -16,6 +17,9 @@ namespace DocumentHub.FrontEnd
         public Main()
         {
             InitializeComponent();
+
+            using var _context = new AppDbContext();
+            _context.Database.EnsureCreated();
 
             // Ensure ToggleButton events are handled even if handlers aren't set in XAML
             if (BtnToggleSidebar != null)

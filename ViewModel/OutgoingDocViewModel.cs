@@ -21,6 +21,17 @@ namespace DocumentHub.ViewModel
         //Command export excel
         public ICommand ExportExcelCommand { get; }
 
+        // Call to RecipientsViewModel
+        public RecipientsViewModel RecipientsVM { get; } = new RecipientsViewModel();
+        // Take List RecipientList from RecipientsViewModel
+        public ObservableCollection<Recipient> RecipientList => RecipientsVM.RecipientList;
+
+        // Call to ReceivingOfficerViewModel
+        public ReceivingOfficerViewModel ReceivingOfficerVM { get; } = new ReceivingOfficerViewModel();
+        // Take List ReceivingOfficer from ReceivingOfficerViewModel
+        public ObservableCollection<ReceivingOfficer> StaffReceivingOfficerList => ReceivingOfficerVM.StaffReceivingOfficerList;
+
+
         //Command go first page
         public ICommand GoToFirstPageCommand => new RelayCommand(param =>
         {
@@ -39,7 +50,7 @@ namespace DocumentHub.ViewModel
         //Event of INotifyPropertyChanged 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //Event notification when name changed
+        
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -110,15 +121,6 @@ namespace DocumentHub.ViewModel
             new Signer { Id = 6, FullName = "Trần Thị M", Position = "Chánh văn phòng" } 
         };
 
-        //List Recipients
-        public ObservableCollection<Recipient> RecipientList { get; }
-        = new ObservableCollection<Recipient>
-    {
-        new Recipient { Id = 1, Name = "Sở Nội vụ" },
-        new Recipient { Id = 2, Name = "Phòng Tài chính" },
-        new Recipient { Id = 3, Name = "Ban Giám đốc" }
-    };
-
 
         // Property SelectedStaff 
         private ConstructionStaff _selectedStaff;
@@ -132,7 +134,7 @@ namespace DocumentHub.ViewModel
 
                 if (SelectedDocument != null)
                 {
-                    SelectedDocument.Handler = _selectedStaff;
+                    SelectedDocument.ConstructionStaff = _selectedStaff;
                     OnPropertyChanged(nameof(SelectedDocument));
                 }
             }
@@ -189,91 +191,27 @@ namespace DocumentHub.ViewModel
             SelectedDocument = new OutgoingDocument
             {
                 Signer = SignerList.FirstOrDefault() 
-            }; 
-            //Data test for outgoing doc
-            OutgoingDocs.Add(new OutgoingDocument
-            {
-                Id = 1,
-                DocumentNumber = "CV-001/2025",
-                DocumentDate = DateTime.Today.AddDays(-1),
-                DocumentType = "Công điện",
-                SecurityLevel = "Tuyệt mật",
-                Sender = "Phòng Hành chính",
-                Handler = StaffList.FirstOrDefault(s => s.FullName == "Nguyễn Văn A"),
-                Signer = SignerList.FirstOrDefault(s => s.FullName == "Trần Văn B"),
-                Recipient = "Sở Nội vụ",
-                Summary = "Công văn gửi Sở Nội vụ về việc đề xuất bổ sung nhân lực."
-            });
+            };
 
-            OutgoingDocs.Add(new OutgoingDocument
+            // Sample data
+            for (int i = 1; i <= 22; i++)
             {
-                Id = 2,
-                DocumentNumber = "TB-002/2025",
-                DocumentDate = DateTime.Today.AddDays(-3),
-                DocumentType = "Thông báo",
-                SecurityLevel = "Mật",
-                Sender = "Văn phòng UBND",
-                Handler = StaffList.FirstOrDefault(s => s.FullName == "Lê Thị C"),
-                Signer = SignerList.FirstOrDefault(s => s.FullName == "Phạm Minh D"),
-                Recipient = "Các đơn vị trực thuộc",
-                Summary = "Thông báo về kế hoạch triển khai quy định bảo mật thông tin."
-            });
+                OutgoingDocs.Add(new OutgoingDocument
+                {
+                    Id = i,
+                    DocumentNumber = $"VB-{100 + i}",
+                    DocumentDate = DateTime.Today.AddDays(-(i + 1)),
+                    DocumentType = DocumentTypes[(i % DocumentTypes.Count)].Name,
+                    Summary = $"Nội dung văn bản mẫu số {i}",
+                    SecurityLevel = SecurityLevel[(i % SecurityLevel.Count)].Name,
+                    ConstructionStaff = StaffList[(i % StaffList.Count)],
+                    ReceivingOfficer = StaffReceivingOfficerList[(i % StaffReceivingOfficerList.Count)],
+                    Signer = SignerList[(i % SignerList.Count)],
+                    Recipient = RecipientList[(i % RecipientList.Count)],
+                });
+            }
+            
 
-            OutgoingDocs.Add(new OutgoingDocument
-            {
-                Id = 3,
-                DocumentNumber = "QĐ-003/2025",
-                DocumentDate = DateTime.Today.AddDays(-5),
-                DocumentType = "Phiếu báo",
-                SecurityLevel = "Tối mật",
-                Sender = "Ban Giám đốc",
-                Handler = StaffList.FirstOrDefault(s => s.FullName == "Nguyễn Thị E"),
-                Signer = SignerList.FirstOrDefault(s => s.FullName == "Lê Văn F"),
-                Recipient = "Phòng Nhân sự",
-                Summary = "Quyết định bổ nhiệm cán bộ phụ trách an ninh thông tin."
-            });
-
-            OutgoingDocs.Add(new OutgoingDocument
-            {
-                Id = 4,
-                DocumentNumber = "HD-004/2025",
-                DocumentDate = DateTime.Today.AddDays(-7),
-                DocumentType = "Hướng dẫn",
-                SecurityLevel = "Mật",
-                Sender = "Phòng Kỹ thuật",
-                Handler = StaffList.FirstOrDefault(s => s.FullName == "Trần Thị G"),
-                Signer = SignerList.FirstOrDefault(s => s.FullName == "Nguyễn Văn H"),
-                Recipient = "Các đơn vị trực thuộc",
-                Summary = "Hướng dẫn triển khai hệ thống quản lý văn bản điện tử."
-            });
-
-            OutgoingDocs.Add(new OutgoingDocument
-            {
-                Id = 5,
-                DocumentNumber = "BC-005/2025",
-                DocumentDate = DateTime.Today.AddDays(-10),
-                DocumentType = "Báo cáo",
-                SecurityLevel = "Mật",
-                Sender = "Phòng Tài chính",
-                Handler = StaffList.FirstOrDefault(s => s.FullName == "Phạm Thị I"),
-                Signer = SignerList.FirstOrDefault(s => s.FullName == "Đỗ Văn K"),
-                Recipient = "Ban Giám đốc",
-                Summary = "Báo cáo tình hình ngân sách quý IV năm 2025."
-            });
-
-            OutgoingDocs.Add(new OutgoingDocument
-            {
-                Id = 6,
-                DocumentNumber = "GM-006/2025",
-                DocumentDate = DateTime.Today.AddDays(-12),
-                DocumentType = "Giấy mời",
-                SecurityLevel = "Mật",
-                Sender = "Văn phòng UBND",
-                Handler = StaffList.FirstOrDefault(s => s.FullName == "Nguyễn Văn L"),
-                Signer = SignerList.FirstOrDefault(s => s.FullName == "Trần Thị M"),
-                Recipient = "Các cơ quan ban ngành",
-                Summary = "Giấy mời tham dự hội nghị tổng kết cuối năm."
-            });
             AddCommand = new RelayCommand(param => AddDocument());
             EditCommand = new RelayCommand(param => EditDocument());
             DeleteCommand = new RelayCommand(param => DeleteDocument());
@@ -325,12 +263,13 @@ namespace DocumentHub.ViewModel
                     (d.DocumentNumber?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.DocumentDate?.ToString("dd/MM/yyyy").Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.DocumentType?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (d.Summary?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.SecurityLevel?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (d.Sender?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (d.Handler?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (d.ConstructionStaff?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (d.ReceivingOfficer?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.Signer?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (d.Recipient?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (d.Summary?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false)
+                    (d.Signer?.Position?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (d.Recipient?.Name?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) 
                 ).ToList();
 
                 FilteredDocs = new ObservableCollection<OutgoingDocument>(results);
@@ -358,7 +297,7 @@ namespace DocumentHub.ViewModel
             }
         }
 
-        public int PageSize { get; set; } = 5; // số bản ghi mỗi trang
+        public int PageSize { get; set; } = 10;
 
         public int TotalPages =>
             (int)Math.Ceiling((double)(FilteredDocs?.Count ?? 0) / PageSize);
@@ -368,21 +307,19 @@ namespace DocumentHub.ViewModel
 
         private void UpdatePagedDocs()
         {
-            PagedDocs.Clear();
             if (FilteredDocs == null) return;
 
             var items = FilteredDocs
                 .Skip((CurrentPage - 1) * PageSize)
-                .Take(PageSize);
+                .Take(PageSize)
+                .ToList();
 
-            foreach (var item in items)
-            {
-                PagedDocs.Add(item);
-            }
+            PagedDocs = new ObservableCollection<OutgoingDocument>(items);
 
             OnPropertyChanged(nameof(PagedDocs));
             OnPropertyChanged(nameof(TotalPages));
         }
+
 
         public ICommand NextPageCommand => new RelayCommand(param =>
         {
@@ -396,21 +333,22 @@ namespace DocumentHub.ViewModel
                 CurrentPage--;
         });
 
+
         //Function Add
         private void AddDocument()
         {
-            var newDoc = new OutgoingDocument
+            var newDoc = new OutgoingDocument 
             {
                 Id = OutgoingDocs.Count + 1,
-                DocumentNumber = "NEW-" + DateTime.Now.Ticks,
+                DocumentNumber = "NEW-" + DateTime.Now.Ticks, 
                 DocumentDate = DateTime.Today,
-                DocumentType = DocumentTypes.FirstOrDefault()?.Name ?? "Mới",
-                SecurityLevel = SecurityLevel.FirstOrDefault()?.Name ?? "Thường",
-                Sender = "Người gửi",
-                Handler = StaffList.FirstOrDefault(),
-                Signer = SignerList.FirstOrDefault(),
-                Recipient = "Người nhận",
-                Summary = "Nội dung mới"
+                DocumentType = "Mới",
+                Summary = "Nội dung mới", 
+                SecurityLevel = "Thường", 
+                ConstructionStaff = new ConstructionStaff { FullName = "Trần Thị B" },
+                ReceivingOfficer = new ReceivingOfficer {  FullName = "Trần Nhận B" },
+                Signer = new Signer {  FullName = "Phạm Minh D", Position = "Phó Chủ tịch" },
+                Recipient = new Recipient { Name = "Ban Giám đốc" }
             };
 
             SelectedDocument = newDoc;
@@ -437,64 +375,46 @@ namespace DocumentHub.ViewModel
         //Function Export excel
         private void ExportToExcel()
         {
-            var dialog = new SaveFileDialog
-            {
+            var dialog = new SaveFileDialog 
+            { 
                 Filter = "Excel Workbook|*.xlsx",
-                FileName = $"VanBanDi_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx"
-            };
+                FileName = $"VanBanDi_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx" };
             if (dialog.ShowDialog() == true)
-            {
-                using (var workbook = new ClosedXML.Excel.XLWorkbook())
+            { 
+                using (var workbook = new XLWorkbook())
                 {
                     var ws = workbook.Worksheets.Add("OutgoingDocs");
-
-                    // Header
                     ws.Cell(1, 1).Value = "ID";
                     ws.Cell(1, 2).Value = "Số/Ký hiệu";
                     ws.Cell(1, 3).Value = "Ngày VB";
                     ws.Cell(1, 4).Value = "Loại VB";
-                    ws.Cell(1, 5).Value = "Độ mật";
-                    ws.Cell(1, 6).Value = "Nơi gửi";
+                    ws.Cell(1, 5).Value = "Nội dung";
+                    ws.Cell(1, 6).Value = "Độ mật";
                     ws.Cell(1, 7).Value = "Cán bộ xử lý";
-                    ws.Cell(1, 8).Value = "Người ký";
-                    ws.Cell(1, 9).Value = "Chức vụ";
-                    ws.Cell(1, 10).Value = "Người nhận";
-                    ws.Cell(1, 11).Value = "Nội dung";
-
-                    // Data
+                    ws.Cell(1, 8).Value = "Cán bộ tiếp nhận";
+                    ws.Cell(1, 9).Value = "Người ký";
+                    ws.Cell(1, 10).Value = "Chức vụ";
+                    ws.Cell(1, 11).Value = "Nơi nhận";
+                    
                     int row = 2;
-                    foreach (var doc in FilteredDocs)
-                    {
+                    foreach (var doc in OutgoingDocs)
+                    { 
                         ws.Cell(row, 1).Value = doc.Id;
                         ws.Cell(row, 2).Value = doc.DocumentNumber;
                         ws.Cell(row, 3).Value = doc.DocumentDate?.ToString("dd/MM/yyyy");
                         ws.Cell(row, 4).Value = doc.DocumentType;
-                        ws.Cell(row, 5).Value = doc.SecurityLevel;
-                        ws.Cell(row, 6).Value = doc.Sender;
-                        ws.Cell(row, 7).Value = doc.Handler?.FullName;
-                        ws.Cell(row, 8).Value = doc.Signer?.FullName;
-                        ws.Cell(row, 10).Value = doc.Recipient;
-                        ws.Cell(row, 11).Value = doc.Summary;
-                        row++;
+                        ws.Cell(row, 5).Value = doc.Summary;
+                        ws.Cell(row, 6).Value = doc.SecurityLevel;
+                        ws.Cell(row, 7).Value = doc.ConstructionStaff?.FullName;
+                        ws.Cell(row, 8).Value = doc.ReceivingOfficer?.FullName;
+                        ws.Cell(row, 9).Value = doc.Signer?.FullName; 
+                        ws.Cell(row, 10).Value = doc.Signer?.Position;
+                        ws.Cell(row, 11).Value = doc.Recipient?.Name; row++;
                     }
-                    //Style header
-                    var headerRange = ws.Range("A1:K1");
-                    headerRange.Style.Font.Bold = true;
-                    headerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                    headerRange.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-                    headerRange.Style.Fill.BackgroundColor = XLColor.LightGray; 
-
-                    // Border in excel
-                    var dataRange = ws.Range($"A1:K{row - 1}");
-                    dataRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                    dataRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-                    // Fit column
                     ws.Columns().AdjustToContents();
-
-                    // Save file
                     workbook.SaveAs(dialog.FileName);
                 }
-            }
-        }
+            } 
+        } 
     }
 }
