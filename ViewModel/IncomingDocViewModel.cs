@@ -193,6 +193,7 @@ namespace DocumentHub.ViewModel
                     (d.Id.ToString().Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)) ||
                     (d.ArrivalNumber?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.DocumentNumber?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (d.DocumentDate?.ToString("dd/MM/yyyy").Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.DocumentType?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.SecurityLevel?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (d.Sender?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
@@ -276,7 +277,7 @@ namespace DocumentHub.ViewModel
                 DocumentDate = DateTime.Today,
                 DocumentType = DocumentTypes.FirstOrDefault()?.Name ?? "Mới",
                 SecurityLevel = SecurityLevel.FirstOrDefault()?.Name ?? "Thường",
-                Sender = "Người gửi",
+                Sender = "Nơi gửi",
                 Signer = SignerList.FirstOrDefault(),
                 Position = "Chức vụ",
                 Recipient = RecipientList.FirstOrDefault(),

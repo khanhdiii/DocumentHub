@@ -13,12 +13,13 @@ namespace DocumentHub.Model
         public string DocumentNumber { get; set; } = ""; 
         public DateTime? DocumentDate { get; set; }
         public string DocumentType { get; set; } = "";
-        public string SecurityLevel { get; set; } = ""; 
-        public string Sender { get; set; } = "";
-        public ConstructionStaff Handler { get; set; }
-        public Signer Signer { get; set; } 
-        public string Recipient { get; set; } = ""; 
         public string Summary { get; set; } = "";
+        public string SecurityLevel { get; set; } = "";
+        public ConstructionStaff ConstructionStaff { get; set; }
+        public ReceivingOfficer ReceivingOfficer { get; set; }
 
+        public Signer Signer { get; set; }
+
+        public Recipient Recipient { get; set; }
     }
 }
