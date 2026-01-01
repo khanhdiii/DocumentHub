@@ -77,9 +77,9 @@ namespace DocumentHub.FrontEnd
             ContentArea.Content = new RecipientsView();
         }
 
-        private void btnProcess_Click(object sender, RoutedEventArgs e)
+        private void btnWorkProgress_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new ProcessView();
+            ContentArea.Content = new WorkProgressView();
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)

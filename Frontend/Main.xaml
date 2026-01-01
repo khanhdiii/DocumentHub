@@ -355,7 +355,7 @@
                     <Button
                         x:Name="btnProcess"
                         Margin="0,6,0,0"
-                        Click="btnProcess_Click"
+                        Click="btnWorkProgress_Click"
                         Content="Tiến Độ Công Việc"
                         Style="{StaticResource SidebarButtonStyle}"
                         Tag="&#xE94C;" />
