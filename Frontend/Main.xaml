@@ -483,9 +483,9 @@
                             Style="{StaticResource SidebarButtonStyle}"
                             Tag="&#xE94C;" />
                     <StackPanel>
-                        <StackPanel>
+                        <StackPanel Margin="0,6,0,0"
+                                    Visibility="{Binding IsChecked, ElementName=BtnToggleSidebar, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                             <ToggleButton x:Name="btnAdvanced"
-                                          Margin="0,6,0,0"
                                           Style="{StaticResource SidebarToggleButtonStyle}"
                                           IsChecked="True"
                                           Tag="&#xE70D;"
