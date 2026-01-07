@@ -177,7 +177,7 @@
                     <!--  Handler  -->
                     <Grid Margin="6,4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="300" />
 
                         </Grid.ColumnDefinitions>
