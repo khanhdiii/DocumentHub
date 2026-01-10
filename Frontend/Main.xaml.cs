@@ -1,10 +1,15 @@
-﻿using DocumentHub.Data;
-using DocumentHub.FrontEnd.Views;
-using DocumentHub.Model;
-using Frontend.Views;
-using FrontEnd.Views;
 using System.Windows;
 using System.Windows.Media.Animation;
+
+using DocumentHub.Components;
+using DocumentHub.Data;
+using DocumentHub.FrontEnd.Views;
+using DocumentHub.Model;
+using DocumentHub.ViewModel;
+
+using Frontend.Views;
+
+using FrontEnd.Views;
 
 namespace DocumentHub.FrontEnd
 {
@@ -14,9 +19,21 @@ namespace DocumentHub.FrontEnd
         private const double CollapsedWidth = 52;
         private readonly Duration _animDuration = new(TimeSpan.FromMilliseconds(230));
 
-        public Main()
+        public Main(string notificationMessage = null, bool isSuccess = false)
         {
             InitializeComponent();
+
+            // Show notification after UI is loaded
+            Loaded += (s, e) =>
+            {
+                if (!string.IsNullOrEmpty(notificationMessage))
+                {
+                    var toast = new NotificationControl();
+                    toast.Show(notificationMessage, isSuccess);
+                    NotificationContainer.Children.Add(toast);
+
+                }
+            };
 
             using var _context = new AppDbContext();
             _context.Database.EnsureCreated();
@@ -28,7 +45,7 @@ namespace DocumentHub.FrontEnd
                 BtnToggleSidebar.Unchecked += BtnToggleSidebar_Unchecked;
             }
 
-            // load default sub-form
+            // Load default sub-form
             ContentArea.Content = new DashboardView();
         }
 
@@ -49,32 +66,142 @@ namespace DocumentHub.FrontEnd
 
         private void btnIncomingDoc_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new IncomingDocView();
+            // Create view
+            var view = new IncomingDocView();
+
+            // Create ViewModel
+            var vm = new IncomingDocViewModel();
+
+            // Set DataContext
+            view.DataContext = vm;
+
+            // Set Notify in GlobalNotification
+            vm.Notify += (msg, success) =>
+            {
+                var toast = new NotificationControl();
+                toast.Show(msg, success);
+                NotificationContainer.Children.Add(toast);
+            };
+
+            //Show ContentArea
+            ContentArea.Content = view;
         }
 
         private void btnOutgoing_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new OutgoingDocView();
+            // Create view
+            var view = new OutgoingDocView();
+
+            // Create ViewModel
+            var vm = new OutgoingDocViewModel();
+
+            // Set DataContext
+            view.DataContext = vm;
+
+            // Set Notify in GlobalNotification
+            vm.Notify += (msg, success) =>
+            {
+                var toast = new NotificationControl();
+                toast.Show(msg, success);
+                NotificationContainer.Children.Add(toast);
+            };
+
+            //Show ContentArea
+            ContentArea.Content = view;
         }
 
         private void btnConstructionStaff_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new ConstructionStaffView();
+            // Create view
+            var view = new ConstructionStaffView();
+
+            // Create ViewModel
+            var vm = new ConstructionStaffViewModel();
+
+            // Set DataContext
+            view.DataContext = vm;
+
+            // Set Notify in GlobalNotification
+            vm.Notify += (msg, success) =>
+            {
+                var toast = new NotificationControl();
+                toast.Show(msg, success);
+                NotificationContainer.Children.Add(toast);
+            };
+
+            //Show ContentArea
+            ContentArea.Content = view;
         }
+
+
 
         private void btnReceivingOfficer_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new ReceivingOfficerView();
+            // Create view
+            var view = new ReceivingOfficerView();
+
+            // Create ViewModel
+            var vm = new ReceivingOfficerViewModel();
+
+            // Set DataContext
+            view.DataContext = vm;
+
+            // Set Notify in GlobalNotification
+            vm.Notify += (msg, success) =>
+            {
+                var toast = new NotificationControl();
+                toast.Show(msg, success);
+                NotificationContainer.Children.Add(toast);
+            };
+
+            //Show ContentArea
+            ContentArea.Content = view;
         }
 
         private void btnSigner_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new SignerView();
+            // Create view
+            var view = new SignerView();
+
+            // Create ViewModel
+            var vm = new SignerViewModel();
+
+            // Set DataContext
+            view.DataContext = vm;
+
+            // Set Notify in GlobalNotification
+            vm.Notify += (msg, success) =>
+            {
+                var toast = new NotificationControl();
+                toast.Show(msg, success);
+                NotificationContainer.Children.Add(toast);
+            };
+
+            //Show ContentArea
+            ContentArea.Content = view;
         }
 
         private void btnRecpient_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new RecipientsView();
+            // Create view
+            var view = new RecipientsView();
+
+            // Create ViewModel
+            var vm = new RecipientsViewModel();
+
+            // Set DataContext
+            view.DataContext = vm;
+
+            // Set Notify in GlobalNotification
+            vm.Notify += (msg, success) =>
+            {
+                var toast = new NotificationControl();
+                toast.Show(msg, success);
+                NotificationContainer.Children.Add(toast);
+            };
+
+            //Show ContentArea
+            ContentArea.Content = view;
         }
 
         private void btnWorkProgress_Click(object sender, RoutedEventArgs e)
@@ -129,11 +256,5 @@ namespace DocumentHub.FrontEnd
                 Sidebar.Width = toWidth;
             };
         }
-
-        //    private void BtnClearSearch_Click(object sender, RoutedEventArgs e)
-        //    {
-        //        SearchBox.Text = string.Empty;
-        //        SearchBox.Focus();
-        //    }
     }
 }
