@@ -534,49 +534,37 @@
                             Text="{Binding SelectedDocument.Sender}" />
                     </Grid>
 
-                    <!--  Người ký  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Người ký" />
-                        <ComboBox
-                            Grid.Column="1"
-                            DisplayMemberPath="FullName"
-                            ItemsSource="{Binding SignerList}"
-                            SelectedItem="{Binding SelectedDocument.Signer, Mode=TwoWay}"
-                            Style="{StaticResource ModernComboBox}" />
-                    </Grid>
-                    <!--  Chức vụ  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Chức vụ" />
-                        <TextBox
-                            Grid.Column="1"
-                            IsReadOnly="True"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="{Binding SelectedDocument.Signer.Position, Mode=TwoWay, TargetNullValue=''}" />
+          <!-- Người ký -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Text="Người ký"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       FontSize="12"
+                       VerticalAlignment="Center"
+                       Margin="0,0,8,0" />
 
+            <ComboBox Grid.Column="1"
+                      ItemsSource="{Binding SignerList}"
+                      SelectedItem="{Binding SelectedDocument.Signer, Mode=TwoWay}"
+                      Style="{StaticResource ModernComboBox}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding FullName}" />
+                    <TextBlock Text=" - " />
+                    <TextBlock Text="{Binding Position}"
+                               Foreground="Gray" />
+                  </StackPanel>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </Grid>
 
-                    </Grid>
-
-                    <!--  Nơi nhận  -->
+          <!--  Nơi nhận  -->
                     <Grid Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100" />
