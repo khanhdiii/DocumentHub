@@ -1,15 +1,30 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
+
+using DocumentHub.Data;
 using DocumentHub.Model;
 
 namespace DocumentHub.ViewModel
 {
     public class RecipientsViewModel : INotifyPropertyChanged
     {
-        // List Recipient
-        public ObservableCollection<Recipient> RecipientList { get; set; }
-            = new ObservableCollection<Recipient>();
+        //Action call Notification
+        public event Action<string, bool> Notify;
+
+        public ICommand SaveCommand
+        {
+            get;
+        }
+        public ICommand EditCommand
+        {
+            get;
+        }
+        public ICommand DeleteCommand
+        {
+            get;
+        }
 
         private Recipient _selectedRecipient;
         public Recipient SelectedRecipient
@@ -22,57 +37,142 @@ namespace DocumentHub.ViewModel
             }
         }
 
-        //Command function
-        public ICommand SaveCommand { get; }
-        public ICommand EditCommand { get; }
-        public ICommand DeleteCommand { get; }
+        // List Recipient
+        public ObservableCollection<Recipient> RecipientList { get; set; }
+            = new ObservableCollection<Recipient>();
+
 
         public RecipientsViewModel()
         {
-            // Data test
-            RecipientList.Add(new Recipient { Id = 1, Name = "Sở Nội vụ" });
-            RecipientList.Add(new Recipient { Id = 2, Name = "Phòng Tài chính" });
-            RecipientList.Add(new Recipient { Id = 3, Name = "Ban Giám đốc" });
-
-            SaveCommand = new RelayCommand(param => SaveRecipient());
-            EditCommand = new RelayCommand(param => EditRecipient(param as Recipient));
             DeleteCommand = new RelayCommand(param => DeleteRecipient(param as Recipient));
+            SaveCommand = new RelayCommand(param => SaveRecipient());
+            SelectedRecipient = new Recipient();
+            LoadRecipientList();
         }
 
+
+        /*Function Load*/
+        private void LoadRecipientList()
+        {
+            using var db = new AppDbContext();
+            var recipientsFromDb = db.Recipients.ToList();
+            RecipientList = new ObservableCollection<Recipient>(recipientsFromDb);
+            OnPropertyChanged(nameof(RecipientList));
+        }
+
+        /*Function Save*/
         private void SaveRecipient()
         {
-            if (SelectedRecipient == null) return;
 
-            // If not in list -> add new
-            if (!RecipientList.Contains(SelectedRecipient))
+            if (SelectedRecipient == null || string.IsNullOrWhiteSpace(SelectedRecipient.Name))
             {
-                SelectedRecipient.Id = RecipientList.Count + 1;
-                RecipientList.Add(SelectedRecipient);
+                Notify?.Invoke("Vui lòng nhập tên nơi nhận.", false);
+                return;
             }
-            else
+
+            try
             {
-                // If in list -> edit
-                OnPropertyChanged(nameof(RecipientList));
+                using var db = new AppDbContext();
+
+                if (SelectedRecipient.Id > 0)
+                {
+                    var existing = db.Recipients.FirstOrDefault(x => x.Id == SelectedRecipient.Id);
+                    if (existing != null)
+                    {
+                        existing.Name = SelectedRecipient.Name;
+                    }
+                    else
+                    {
+                        db.Recipients.Add(new Recipient
+                        {
+                            Name = SelectedRecipient.Name,
+                        });
+                    }
+                }
+                else
+                {
+                    db.Recipients.Add(new Recipient
+                    {
+                        Name = SelectedRecipient.Name,
+                    });
+                }
+
+                db.SaveChanges();
+                if (SelectedRecipient.Id > 0)
+                    Notify?.Invoke("Sửa nơi nhận thành công", true);
+                else
+                    Notify?.Invoke("Thêm nơi nhận thành công", true);
+
+                // Load List View Table from DB
+               LoadRecipientList ();
+                SelectedRecipient = new Recipient();
+            }
+            catch (Exception ex)
+            {
+                Notify?.Invoke($"Không thể lưu nơi nhận: {ex.Message}", false);
             }
         }
 
+        /*Function Edit*/
         private void EditRecipient(Recipient recipient)
         {
-            if (recipient != null)
+            if (recipient == null)
+                return;
+            try
             {
-                SelectedRecipient = recipient;
-                recipient.Name += " (đã chỉnh sửa)";
-                OnPropertyChanged(nameof(RecipientList));
+                using var db = new AppDbContext();
+                var existing = db.Recipients.FirstOrDefault(x => x.Id == recipient.Id);
+                if (existing != null)
+                {
+                    existing.Name = recipient.Name;
+                    db.SaveChanges();
+                    Notify?.Invoke("Sửa nơi nhận thành công", true);
+                }
+                LoadRecipientList();
+            }
+            catch (Exception ex)
+            {
+                Notify?.Invoke($"Không thể sửa nơi nhận: {ex.Message}", false);
             }
         }
 
+        /*Function Delete*/
         private void DeleteRecipient(Recipient recipient)
         {
-            if (recipient != null)
+            if (recipient == null || recipient.Id <= 0)
             {
-                RecipientList.Remove(recipient);
+                Notify?.Invoke("Không tìm thấy nơi nhận để xóa.", false);
+                return;
+            }
+
+            var confirm = MessageBox.Show("Bạn có chắc muốn xóa nơi nhận này?", "⭐ Xác nhận", MessageBoxButton.YesNo);
+            if (confirm != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                using var db = new AppDbContext();
+                var existing = db.Recipients.FirstOrDefault(x => x.Id == recipient.Id);
+                if (existing != null)
+                {
+                    db.Recipients.Remove(existing);
+                    db.SaveChanges();
+                    Notify?.Invoke($"Xóa nơi nhận {recipient.Name} thành công", true);
+                }
+                else
+                {
+                    Notify?.Invoke("Không tìm thấy nơi nhận trong cơ sở dữ liệu.", false);
+                }
+
+                LoadRecipientList();
+                SelectedRecipient = new Recipient();
+            }
+            catch (Exception ex)
+            {
+                Notify?.Invoke($"Không thể xóa nơi nhận: {ex.Message}", false);
             }
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>
