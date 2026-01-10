@@ -14,7 +14,9 @@
 		<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
 		<PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="Notifications.Wpf.Core" Version="2.0.1" />
 		<PackageReference Include="PdfSharp-MigraDoc-GDI" Version="6.2.3" />
+
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,6 +33,23 @@
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	    <PrivateAssets>all</PrivateAssets>
 	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="FrontEnd\Auth\ChangePIN.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	  <Compile Update="FrontEnd\Auth\LoginForm.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EditorConfigFiles Remove="D:\DocumentHub\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="D:\DocumentHub\.editorconfig" />
 	</ItemGroup>
 
 </Project>
