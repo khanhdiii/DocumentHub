@@ -1,53 +1,180 @@
-﻿using DocumentHub.Model;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+
+using DocumentHub.Data;
+using DocumentHub.Model;
 
 namespace DocumentHub.ViewModel
 {
     public class ReceivingOfficerViewModel : INotifyPropertyChanged
     {
-        public ICommand SaveCommand { get; }
+        //Action call Notification
+        public event Action<string, bool> Notify;
+
+        public ICommand SaveCommand
+        {
+            get;
+        }
+        public ICommand EditCommand
+        {
+            get;
+        }
+        public ICommand DeleteCommand
+        {
+            get;
+        }
+
+        private ReceivingOfficer _selectedStaff;
+
+        public ReceivingOfficer SelectedStaff
+        {
+            get => _selectedStaff;
+            set
+            {
+                _selectedStaff = value;
+                OnPropertyChanged(nameof(SelectedStaff));
+            }
+        }
+        public ObservableCollection<ReceivingOfficer> StaffList
+        {
+            get; set;
+        }
 
         public ReceivingOfficerViewModel()
         {
-            SaveCommand = new RelayCommand(param => SaveStaffReceivingOfficer());
+            DeleteCommand = new RelayCommand(param => DeleteStaff(param as ReceivingOfficer));
+            SaveCommand = new RelayCommand(param => SaveStaff());
+            SelectedStaff = new ReceivingOfficer();
+            LoadStaffList();
         }
 
-        //  SelectedStaffReceivingOfficer
-        private ReceivingOfficer _selectedStaffReceivingOfficer;
-        public ReceivingOfficer SelectedStaffReceivingOfficer
+        /*Function Load*/
+        private void LoadStaffList()
         {
-            get => _selectedStaffReceivingOfficer;
-            set
+            using var db = new AppDbContext();
+            var staffFromDb = db.ReceivingOfficers.ToList();
+            StaffList = new ObservableCollection<ReceivingOfficer>(staffFromDb);
+            OnPropertyChanged(nameof(StaffList));
+        }
+
+        /*Function Save*/
+        private void SaveStaff()
+        {
+
+            if (SelectedStaff == null || string.IsNullOrWhiteSpace(SelectedStaff.FullName))
             {
-                _selectedStaffReceivingOfficer = value;
-                OnPropertyChanged(nameof(SelectedStaffReceivingOfficer));
+                Notify?.Invoke("Vui lòng nhập tên cán bộ xử lý.", false);
+                return;
+            }
+
+            try
+            {
+                using var db = new AppDbContext();
+
+                if (SelectedStaff.Id > 0)
+                {
+                    var existing = db.ReceivingOfficers.FirstOrDefault(x => x.Id == SelectedStaff.Id);
+                    if (existing != null)
+                    {
+                        existing.FullName = SelectedStaff.FullName;
+                    }
+                    else
+                    {
+                        db.ReceivingOfficers.Add(new ReceivingOfficer
+                        {
+                            FullName = SelectedStaff.FullName,
+                        });
+                    }
+                }
+                else
+                {
+                    db.ReceivingOfficers.Add(new ReceivingOfficer
+                    {
+                        FullName = SelectedStaff.FullName,
+                    });
+                }
+
+                db.SaveChanges();
+                if (SelectedStaff.Id > 0)
+                    Notify?.Invoke("Sửa cán bộ thành công", true);
+                else
+                    Notify?.Invoke("Thêm cán bộ thành công", true);
+
+                // Load List View Table from DB
+                LoadStaffList();
+                SelectedStaff = new ReceivingOfficer();
+            }
+            catch (Exception ex)
+            {
+                Notify?.Invoke($"Không thể lưu cán bộ: {ex.Message}", false);
             }
         }
 
-        // Data StaffList
-        public ObservableCollection<ReceivingOfficer> StaffReceivingOfficerList { get; }
-            = new ObservableCollection<ReceivingOfficer>
-            {
-                new ReceivingOfficer { Id = 1, FullName = "Nguyễn Nhận A" },
-                new ReceivingOfficer { Id = 2, FullName = "Trần Nhận B" },
-                new ReceivingOfficer { Id = 3, FullName = "Lê Nhận C" }
-            };
-
-        // Save Construction Staff
-        private void SaveStaffReceivingOfficer()
+        /*Function Edit*/
+        private void EditStaff(ReceivingOfficer receivingOfficer)
         {
-            var staffReceivingOfficer = StaffReceivingOfficerList.FirstOrDefault(s => s.Id == SelectedStaffReceivingOfficer?.Id);
-            if (staffReceivingOfficer != null)
+            if (receivingOfficer == null)
+                return;
+            SelectedStaff = new ReceivingOfficer { Id = receivingOfficer.Id, FullName = receivingOfficer.FullName };
+            try
             {
-                staffReceivingOfficer.FullName = SelectedStaffReceivingOfficer.FullName;
-                staffReceivingOfficer.Position = SelectedStaffReceivingOfficer.Position;
-                OnPropertyChanged(nameof(StaffReceivingOfficerList));
+                using var db = new AppDbContext();
+                var existing = db.ReceivingOfficers.FirstOrDefault(x => x.Id == receivingOfficer.Id);
+                if (existing != null)
+                {
+                    existing.FullName = receivingOfficer.FullName;
+                    db.SaveChanges();
+                    Notify?.Invoke("Sửa cán bộ thành công", true);
+                }
+                LoadStaffList();
+            }
+            catch (Exception ex)
+            {
+                Notify?.Invoke($"Không thể sửa cán bộ: {ex.Message}", false);
             }
         }
+
+        /*Function Delete*/
+        private void DeleteStaff(ReceivingOfficer receivingOfficer)
+        {
+            if (receivingOfficer == null || receivingOfficer.Id <= 0)
+            {
+                Notify?.Invoke("Không tìm thấy cán bộ để xóa.", false);
+                return;
+            }
+
+            var confirm = MessageBox.Show("Bạn có chắc muốn xóa cán bộ này?", "⭐Xác nhận", MessageBoxButton.YesNo);
+            if (confirm != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                using var db = new AppDbContext();
+                var existing = db.ReceivingOfficers.FirstOrDefault(x => x.Id == receivingOfficer.Id);
+                if (existing != null)
+                {
+                    db.ReceivingOfficers.Remove(existing);
+                    db.SaveChanges();
+                    Notify?.Invoke($"Xóa cán bộ {receivingOfficer.FullName} thành công", true);
+                }
+                else
+                {
+                    Notify?.Invoke("Không tìm thấy cán bộ trong cơ sở dữ liệu.", false);
+                }
+
+                LoadStaffList();
+                SelectedStaff = new ReceivingOfficer();
+            }
+            catch (Exception ex)
+            {
+                Notify?.Invoke($"Không thể xóa cán bộ: {ex.Message}", false);
+            }
+        }
+
 
         //  INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
