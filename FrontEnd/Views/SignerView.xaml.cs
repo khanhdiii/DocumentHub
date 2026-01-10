@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using DocumentHub.Components;
+using DocumentHub.ViewModel;
+
 namespace DocumentHub.FrontEnd.Views
 {
     /// <summary>
@@ -23,6 +26,26 @@ namespace DocumentHub.FrontEnd.Views
         public SignerView()
         {
             InitializeComponent();
+            Loaded += (s, e) =>
+            {
+                if (DataContext is SignerViewModel vm)
+                {
+                    vm.Notify -= ShowNotification;
+                    vm.Notify += ShowNotification;
+                }
+            };
+        }
+
+        public void ShowNotification(string message, bool isSuccess)
+        {
+            if (Application.Current.MainWindow is Main mainWindow)
+            {
+                var toast = new NotificationControl();
+                toast.Show(message, isSuccess);
+                mainWindow.NotificationContainer.Children.Add(toast);
+
+                System.Diagnostics.Debug.WriteLine($"Notify: {message} - {isSuccess}");
+            }
         }
     }
 }
