@@ -177,7 +177,7 @@
                         Margin="0,0,0,8"
                         FontFamily="Montserrat"
                         Style="{StaticResource CardHeader}"
-                        Text="Thông tin cán bộ xây dựng" />
+                        Text="Thông tin cán bộ xử lý" />
 
                     <!--  Handler  -->
                     <Grid Margin="6,4">
