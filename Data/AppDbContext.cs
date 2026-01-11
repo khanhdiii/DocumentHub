@@ -1,4 +1,5 @@
 using DocumentHub.Model;
+using DocumentHub.ViewModel;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -6,34 +7,19 @@ namespace DocumentHub.Data
 {
     internal class AppDbContext : DbContext
     {
-        public DbSet<IncomingDocument> IncomingDocuments
-        {
-            get; set;
-        }
-        public DbSet<UserCredential> UserCredentials
-        {
-            get; set;
-        }
-        public DbSet<OutgoingDocument> OutgoingDocuments
-        {
-            get; set;
-        }
-        public DbSet<ReceivingOfficer> ReceivingOfficers
-        {
-            get; set;
-        }
-        public DbSet<ConstructionStaff> ConstructionStaff
-        {
-            get; set;
-        }
-        public DbSet<Signer> Signers
-        {
-            get; set;
-        }
-        public DbSet<Recipient> Recipients
-        {
-            get; set;
-        }
+        public DbSet<IncomingDocument> IncomingDocuments { get; set; }
+        public DbSet<UserCredential> UserCredentials { get; set; }
+        public DbSet<OutgoingDocument> OutgoingDocuments { get; set; }
+        public DbSet<ReceivingOfficer> ReceivingOfficers { get; set; }
+        public DbSet<ConstructionStaff> ConstructionStaff { get; set; }
+        public DbSet<Signer> Signers { get; set; }
+        public DbSet<Recipient> Recipients { get; set; }
+        public DbSet<WorkProgress> WorkProgresses { get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<WorkProgressMonth> WorkProgressMonths { get; set; }
+        public DbSet<WorkProgressYear> WorkProgressYears { get; set; }
+
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -63,9 +49,11 @@ namespace DocumentHub.Data
                 .WithMany()
                 .HasForeignKey("RecipientId");
 
+            modelBuilder.Entity<WorkProgress>().HasOne(w => w.Assigner).WithMany().HasForeignKey(w => w.AssignerId);
+            modelBuilder.Entity<WorkProgress>().HasOne(w => w.PersonInCharge).WithMany().HasForeignKey(w => w.PersonInChargeId);
+
             base.OnModelCreating(modelBuilder);
 
-          
         }
     }
 }
