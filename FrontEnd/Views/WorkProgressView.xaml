@@ -4,12 +4,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:conv="clr-namespace:DocumentHub.FrontEnd.Converters"
+             xmlns:vm="clr-namespace:DocumentHub.ViewModel"
              mc:Ignorable="d"
              d:DesignHeight="800"
              d:DesignWidth="1400">
   <UserControl.Resources>
+
+    <!--Helpers suport-->
     <conv:BoolToCheckConverter x:Key="BoolToCheckConverter" />
     <conv:BoolToVisibilityForWorkConverter x:Key="BoolToVisibilityForWorkConverter" />
+
     <!--  Modern color palette  -->
     <Color x:Key="PrimaryColor">#FF2B6BEA</Color>
     <Color x:Key="AccentColor">#FF00B894</Color>
@@ -386,9 +390,19 @@
               <ColumnDefinition Width="120" />
               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Tên Công việc"
-                       Grid.Column="0"
-                       VerticalAlignment="Center" />
+            <!-- Label  * -->
+            <StackPanel Grid.Column="0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+              <TextBlock Text="Tên Công việc"
+                         Grid.Column="0"
+                         VerticalAlignment="Center" />
+              <TextBlock Text="*"
+                         Foreground="Red"
+                         FontWeight="Bold"
+                         Margin="4,0,0,0"
+                         ToolTip="Trường này bắt buộc nhập" />
+            </StackPanel>
             <TextBox Grid.Column="1"
                      Text="{Binding WorkItem.Name}"
                      Style="{StaticResource ModernTextBox}" />
@@ -456,9 +470,18 @@
               <CheckBox Content="9 tháng"
                         IsChecked="{Binding WorkItem.Is9Months}"
                         Margin="2" />
-              <CheckBox Content="Hàng năm"
-                        IsChecked="{Binding WorkItem.IsYearly}"
-                        Margin="2" />
+              <WrapPanel Margin="0,2">
+                <!-- Checkbox hàng năm -->
+                <CheckBox Content="Hàng năm"
+                          IsChecked="{Binding WorkItem.IsYearly}"
+                          Margin="2" />
+
+                <!-- TextBox nhập số năm, chỉ hiện khi IsYearly = true -->
+                <TextBox Width="60"
+                         Margin="2"
+                         Text="{Binding WorkItem.YearlyCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Visibility="{Binding WorkItem.IsYearly, Converter={StaticResource BoolToVisibilityForWorkConverter}}" />
+              </WrapPanel>
             </WrapPanel>
 
             <!-- Theo tháng -->
@@ -544,12 +567,21 @@
               <ColumnDefinition Width="120" />
               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Người giao việc"
-                       Grid.Column="0"
-                       VerticalAlignment="Center" />
+            <StackPanel Grid.Column="0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+              <TextBlock Text="Người giao việc"
+                         Grid.Column="0"
+                         VerticalAlignment="Center" />
+              <TextBlock Text="*"
+                         Foreground="Red"
+                         FontWeight="Bold"
+                         Margin="4,0,0,0"
+                         ToolTip="Trường này bắt buộc nhập" />
+            </StackPanel>
             <ComboBox Grid.Column="1"
-                      ItemsSource="{Binding Assigners}"
-                      SelectedItem="{Binding WorkItem.Assigner}"
+                      ItemsSource="{Binding StaffOptions}"
+                      SelectedItem="{Binding WorkItem.Assigner, Mode=TwoWay}"
                       DisplayMemberPath="FullName"
                       Style="{StaticResource ModernComboBox}" />
           </Grid>
@@ -560,12 +592,22 @@
               <ColumnDefinition Width="120" />
               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Người phụ trách"
-                       Grid.Column="0"
-                       VerticalAlignment="Center" />
+            <StackPanel Grid.Column="0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+              <TextBlock Text="Người phụ trách"
+                         Grid.Column="0"
+                         VerticalAlignment="Center" />
+              <TextBlock Text="*"
+                         Foreground="Red"
+                         FontWeight="Bold"
+                         Margin="4,0,0,0"
+                         ToolTip="Trường này bắt buộc nhập" />
+            </StackPanel>
+
             <ComboBox Grid.Column="1"
-                      ItemsSource="{Binding StaffList}"
-                      SelectedItem="{Binding WorkItem.PersonInCharge}"
+                      ItemsSource="{Binding StaffOptions}"
+                      SelectedItem="{Binding WorkItem.PersonInCharge, Mode=TwoWay}"
                       DisplayMemberPath="FullName"
                       Style="{StaticResource ModernComboBox}" />
           </Grid>
@@ -576,9 +618,18 @@
               <ColumnDefinition Width="120" />
               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Trạng thái"
-                       Grid.Column="0"
-                       VerticalAlignment="Center" />
+            <StackPanel Grid.Column="0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+              <TextBlock Text="Trạng thái"
+                         Grid.Column="0"
+                         VerticalAlignment="Center" />
+              <TextBlock Text="*"
+                         Foreground="Red"
+                         FontWeight="Bold"
+                         Margin="4,0,0,0"
+                         ToolTip="Trường này bắt buộc nhập" />
+            </StackPanel>
             <ComboBox Grid.Column="1"
                       ItemsSource="{Binding StatusOptions}"
                       SelectedItem="{Binding WorkItem.Status}"
@@ -591,9 +642,18 @@
               <ColumnDefinition Width="120" />
               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Độ ưu tiên"
-                       Grid.Column="0"
-                       VerticalAlignment="Center" />
+            <StackPanel Grid.Column="0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+              <TextBlock Text="Độ ưu tiên"
+                         Grid.Column="0"
+                         VerticalAlignment="Center" />
+              <TextBlock Text="*"
+                         Foreground="Red"
+                         FontWeight="Bold"
+                         Margin="4,0,0,0"
+                         ToolTip="Trường này bắt buộc nhập" />
+            </StackPanel>
             <ComboBox Grid.Column="1"
                       ItemsSource="{Binding PriorityOptions}"
                       SelectedItem="{Binding WorkItem.Priority}"
@@ -615,7 +675,7 @@
                     Maximum="100"
                     Value="{Binding WorkItem.Progress}" />
             <TextBlock Grid.Column="2"
-                       Text="{Binding WorkItem.Progress}"
+                       Text="{Binding WorkItem.Progress, StringFormat={}{0}%}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        FontWeight="Bold"
@@ -691,14 +751,17 @@
                                 Binding="{Binding Name}"
                                 Width="200" />
             <DataGridTextColumn Header="Ngày BD"
-                                Binding="{Binding StartDate}"
+                                Binding="{Binding StartDate, StringFormat={}{0:dd/MM/yyyy}}"
                                 Width="100" />
             <DataGridTextColumn Header="Thời hạn"
-                                Binding="{Binding Deadline}"
+                                Binding="{Binding Deadline, StringFormat={}{0:dd/MM/yyyy}}"
                                 Width="100" />
             <DataGridTextColumn Header="Tháng"
                                 Binding="{Binding IsMonth, Converter={StaticResource BoolToCheckConverter}}"
                                 Width="60" />
+            <DataGridTextColumn Header="Tháng đã chọn"
+                                Binding="{Binding SelectedMonths}"
+                                Width="200" />
             <DataGridTextColumn Header="3 tháng"
                                 Binding="{Binding Is3Months, Converter={StaticResource BoolToCheckConverter}}"
                                 Width="70" />
@@ -711,7 +774,15 @@
             <DataGridTextColumn Header="Năm"
                                 Binding="{Binding IsYear, Converter={StaticResource BoolToCheckConverter}}"
                                 Width="60" />
-
+            <DataGridTextColumn Header="Năm đã chọn"
+                                Binding="{Binding SelectedYears}"
+                                Width="200" />
+            <DataGridTextColumn Header="Số năm"
+                                Binding="{Binding YearlyCount}"
+                                Width="80" />
+            <DataGridTextColumn Header="Người giao việc"
+                                Binding="{Binding Assigner.FullName}"
+                                Width="150" />
             <DataGridTextColumn Header="Người phụ trách"
                                 Binding="{Binding PersonInCharge.FullName}"
                                 Width="150" />
@@ -725,7 +796,7 @@
                                 Binding="{Binding Progress}"
                                 Width="80" />
             <DataGridTextColumn Header="Ngày HT thực tế"
-                                Binding="{Binding ActualCompletionDate}"
+                                Binding="{Binding ActualCompletionDate, StringFormat={}{0:dd/MM/yyyy}}"
                                 Width="120" />
           </DataGrid.Columns>
         </DataGrid>
