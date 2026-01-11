@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-
 using DocumentHub.Data;
 using DocumentHub.Model;
 
@@ -15,18 +14,9 @@ namespace DocumentHub.ViewModel
         //Action call Notification
         public event Action<string, bool> Notify;
 
-        public ICommand SaveCommand
-        {
-            get;
-        }
-        public ICommand EditCommand
-        {
-            get;
-        }
-        public ICommand DeleteCommand
-        {
-            get;
-        }
+        public ICommand SaveCommand { get; }
+        public ICommand EditCommand { get; }
+        public ICommand DeleteCommand { get; }
 
         private ConstructionStaff _selectedStaff;
         public ConstructionStaff SelectedStaff
@@ -40,10 +30,7 @@ namespace DocumentHub.ViewModel
         }
 
         // List Staff
-        public ObservableCollection<ConstructionStaff> StaffList
-        {
-            get; set;
-        }
+        public ObservableCollection<ConstructionStaff> StaffList { get; set; }
 
         public ConstructionStaffViewModel()
         {
@@ -65,7 +52,6 @@ namespace DocumentHub.ViewModel
         /*Function Save*/
         private void SaveStaff()
         {
-
             if (SelectedStaff == null || string.IsNullOrWhiteSpace(SelectedStaff.FullName))
             {
                 Notify?.Invoke("Vui lòng nhập tên cán bộ xử lý.", false);
@@ -78,25 +64,25 @@ namespace DocumentHub.ViewModel
 
                 if (SelectedStaff.Id > 0)
                 {
-                    var existing = db.ConstructionStaff.FirstOrDefault(x => x.Id == SelectedStaff.Id);
+                    var existing = db.ConstructionStaff.FirstOrDefault(x =>
+                        x.Id == SelectedStaff.Id
+                    );
                     if (existing != null)
                     {
                         existing.FullName = SelectedStaff.FullName;
                     }
                     else
                     {
-                        db.ConstructionStaff.Add(new ConstructionStaff
-                        {
-                            FullName = SelectedStaff.FullName,
-                        });
+                        db.ConstructionStaff.Add(
+                            new ConstructionStaff { FullName = SelectedStaff.FullName }
+                        );
                     }
                 }
                 else
                 {
-                    db.ConstructionStaff.Add(new ConstructionStaff
-                    {
-                        FullName = SelectedStaff.FullName,
-                    });
+                    db.ConstructionStaff.Add(
+                        new ConstructionStaff { FullName = SelectedStaff.FullName }
+                    );
                 }
 
                 db.SaveChanges();
@@ -123,7 +109,9 @@ namespace DocumentHub.ViewModel
             try
             {
                 using var db = new AppDbContext();
-                var existing = db.ConstructionStaff.FirstOrDefault(x => x.Id == constructionStaff.Id);
+                var existing = db.ConstructionStaff.FirstOrDefault(x =>
+                    x.Id == constructionStaff.Id
+                );
                 if (existing != null)
                 {
                     existing.FullName = constructionStaff.FullName;
@@ -147,14 +135,20 @@ namespace DocumentHub.ViewModel
                 return;
             }
 
-            var confirm = MessageBox.Show("Bạn có chắc muốn xóa cán bộ này?", "⭐Xác nhận", MessageBoxButton.YesNo);
+            var confirm = MessageBox.Show(
+                "Bạn có chắc muốn xóa cán bộ này?",
+                "⭐Xác nhận",
+                MessageBoxButton.YesNo
+            );
             if (confirm != MessageBoxResult.Yes)
                 return;
 
             try
             {
                 using var db = new AppDbContext();
-                var existing = db.ConstructionStaff.FirstOrDefault(x => x.Id == constructionStaff.Id);
+                var existing = db.ConstructionStaff.FirstOrDefault(x =>
+                    x.Id == constructionStaff.Id
+                );
                 if (existing != null)
                 {
                     db.ConstructionStaff.Remove(existing);
@@ -175,10 +169,10 @@ namespace DocumentHub.ViewModel
             }
         }
 
-
         //  INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        protected void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

@@ -1,4 +1,5 @@
-﻿using DocumentHub.Model;
+using DocumentHub.Model;
+
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -6,17 +7,35 @@ using System.Windows.Input;
 
 namespace DocumentHub.ViewModel
 {
-    public enum ViewMode { Week, Month, Quarter }
+    public enum ViewMode
+    {
+        Week, Month, Quarter
+    }
 
     public class DashboardViewModel : INotifyPropertyChanged
     {
         public event Action RequestScrollToToday;
-        public ObservableCollection<CalendarDay> CalendarDays { get; set; }
-        public ObservableCollection<CalendarMonth> CalendarMonths { get; set; }
-        public ObservableCollection<ViewModeItem> ViewModes { get; set; }
+        public ObservableCollection<CalendarDay> CalendarDays
+        {
+            get; set;
+        }
+        public ObservableCollection<CalendarMonth> CalendarMonths
+        {
+            get; set;
+        }
+        public ObservableCollection<ViewModeItem> ViewModes
+        {
+            get; set;
+        }
 
-        public ICommand PreviousPeriodCommand { get; }
-        public ICommand NextPeriodCommand { get; }
+        public ICommand PreviousPeriodCommand
+        {
+            get;
+        }
+        public ICommand NextPeriodCommand
+        {
+            get;
+        }
 
         private DateTime _currentDate;
         private ViewMode _selectedViewMode;
@@ -91,9 +110,15 @@ namespace DocumentHub.ViewModel
         {
             switch (SelectedViewMode)
             {
-                case ViewMode.Week: _currentDate = _currentDate.AddDays(offset * 7); break;
-                case ViewMode.Month: _currentDate = _currentDate.AddMonths(offset); break;
-                case ViewMode.Quarter: _currentDate = _currentDate.AddMonths(offset * 3); break;
+                case ViewMode.Week:
+                    _currentDate = _currentDate.AddDays(offset * 7);
+                    break;
+                case ViewMode.Month:
+                    _currentDate = _currentDate.AddMonths(offset);
+                    break;
+                case ViewMode.Quarter:
+                    _currentDate = _currentDate.AddMonths(offset * 3);
+                    break;
             }
             OnPropertyChanged(nameof(CurrentPeriodDisplay));
             LoadCalendar();
@@ -161,8 +186,8 @@ namespace DocumentHub.ViewModel
             else if (SelectedViewMode == ViewMode.Quarter)
             {
                 int year = _currentDate.Year;
-                int quarter = ((_currentDate.Month - 1) / 3) + 1;  
-                int startMonth = (quarter - 1) * 3 + 1;             
+                int quarter = ((_currentDate.Month - 1) / 3) + 1;
+                int startMonth = (quarter - 1) * 3 + 1;
 
                 for (int m = 0; m < 3; m++)
                 {
