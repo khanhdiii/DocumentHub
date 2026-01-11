@@ -12,7 +12,7 @@ namespace DocumentHub.Components
 
             container.Children.Add(toast);
 
-            // Sau khi hết thời gian thì tự xóa khỏi container
+            // After end time then remove container
             var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(3000) };
             timer.Tick += (s, e) =>
             {
