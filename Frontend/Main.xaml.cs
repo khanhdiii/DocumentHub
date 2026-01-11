@@ -133,8 +133,6 @@ namespace DocumentHub.FrontEnd
             ContentArea.Content = view;
         }
 
-
-
         private void btnReceivingOfficer_Click(object sender, RoutedEventArgs e)
         {
             // Create view
@@ -206,7 +204,48 @@ namespace DocumentHub.FrontEnd
 
         private void btnWorkProgress_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new WorkProgressView();
+            // Create view
+            var view = new WorkProgressView();
+
+            // Create ViewModel
+            var vm = new WorkProgressViewModel();
+
+            // Set DataContext
+            view.DataContext = vm;
+
+            // Set Notify in GlobalNotification
+            vm.Notify += (msg, success) =>
+            {
+                var toast = new NotificationControl();
+                toast.Show(msg, success);
+                NotificationContainer.Children.Add(toast);
+            };
+
+            //Show ContentArea
+            ContentArea.Content = view;
+        }
+
+        private void btnPerson_Click(object sender, RoutedEventArgs e)
+        {
+            // Create view
+            var view = new PersonView();
+
+            // Create ViewModel
+            var vm = new PersonViewModel();
+
+            // Set DataContext
+            view.DataContext = vm;
+
+            // Set Notify in GlobalNotification
+            vm.Notify += (msg, success) =>
+            {
+                var toast = new NotificationControl();
+                toast.Show(msg, success);
+                NotificationContainer.Children.Add(toast);
+            };
+
+            //Show ContentArea
+            ContentArea.Content = view;
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)

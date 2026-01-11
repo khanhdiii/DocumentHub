@@ -524,6 +524,11 @@
                         Content="Nơi nhận"
                         Style="{StaticResource SidebarButtonStyle}"
                         Tag="&#xE707;" />
+                <Button Margin="0,4,0,0"
+                        Click="btnPerson_Click"
+                        Content="Cán bộ"
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Tag="&#xE706;" />
               </StackPanel>
             </StackPanel>
           </StackPanel>
