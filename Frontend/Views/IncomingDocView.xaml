@@ -1,538 +1,649 @@
-﻿<UserControl
-    x:Class="Frontend.Views.IncomingDocView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:DocumentHub.FrontEnd.Converters"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-    d:DesignHeight="800"
-    d:DesignWidth="1400"
-    mc:Ignorable="d">
+﻿<UserControl x:Class="Frontend.Views.IncomingDocView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:DocumentHub.FrontEnd.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             d:DesignHeight="800"
+             d:DesignWidth="1400"
+             mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
-        <!--  Modern color palette  -->
-        <Color x:Key="PrimaryColor">#FF2B6BEA</Color>
-        <Color x:Key="AccentColor">#FF00B894</Color>
-        <Color x:Key="SurfaceColor">#FFFFFFFF</Color>
-        <Color x:Key="MuterText">#FF6B7280</Color>
-        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}" />
-        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
-        <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}" />
-        <SolidColorBrush x:Key="MutedTextBrush" Color="{StaticResource MuterText}" />
+  <UserControl.Resources>
+    <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
+    <!--  Modern color palette  -->
+    <Color x:Key="PrimaryColor">#FF2B6BEA</Color>
+    <Color x:Key="AccentColor">#FF00B894</Color>
+    <Color x:Key="SurfaceColor">#FFFFFFFF</Color>
+    <Color x:Key="MuterText">#FF6B7280</Color>
+    <SolidColorBrush x:Key="PrimaryBrush"
+                     Color="{StaticResource PrimaryColor}" />
+    <SolidColorBrush x:Key="AccentBrush"
+                     Color="{StaticResource AccentColor}" />
+    <SolidColorBrush x:Key="SurfaceBrush"
+                     Color="{StaticResource SurfaceColor}" />
+    <SolidColorBrush x:Key="MutedTextBrush"
+                     Color="{StaticResource MuterText}" />
 
-        <!--  Corner radius and spacing  -->
-        <CornerRadius x:Key="CardCornerRadius">10</CornerRadius>
-        <Thickness x:Key="CardPadding">14</Thickness>
+    <!--  Corner radius and spacing  -->
+    <CornerRadius x:Key="CardCornerRadius">10</CornerRadius>
+    <Thickness x:Key="CardPadding">14</Thickness>
 
-        <!--  TextBox style  -->
-        <Style x:Key="ModernTextBox" TargetType="TextBox">
-            <Setter Property="FontFamily" Value="Montserrat" />
-            <Setter Property="Background" Value="#FFF7F9FC" />
-            <Setter Property="BorderBrush" Value="#FFE6EDF8" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="4" />
-            <Setter Property="Margin" Value="4" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="6"
-                            SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+    <!--  TextBox style  -->
+    <Style x:Key="ModernTextBox"
+           TargetType="TextBox">
+      <Setter Property="FontFamily"
+              Value="Montserrat" />
+      <Setter Property="Background"
+              Value="#FFF7F9FC" />
+      <Setter Property="BorderBrush"
+              Value="#FFE6EDF8" />
+      <Setter Property="BorderThickness"
+              Value="1" />
+      <Setter Property="Padding"
+              Value="4" />
+      <Setter Property="Margin"
+              Value="4" />
+      <Setter Property="FontSize"
+              Value="12" />
+      <Setter Property="VerticalContentAlignment"
+              Value="Center" />
+      <Setter Property="SnapsToDevicePixels"
+              Value="True" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="TextBox">
+            <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="6"
+                    SnapsToDevicePixels="True">
+              <ScrollViewer x:Name="PART_ContentHost"
+                            Margin="{TemplateBinding Padding}" />
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
 
-        <!--  Export button style  -->
-        <Style x:Key="ExportButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#FF2D89EF" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Padding" Value="10,6" />
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="BorderBrush" Value="#FF1E5AA8" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="FontFamily" Value="Montserrat" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter
-                                Margin="{TemplateBinding Padding}"
+    <!--  Export button style  -->
+    <Style x:Key="ExportButtonStyle"
+           TargetType="Button">
+      <Setter Property="Background"
+              Value="#FF2D89EF" />
+      <Setter Property="Foreground"
+              Value="White" />
+      <Setter Property="FontWeight"
+              Value="SemiBold" />
+      <Setter Property="Padding"
+              Value="10,6" />
+      <Setter Property="Margin"
+              Value="5" />
+      <Setter Property="Cursor"
+              Value="Hand" />
+      <Setter Property="BorderBrush"
+              Value="#FF1E5AA8" />
+      <Setter Property="BorderThickness"
+              Value="1" />
+      <Setter Property="FontFamily"
+              Value="Montserrat" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+              <ContentPresenter Margin="{TemplateBinding Padding}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver"
+                 Value="True">
+          <Setter Property="Background"
+                  Value="#FF1E5AA8" />
+        </Trigger>
+        <Trigger Property="IsPressed"
+                 Value="True">
+          <Setter Property="Background"
+                  Value="#FF164A90" />
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+
+    <!--  ComboBox style  -->
+    <Style x:Key="ModernComboBox"
+           TargetType="ComboBox">
+      <Setter Property="Background"
+              Value="#FFF7F9FC" />
+      <Setter Property="FontFamily"
+              Value="Montserrat" />
+      <Setter Property="BorderBrush"
+              Value="#FFE6EDF8" />
+      <Setter Property="BorderThickness"
+              Value="1" />
+      <Setter Property="Padding"
+              Value="4,4" />
+      <Setter Property="Margin"
+              Value="4" />
+      <Setter Property="FontSize"
+              Value="12" />
+      <Setter Property="Foreground"
+              Value="Black" />
+      <Setter Property="SnapsToDevicePixels"
+              Value="True" />
+      <Setter Property="SnapsToDevicePixels"
+              Value="True" />
+      <Setter Property="Foreground"
+              Value="Black" />
+      <Setter Property="ItemContainerStyle">
+        <Setter.Value>
+          <Style TargetType="ComboBoxItem">
+            <Setter Property="Background"
+                    Value="White" />
+            <Setter Property="Padding"
+                    Value="6" />
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF1E5AA8" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#FF164A90" />
-                </Trigger>
+              <Trigger Property="IsMouseOver"
+                       Value="True">
+                <Setter Property="Background"
+                        Value="#FFEAF2FF" />
+              </Trigger>
+              <Trigger Property="IsSelected"
+                       Value="True">
+                <Setter Property="Background"
+                        Value="#FFD6E4FF" />
+              </Trigger>
             </Style.Triggers>
-        </Style>
+          </Style>
+        </Setter.Value>
+      </Setter>
 
+    </Style>
 
-        <!--  ComboBox style  -->
-        <Style x:Key="ModernComboBox" TargetType="ComboBox">
-            <Setter Property="Background" Value="#FFF7F9FC" />
-            <Setter Property="FontFamily" Value="Montserrat" />
-            <Setter Property="BorderBrush" Value="#FFE6EDF8" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="4,4" />
-            <Setter Property="Margin" Value="4" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="ItemContainerStyle">
-                <Setter.Value>
-                    <Style TargetType="ComboBoxItem">
-                        <Setter Property="Background" Value="White" />
-                        <Setter Property="Padding" Value="6" />
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FFEAF2FF" />
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#FFD6E4FF" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Setter.Value>
-            </Setter>
+    <!--  DatePicker style  -->
+    <Style x:Key="ModernDatePicker"
+           TargetType="DatePicker">
+      <Setter Property="Background"
+              Value="#FFF7F9FC" />
+      <Setter Property="BorderBrush"
+              Value="#FFE6EDF8" />
+      <Setter Property="BorderThickness"
+              Value="1" />
+      <Setter Property="Margin"
+              Value="4" />
+      <Setter Property="Padding"
+              Value="4" />
+    </Style>
 
-        </Style>
+    <!--  Style button function  -->
+    <Style x:Key="ModernActionButton"
+           TargetType="Button">
+      <Setter Property="Foreground"
+              Value="White" />
+      <Setter Property="FontWeight"
+              Value="SemiBold" />
+      <Setter Property="Padding"
+              Value="4,4" />
+      <Setter Property="Margin"
+              Value="4" />
+      <Setter Property="Cursor"
+              Value="Hand" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border Padding="{TemplateBinding Padding}"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="8">
+              <ContentPresenter HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+            </Border>
+            <ControlTemplate.Triggers>
+              <!--  Hover  -->
+              <Trigger Property="IsMouseOver"
+                       Value="True">
+                <Setter Property="Background"
+                        Value="Yellow" />
+                <Setter Property="Cursor"
+                        Value="Hand" />
+              </Trigger>
+              <!--  Click  -->
+              <Trigger Property="IsPressed"
+                       Value="True">
+                <Setter Property="Background"
+                        Value="Yellow" />
+                <Setter Property="Cursor"
+                        Value="Hand" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
 
+      <!--  Default background color  -->
+      <Setter Property="Background">
+        <Setter.Value>
+          <LinearGradientBrush StartPoint="0,0"
+                               EndPoint="1,1">
+            <GradientStop Offset="0"
+                          Color="#FF2196F3" />
+            <GradientStop Offset="1"
+                          Color="#FF1976D2" />
+          </LinearGradientBrush>
+        </Setter.Value>
+      </Setter>
+    </Style>
 
+    <!--  Button style  -->
+    <Style x:Key="PrimaryButton"
+           TargetType="Button">
+      <Setter Property="Background"
+              Value="{StaticResource PrimaryBrush}" />
+      <Setter Property="Foreground"
+              Value="White" />
+      <Setter Property="Padding"
+              Value="8,6" />
+      <Setter Property="Margin"
+              Value="6,0,0,0" />
+      <Setter Property="FontWeight"
+              Value="SemiBold" />
+      <Setter Property="BorderThickness"
+              Value="0" />
+      <Setter Property="Cursor"
+              Value="Hand" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border Padding="{TemplateBinding Padding}"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="6">
+              <ContentPresenter HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver"
+                       Value="True">
+                <Setter Property="Opacity"
+                        Value="0.92" />
+              </Trigger>
+              <Trigger Property="IsPressed"
+                       Value="True">
+                <Setter Property="Opacity"
+                        Value="0.85" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
 
-        <!--  DatePicker style  -->
-        <Style x:Key="ModernDatePicker" TargetType="DatePicker">
-            <Setter Property="Background" Value="#FFF7F9FC" />
-            <Setter Property="BorderBrush" Value="#FFE6EDF8" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Margin" Value="4" />
-            <Setter Property="Padding" Value="4" />
-        </Style>
+    <!--  Card header text style  -->
+    <Style x:Key="CardHeader"
+           TargetType="TextBlock">
+      <Setter Property="FontSize"
+              Value="15" />
+      <Setter Property="FontWeight"
+              Value="Bold" />
+      <Setter Property="Foreground"
+              Value="{StaticResource PrimaryBrush}" />
+    </Style>
 
-        <!--  Style button function  -->
-        <Style x:Key="ModernActionButton" TargetType="Button">
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Padding" Value="4,4" />
-            <Setter Property="Margin" Value="4" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border
-                            Padding="{TemplateBinding Padding}"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="8">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <!--  Hover  -->
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="Yellow" />
-                                <Setter Property="Cursor" Value="Hand" />
-                            </Trigger>
-                            <!--  Click  -->
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="Yellow" />
-                                <Setter Property="Cursor" Value="Hand" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+    <!--  DataGrid styling for modern look  -->
+    <Style x:Key="ModernDataGrid"
+           TargetType="DataGrid">
+      <Setter Property="RowBackground"
+              Value="#FFF" />
+      <Setter Property="AlternatingRowBackground"
+              Value="#FFF8FBFF" />
+      <Setter Property="GridLinesVisibility"
+              Value="None" />
+      <Setter Property="HeadersVisibility"
+              Value="Column" />
+      <Setter Property="ColumnHeaderHeight"
+              Value="40" />
+      <Setter Property="RowHeight"
+              Value="38" />
+      <Setter Property="Margin"
+              Value="8" />
+    </Style>
 
-            <!--  Default background color  -->
-            <Setter Property="Background">
-                <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Offset="0" Color="#FF2196F3" />
-                        <GradientStop Offset="1" Color="#FF1976D2" />
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-        </Style>
+    <!--Style for button pagination-->
+    <Style x:Key="PagingButtonStyle"
+           TargetType="Button">
+      <Setter Property="Background"
+              Value="#FF2B6BEA" />
+      <Setter Property="Foreground"
+              Value="White" />
+      <Setter Property="FontWeight"
+              Value="Bold" />
+      <Setter Property="Padding"
+              Value="8,8" />
+      <Setter Property="Margin"
+              Value="4" />
+      <Setter Property="FontSize"
+              Value="12" />
+      <Setter Property="Cursor"
+              Value="Hand" />
+      <Setter Property="BorderBrush"
+              Value="#FF1E5AA8" />
+      <Setter Property="BorderThickness"
+              Value="1" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="6">
+              <ContentPresenter HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Margin="{TemplateBinding Padding}" />
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver"
+                       Value="True">
+                <Setter Property="Background"
+                        Value="#FF1E5AA8" />
+              </Trigger>
+              <Trigger Property="IsPressed"
+                       Value="True">
+                <Setter Property="Background"
+                        Value="#FF164A90" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </UserControl.Resources>
 
+  <Grid Margin="4"
+        Background="#FFF2F5FB">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <!--  Button style  -->
-        <Style x:Key="PrimaryButton" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="Padding" Value="8,6" />
-            <Setter Property="Margin" Value="6,0,0,0" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border
-                            Padding="{TemplateBinding Padding}"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="6">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Opacity" Value="0.92" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Opacity" Value="0.85" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+    <!--  Main content: left form, right list  -->
+    <!--  NOTE: removed ColumnSpacing (not supported in WPF). spacing is handled with margins below.  -->
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <!--  Form input  -->
+        <ColumnDefinition Width="1.2*" />
+        <!--  List Table  -->
+        <ColumnDefinition Width="3*" />
 
-        <!--  Card header text style  -->
-        <Style x:Key="CardHeader" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="15" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}" />
-        </Style>
+      </Grid.ColumnDefinitions>
+      <!--  Left card: input form  -->
+      <Border Grid.Column="0"
+              Margin="0,0,12,0"
+              Padding="{StaticResource CardPadding}"
+              Background="{StaticResource SurfaceBrush}"
+              CornerRadius="{StaticResource CardCornerRadius}">
+        <StackPanel>
+          <TextBlock Margin="0,0,0,8"
+                     FontFamily="Montserrat"
+                     Style="{StaticResource CardHeader}"
+                     Text="Thông tin văn bản đến" />
 
-        <!--  DataGrid styling for modern look  -->
-        <Style x:Key="ModernDataGrid" TargetType="DataGrid">
-            <Setter Property="RowBackground" Value="#FFF" />
-            <Setter Property="AlternatingRowBackground" Value="#FFF8FBFF" />
-            <Setter Property="GridLinesVisibility" Value="None" />
-            <Setter Property="HeadersVisibility" Value="Column" />
-            <Setter Property="ColumnHeaderHeight" Value="40" />
-            <Setter Property="RowHeight" Value="38" />
-            <Setter Property="Margin" Value="8" />
-        </Style>
-
-        <!--Style for button pagination-->
-        <Style x:Key="PagingButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#FF2B6BEA" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Padding" Value="8,8" />
-            <Setter Property="Margin" Value="4" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="BorderBrush" Value="#FF1E5AA8" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border
-                             Background="{TemplateBinding Background}"
-                             BorderBrush="{TemplateBinding BorderBrush}"
-                             BorderThickness="{TemplateBinding BorderThickness}"
-                             CornerRadius="6">
-                            <ContentPresenter
-                                 HorizontalAlignment="Center"
-                                 VerticalAlignment="Center"
-                                 Margin="{TemplateBinding Padding}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FF1E5AA8" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#FF164A90" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>
-
-    <Grid Margin="4" Background="#FFF2F5FB">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-
-        <!--  Main content: left form, right list  -->
-        <!--  NOTE: removed ColumnSpacing (not supported in WPF). spacing is handled with margins below.  -->
-        <Grid Grid.Row="1">
+          <!--  Số đến  -->
+          <Grid Margin="0,4">
             <Grid.ColumnDefinitions>
-                <!--  Form input  -->
-                <ColumnDefinition Width="1.2*" />
-                <!--  List Table  -->
-                <ColumnDefinition Width="3*" />
-
+              <ColumnDefinition Width="100" />
+              <!--  Label  -->
+              <ColumnDefinition Width="*" />
+              <!--  Input  -->
             </Grid.ColumnDefinitions>
-            <!--  Left card: input form  -->
-            <Border
-                Grid.Column="0"
-                Margin="0,0,12,0"
-                Padding="{StaticResource CardPadding}"
-                Background="{StaticResource SurfaceBrush}"
-                CornerRadius="{StaticResource CardCornerRadius}">
-                <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,8"
-                        FontFamily="Montserrat"
-                        Style="{StaticResource CardHeader}"
-                        Text="Thông tin văn bản đến" />
 
-                    <!--  Số đến  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <!--  Label  -->
-                            <ColumnDefinition Width="*" />
-                            <!--  Input  -->
-                        </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="Số đến" />
 
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Số đến" />
+            <TextBox Grid.Column="1"
+                     Style="{StaticResource ModernTextBox}"
+                     Text="{Binding SelectedDocument.ArrivalNumber}" />
+          </Grid>
 
-                        <TextBox
-                            Grid.Column="1"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="{Binding SelectedDocument.ArrivalNumber}" />
-                    </Grid>
+          <!--  Ngày đến  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <!--  Label  -->
+              <ColumnDefinition Width="*" />
+              <!--  Input  -->
+            </Grid.ColumnDefinitions>
 
+            <TextBlock Grid.Column="0"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="Ngày đến" />
+            <DatePicker Grid.Column="1"
+                        SelectedDate="{Binding SelectedDocument.ArrivalDate}"
+                        Style="{StaticResource ModernDatePicker}">
+              <DatePicker.Resources>
+                <Style TargetType="DatePickerTextBox">
+                  <Setter Property="Template">
+                    <Setter.Value>
+                      <ControlTemplate TargetType="DatePickerTextBox">
+                        <Grid>
+                          <TextBlock Margin="4,0,0,0"
+                                     VerticalAlignment="Center"
+                                     Foreground="Gray"
+                                     IsHitTestVisible="False"
+                                     Text="Chọn ngày..."
+                                     Visibility="{Binding Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DatePickerTextBox}, Converter={StaticResource EmptyStringToVisibilityConverter}}" />
+                          <ScrollViewer x:Name="PART_ContentHost" />
+                        </Grid>
+                      </ControlTemplate>
+                    </Setter.Value>
+                  </Setter>
+                </Style>
+              </DatePicker.Resources>
+            </DatePicker>
+          </Grid>
 
-                    <!--  Ngày đến  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <!--  Label  -->
-                            <ColumnDefinition Width="*" />
-                            <!--  Input  -->
-                        </Grid.ColumnDefinitions>
+          <!--  Số/ Ký hiệu VB  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <!--  Label  -->
+              <ColumnDefinition Width="*" />
+              <!--  Input  -->
+            </Grid.ColumnDefinitions>
 
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Ngày đến" />
-                        <DatePicker
-                            Grid.Column="1"
-                            SelectedDate="{Binding SelectedDocument.ArrivalDate}"
-                            Style="{StaticResource ModernDatePicker}">
-                            <DatePicker.Resources>
-                                <Style TargetType="DatePickerTextBox">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="DatePickerTextBox">
-                                                <Grid>
-                                                    <TextBlock
-                                                        Margin="4,0,0,0"
-                                                        VerticalAlignment="Center"
-                                                        Foreground="Gray"
-                                                        IsHitTestVisible="False"
-                                                        Text="Chọn ngày..."
-                                                        Visibility="{Binding Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DatePickerTextBox}, Converter={StaticResource EmptyStringToVisibilityConverter}}" />
-                                                    <ScrollViewer x:Name="PART_ContentHost" />
-                                                </Grid>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </DatePicker.Resources>
-                        </DatePicker>
-                    </Grid>
+            <TextBlock Grid.Column="0"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="Số/ Ký hiệu" />
 
+            <TextBox Grid.Column="1"
+                     Style="{StaticResource ModernTextBox}"
+                     Text="{Binding SelectedDocument.DocumentNumber}" />
+          </Grid>
 
-                    <!--  Số/ Ký hiệu VB  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <!--  Label  -->
-                            <ColumnDefinition Width="*" />
-                            <!--  Input  -->
-                        </Grid.ColumnDefinitions>
+          <!--  Ngày Văn bản  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <!--  Label  -->
+              <ColumnDefinition Width="*" />
+              <!--  Input  -->
+            </Grid.ColumnDefinitions>
 
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Số/ Ký hiệu" />
+            <TextBlock Grid.Column="0"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="Ngày văn bản" />
+            <DatePicker Grid.Column="1"
+                        SelectedDate="{Binding SelectedDocument.DocumentDate}"
+                        Style="{StaticResource ModernDatePicker}">
+              <DatePicker.Resources>
+                <Style TargetType="DatePickerTextBox">
+                  <Setter Property="Template">
+                    <Setter.Value>
+                      <ControlTemplate TargetType="DatePickerTextBox">
+                        <Grid>
+                          <TextBlock Margin="4,0,0,0"
+                                     VerticalAlignment="Center"
+                                     Foreground="Gray"
+                                     IsHitTestVisible="False"
+                                     Text="Chọn ngày..."
+                                     Visibility="{Binding Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DatePickerTextBox}, Converter={StaticResource EmptyStringToVisibilityConverter}}" />
+                          <ScrollViewer x:Name="PART_ContentHost" />
+                        </Grid>
+                      </ControlTemplate>
+                    </Setter.Value>
+                  </Setter>
+                </Style>
+              </DatePicker.Resources>
+            </DatePicker>
 
+          </Grid>
 
-                        <TextBox
-                            Grid.Column="1"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="{Binding SelectedDocument.DocumentNumber}" />
-                    </Grid>
+          <!--  Độ mật  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="51*" />
+              <ColumnDefinition Width="259*" />
+            </Grid.ColumnDefinitions>
 
-                    <!--  Ngày Văn bản  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <!--  Label  -->
-                            <ColumnDefinition Width="*" />
-                            <!--  Input  -->
-                        </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="Độ mật" />
 
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Ngày văn bản" />
-                        <DatePicker
-                            Grid.Column="1"
-                            SelectedDate="{Binding SelectedDocument.DocumentDate}"
-                            Style="{StaticResource ModernDatePicker}">
-                            <DatePicker.Resources>
-                                <Style TargetType="DatePickerTextBox">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="DatePickerTextBox">
-                                                <Grid>
-                                                    <TextBlock
-                                                        Margin="4,0,0,0"
-                                                        VerticalAlignment="Center"
-                                                        Foreground="Gray"
-                                                        IsHitTestVisible="False"
-                                                        Text="Chọn ngày..."
-                                                        Visibility="{Binding Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DatePickerTextBox}, Converter={StaticResource EmptyStringToVisibilityConverter}}" />
-                                                    <ScrollViewer x:Name="PART_ContentHost" />
-                                                </Grid>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </DatePicker.Resources>
-                        </DatePicker>
+            <ComboBox Grid.Column="1"
+                      Grid.ColumnSpan="2"
+                      Margin="4,4,4,4"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding SecurityLevel}"
+                      SelectedValue="{Binding SelectedDocument.SecurityLevel, Mode=TwoWay}"
+                      SelectedValuePath="Name"
+                      Style="{StaticResource ModernComboBox}" />
+          </Grid>
 
-                    </Grid>
+          <!--  Loại văn bản  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <!--  Label  -->
+              <ColumnDefinition Width="*" />
+              <!--  Input  -->
+            </Grid.ColumnDefinitions>
 
-                    <!--  Độ mật  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="51*" />
-                            <ColumnDefinition Width="259*" />
-                        </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="Loại VB" />
 
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Độ mật" />
+            <ComboBox Grid.Column="1"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding DocumentTypes}"
+                      SelectedValue="{Binding SelectedDocument.DocumentType, Mode=TwoWay}"
+                      SelectedValuePath="Name"
+                      Style="{StaticResource ModernComboBox}" />
 
-                        <ComboBox
-                            Grid.Column="1"
-                            Grid.ColumnSpan="2"
-                            Margin="4,4,4,4"
-                            DisplayMemberPath="Name"
-                            ItemsSource="{Binding SecurityLevel}"
-                            SelectedValue="{Binding SelectedDocument.SecurityLevel, Mode=TwoWay}"
-                            SelectedValuePath="Name"
-                            Style="{StaticResource ModernComboBox}" />
-                    </Grid>
+          </Grid>
 
-                    <!--  Loại văn bản  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <!--  Label  -->
-                            <ColumnDefinition Width="*" />
-                            <!--  Input  -->
-                        </Grid.ColumnDefinitions>
+          <!--  Nội dung  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Loại VB" />
+            <TextBlock Grid.Column="0"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Top"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="Nội dung" />
 
+            <TextBox Grid.Column="1"
+                     AcceptsReturn="True"
+                     MinLines="3"
+                     MaxLines="4"
+                     Style="{StaticResource ModernTextBox}"
+                     Text="{Binding SelectedDocument.Summary}"
+                     TextWrapping="Wrap" />
+          </Grid>
 
-                        <ComboBox
-                            Grid.Column="1"
-                            DisplayMemberPath="Name"
-                            ItemsSource="{Binding DocumentTypes}"
-                            SelectedValue="{Binding SelectedDocument.DocumentType, Mode=TwoWay}"
-                            SelectedValuePath="Name"
-                            Style="{StaticResource ModernComboBox}" />
+          <!--  Cán bộ xử lý  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="Cán bộ xử lý" />
+            <ComboBox Grid.Column="1"
+                      DisplayMemberPath="FullName"
+                      ItemsSource="{Binding StaffList}"
+                      SelectedItem="{Binding SelectedDocument.ConstructionStaff, Mode=TwoWay}"
+                      Style="{StaticResource ModernComboBox}" />
 
+          </Grid>
 
-                    </Grid>
+          <!--  Cán bộ tiếp nhận  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="Cán bộ tiếp nhận" />
+            <ComboBox Grid.Column="1"
+                      DisplayMemberPath="FullName"
+                      ItemsSource="{Binding StaffReceivingOfficerList}"
+                      SelectedItem="{Binding SelectedDocument.ReceivingOfficer, Mode=TwoWay}"
+                      Style="{StaticResource ModernComboBox}" />
 
-                    <!--  Nội dung  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+          </Grid>
 
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Top"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Nội dung" />
+          <!--  Nơi gửi  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-                        <TextBox
-                            Grid.Column="1"
-                            AcceptsReturn="True"
-                            MinLines="3"
-                            MaxLines="4"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="{Binding SelectedDocument.Summary}"
-                            TextWrapping="Wrap" />
-                    </Grid>
+            <TextBlock Grid.Column="0"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="Nơi gửi" />
 
-                    <!--  Nơi gửi  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Nơi gửi" />
-
-                        <TextBox
-                            Grid.Column="1"
-                            Style="{StaticResource ModernTextBox}"
-                            Text="{Binding SelectedDocument.Sender}" />
-                    </Grid>
+            <TextBox Grid.Column="1"
+                     Style="{StaticResource ModernTextBox}"
+                     Text="{Binding SelectedDocument.Sender}" />
+          </Grid>
 
           <!-- Người ký -->
           <Grid Margin="0,4">
@@ -565,529 +676,544 @@
           </Grid>
 
           <!--  Nơi nhận  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Nơi nhận" />
+            <TextBlock Grid.Column="0"
+                       Margin="0,0,8,0"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="Nơi nhận" />
 
-                        <ComboBox
-                            Grid.Column="1"
-                            DisplayMemberPath="Name"
-                            ItemsSource="{Binding RecipientList}"
-                            SelectedItem="{Binding SelectedDocument.Recipient, Mode=TwoWay}"
-                            Style="{StaticResource ModernComboBox}" />
+            <ComboBox Grid.Column="1"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding RecipientList}"
+                      SelectedItem="{Binding SelectedDocument.Recipient, Mode=TwoWay}"
+                      Style="{StaticResource ModernComboBox}" />
 
+          </Grid>
 
+          <!--  Người ký  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+          </Grid>
+          <!--  Chức vụ  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-                    </Grid>
-                    
-                    <!--  Cán bộ tiếp nhận  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                           Grid.Column="0"
-                           Margin="0,0,8,0"
-                           VerticalAlignment="Center"
-                           FontSize="12"
-                           Foreground="{StaticResource MutedTextBrush}"
-                           Text="Cán bộ tiếp nhận" />
-                        <ComboBox
-                            Grid.Column="1"
-                            DisplayMemberPath="FullName"
-                            ItemsSource="{Binding StaffReceivingOfficerList}"
-                            SelectedItem="{Binding SelectedDocument.ReceivingOfficer, Mode=TwoWay}"
-                            Style="{StaticResource ModernComboBox}" />
+          </Grid>
 
-                    </Grid>
+          <!--  Người nhận  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+          </Grid>
 
-                    <!--  Cán bộ xử lý  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedTextBrush}"
-                            Text="Cán bộ xử lý" />
-                        <ComboBox
-                            Grid.Column="1"
-                            Margin="4"
-                            DisplayMemberPath="FullName"
-                            ItemsSource="{Binding StaffList}"
-                            SelectedItem="{Binding SelectedDocument.ConstructionStaff, Mode=TwoWay}"
-                            Style="{StaticResource ModernComboBox}" />
-                    </Grid>
+          <!--  Người xử lý  -->
+          <Grid Margin="0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+          </Grid>
 
-                    <!--  Người ký  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                    <!--  Chức vụ  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+          <!--  Button Save  -->
+          <Button Command="{Binding SaveCommand}"
+                  Content="Lưu"
+                  Style="{StaticResource PrimaryButton}" />
+        </StackPanel>
+      </Border>
 
+      <!--  Right card: list  -->
+      <Border Grid.Column="1"
+              Padding="{StaticResource CardPadding}"
+              Background="{StaticResource SurfaceBrush}"
+              CornerRadius="{StaticResource CardCornerRadius}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource CardHeader}"
+                     Text="Danh sách văn bản đến" />
 
-                    </Grid>
+          <!--  Quick filter and search row  -->
+          <DockPanel Margin="0,0,0,8">
+            <!--  Search box with watermark implemented (PlaceholderText not available in WPF)  -->
+            <Grid Margin="0,4"
+                  DockPanel.Dock="Right">
+              <TextBox x:Name="SearchBox"
+                       VerticalContentAlignment="Center"
+                       Style="{StaticResource ModernTextBox}"
+                       Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}" />
+              <TextBlock Margin="12,0,0,0"
+                         VerticalAlignment="Center"
+                         Foreground="{StaticResource MutedTextBrush}"
+                         IsHitTestVisible="False"
+                         Text="Tìm kiếm theo Số đến, Người gửi...">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="Visibility"
+                            Value="Collapsed" />
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding Text, ElementName=SearchBox}"
+                                   Value="">
+                        <Setter Property="Visibility"
+                                Value="Visible" />
+                      </DataTrigger>
+                      <DataTrigger Binding="{Binding Text, ElementName=SearchBox}"
+                                   Value="{x:Null}">
+                        <Setter Property="Visibility"
+                                Value="Visible" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+            </Grid>
 
-                    <!--  Người nhận  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                    </Grid>
+          </DockPanel>
+          <DataGrid x:Name="IncomingDocsDataGrid"
+                    Height="450"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    EnableRowVirtualization="True"
+                    FontFamily="Montserrat"
+                    HorizontalScrollBarVisibility="Visible"
+                    IsReadOnly="False"
+                    Margin="0,0,0,8"
+                    ItemsSource="{Binding PagedDocs}"
+                    ScrollViewer.CanContentScroll="False"
+                    SelectedItem="{Binding SelectedDocument, Mode=TwoWay}"
+                    SelectionMode="Extended"
+                    VerticalScrollBarVisibility="Auto">
+            <DataGrid.Resources>
+              <Style TargetType="{x:Type DataGridColumnHeader}">
+                <Setter Property="FontWeight"
+                        Value="Bold" />
+                <Setter Property="FontFamily"
+                        Value="Montserrat" />
+                <Setter Property="FontSize"
+                        Value="13" />
+                <Setter Property="HorizontalContentAlignment"
+                        Value="Center" />
+              </Style>
+            </DataGrid.Resources>
+            <DataGrid.Style>
+              <StaticResource ResourceKey="ModernDataGrid" />
+            </DataGrid.Style>
+            <DataGrid.Columns>
+              <!--  ID  -->
+              <DataGridTextColumn Width="30"
+                                  Binding="{Binding Id}"
+                                  Header="ID">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
-                    <!--  Người xử lý  -->
-                    <Grid Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                    </Grid>
+              <!--  Số đến  -->
+              <DataGridTextColumn Width="120"
+                                  Binding="{Binding ArrivalNumber}"
+                                  Header="Số đến">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
-                    
+              <!--  Ngày đến  -->
+              <DataGridTextColumn Width="110"
+                                  Binding="{Binding ArrivalDate, StringFormat=\{0:dd/MM/yyyy\}}"
+                                  Header="Ngày đến">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
-                    <!--  Button Save  -->
-                    <Button
-                        Command="{Binding SaveCommand}"
-                        Content="Lưu"
-                        Style="{StaticResource PrimaryButton}" />
-                </StackPanel>
-            </Border>
+              <!--  Số/ Ký hiệu  -->
+              <DataGridTextColumn Width="120"
+                                  Binding="{Binding DocumentNumber}"
+                                  Header="Số/ Ký hiệu">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
+              <!--  Ngày văn bản  -->
+              <DataGridTextColumn Width="110"
+                                  Binding="{Binding DocumentDate, StringFormat=\{0:dd/MM/yyyy\}}"
+                                  Header="Ngày văn bản">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
+              <!--  Độ mật  -->
+              <DataGridTextColumn Width="100"
+                                  Binding="{Binding SecurityLevel}"
+                                  Header="Độ mật">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
+              <!--  Loại văn bản  -->
+              <DataGridTextColumn Width="120"
+                                  Binding="{Binding DocumentType}"
+                                  Header="Loại văn bản">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
-            <!--  Right card: list  -->
-            <Border
-                Grid.Column="1"
-                Padding="{StaticResource CardPadding}"
-                Background="{StaticResource SurfaceBrush}"
-                CornerRadius="{StaticResource CardCornerRadius}">
-                <StackPanel>
-                    <TextBlock Style="{StaticResource CardHeader}" Text="Danh sách văn bản đến" />
-
-                    <!--  Quick filter and search row  -->
-                    <DockPanel Margin="0,0,0,8">
-                        <!--  Search box with watermark implemented (PlaceholderText not available in WPF)  -->
-                        <Grid Margin="0,4" DockPanel.Dock="Right">
-                            <TextBox
-                                x:Name="SearchBox"
-                                VerticalContentAlignment="Center"
-                                Style="{StaticResource ModernTextBox}"
-                                Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}" />
-                            <TextBlock
-                                Margin="12,0,0,0"
-                                VerticalAlignment="Center"
-                                Foreground="{StaticResource MutedTextBrush}"
-                                IsHitTestVisible="False"
-                                Text="Tìm kiếm theo Số đến, Người gửi...">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Grid>
-
-                    </DockPanel>
-                    <DataGrid
-                        x:Name="IncomingDocsDataGrid"
-                        Height="450"
-                        AutoGenerateColumns="False"
-                        CanUserAddRows="False"
-                        EnableRowVirtualization="True"
-                        FontFamily="Montserrat"
-                        HorizontalScrollBarVisibility="Visible"
-                        IsReadOnly="False"
-                        ItemsSource="{Binding PagedDocs}"
-                        ScrollViewer.CanContentScroll="False"
-                        SelectedItem="{Binding SelectedDocument, Mode=TwoWay}"
-                        SelectionMode="Extended"
-                        VerticalScrollBarVisibility="Auto">
-                        <DataGrid.Resources>
-                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                <Setter Property="FontWeight" Value="Bold" />
-                                <Setter Property="FontFamily" Value="Montserrat" />
-                                <Setter Property="FontSize" Value="13" />
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            </Style>
-                        </DataGrid.Resources>
-                        <DataGrid.Style>
-                            <StaticResource ResourceKey="ModernDataGrid" />
-                        </DataGrid.Style>
-                        <DataGrid.Columns>
-                            <!--  ID  -->
-                            <DataGridTextColumn
-                                Width="30"
-                                Binding="{Binding Id}"
-                                Header="ID">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
-
-                            <!--  Số đến  -->
-                            <DataGridTextColumn
-                                Width="120"
-                                Binding="{Binding DocumentNumber}"
-                                Header="Số đến">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
-
-                            <!--  Ngày đến  -->
-                            <DataGridTextColumn
-                                Width="110"
-                                Binding="{Binding ArrivalDate, StringFormat=\{0:dd/MM/yyyy\}}"
-                                Header="Ngày đến">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
-
-                            <!--  Số/ Ký hiệu  -->
-                            <DataGridTextColumn
-                                Width="120"
-                                Binding="{Binding DocumentNumber}"
-                                Header="Số/ Ký hiệu">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
-
-                            <!--  Ngày văn bản  -->
-                            <DataGridTextColumn
-                                Width="110"
-                                Binding="{Binding DocumentDate, StringFormat=\{0:dd/MM/yyyy\}}"
-                                Header="Ngày văn bản">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
-
-                            <!--  Độ mật  -->
-                            <DataGridTextColumn
-                                Width="100"
-                                Binding="{Binding SecurityLevel}"
-                                Header="Độ mật">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
-
-                            <!--  Loại văn bản  -->
-                            <DataGridTextColumn
-                                Width="120"
-                                Binding="{Binding DocumentType}"
-                                Header="Loại văn bản">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
-
-                            <!--  Nội dung  -->
-                            <DataGridTextColumn
-                                  Width="300"
+              <!--  Nội dung  -->
+              <DataGridTextColumn Width="300"
                                   Binding="{Binding Summary}"
                                   Header="Nội dung">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
-                            <!--  Nơi gửi  -->
-                            <DataGridTextColumn
-                                Width="120"
-                                Binding="{Binding Sender}"
-                                Header="Nơi gửi">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
+              <!--  Nơi gửi  -->
+              <DataGridTextColumn Width="120"
+                                  Binding="{Binding Sender}"
+                                  Header="Nơi gửi">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
-                            <!--  Người ký  -->
-                            <DataGridTextColumn
-                                Width="150"
-                                Binding="{Binding Signer.FullName}"
-                                Header="Người ký">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
+              <!--  Người ký  -->
+              <DataGridTextColumn Width="150"
+                                  Binding="{Binding Signer.FullName}"
+                                  Header="Người ký">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
-                            <!--  Chức vụ  -->
-                            <DataGridTextColumn
-                                Width="120"
-                                Binding="{Binding Signer.Position}"
-                                Header="Chức vụ">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="TextBox">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
+              <!--  Chức vụ  -->
+              <DataGridTextColumn Width="120"
+                                  Binding="{Binding Signer.Position}"
+                                  Header="Chức vụ">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="TextBox">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
-                            <!--  Nơi nhận  -->
-                            <DataGridTextColumn
-                                Width="150"
-                                Binding="{Binding Recipient.Name}"
-                                Header="Nơi nhận">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
+              <!--  Nơi nhận  -->
+              <DataGridTextColumn Width="150"
+                                  Binding="{Binding Recipient.Name}"
+                                  Header="Nơi nhận">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+                <DataGridTextColumn.EditingElementStyle>
+                  <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.EditingElementStyle>
+              </DataGridTextColumn>
 
-                            <!--  Cán bộ tiếp nhận  -->
-                            <DataGridTextColumn
-                                  Width="150"
+              <!--  Cán bộ tiếp nhận  -->
+              <DataGridTextColumn Width="150"
                                   Binding="{Binding ReceivingOfficer.FullName}"
                                   Header="Cán bộ tiếp nhận">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
 
-                            <!--  Cán bộ xử lý  -->
-                            <DataGridTextColumn
-                                Width="150"
-                                Binding="{Binding ConstructionStaff.FullName}"
-                                Header="Cán bộ xử lý">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+              <!--  Cán bộ xử lý  -->
+              <DataGridTextColumn Width="150"
+                                  Binding="{Binding ConstructionStaff.FullName}"
+                                  Header="Cán bộ xử lý">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
 
-
-                            <!--  Button function  -->
-                            <DataGridTemplateColumn Width="100" Header="Thao tác">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                            <!--  Button edit  -->
-                                            <Button
-                                                Margin="2"
-                                                Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
-                                                CommandParameter="{Binding}"
-                                                Style="{StaticResource ModernActionButton}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <fa:ImageAwesome
-                                                        Width="14"
-                                                        Height="14"
-                                                        Foreground="White"
-                                                        Icon="Edit" />
-                                                    <TextBlock VerticalAlignment="Center" />
-                                                </StackPanel>
-                                            </Button>
-
-                                            <!--  Button delete  -->
-                                            <Button
-                                                Margin="2"
-                                                Background="Red"
-                                                Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
-                                                CommandParameter="{Binding}"
-                                                Style="{StaticResource ModernActionButton}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <fa:ImageAwesome
-                                                        Width="14"
-                                                        Height="14"
-                                                        Foreground="White"
-                                                        Icon="Trash" />
-                                                    <TextBlock VerticalAlignment="Center" />
-                                                </StackPanel>
-                                            </Button>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-
-                    </DataGrid>
-
-                    <!--Pagination datagrid-->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                        <!-- Go first page -->
-                        <Button Command="{Binding GoToFirstPageCommand}" Style="{StaticResource PagingButtonStyle}">
-                            <fa:ImageAwesome Icon="StepBackward" Width="16" Height="16" Foreground="White"/>
-                        </Button>
-
-                        <!-- Prev page -->
-                        <Button Command="{Binding PrevPageCommand}" Style="{StaticResource PagingButtonStyle}">
-                            <fa:ImageAwesome Icon="ChevronLeft" Width="16" Height="16" Foreground="White"/>
-                        </Button>
-
-                        <!-- Show page number -->
-                        <TextBlock Text="{Binding CurrentPage}" Margin="10,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" />
-                        <TextBlock Text="/" Margin="2,0" VerticalAlignment="Center" FontSize="14" />
-                        <TextBlock Text="{Binding TotalPages}" Margin="2,0" VerticalAlignment="Center" FontSize="14" />
-
-                        <!-- Next page -->
-                        <Button Command="{Binding NextPageCommand}" Style="{StaticResource PagingButtonStyle}">
-                            <fa:ImageAwesome Icon="ChevronRight" Width="16" Height="16" Foreground="White"/>
-                        </Button>
-
-                        <!-- Last page -->
-                        <Button Command="{Binding GoToLastPageCommand}" Style="{StaticResource PagingButtonStyle}">
-                            <fa:ImageAwesome Icon="StepForward" Width="16" Height="16" Foreground="White"/>
-                        </Button>
-                    </StackPanel>
-                    
-                    <Button Command="{Binding ExportExcelCommand}" Style="{StaticResource ExportButtonStyle}">
+              <!--  Button function  -->
+              <DataGridTemplateColumn Width="100"
+                                      Header="Thao tác">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <StackPanel HorizontalAlignment="Center"
+                                Orientation="Horizontal">
+                      <!--  Button edit  -->
+                      <Button Margin="2"
+                              Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                              CommandParameter="{Binding}"
+                              Style="{StaticResource ModernActionButton}">
                         <StackPanel Orientation="Horizontal">
-                            <!--  Icon FontAwesome  -->
-                            <fa:FontAwesome
-                                Margin="0,0,6,0"
-                                FontSize="14"
-                                Icon="Download" />
-                            <!--  Text  -->
-                            <TextBlock Text="Xuất Excel" />
+                          <fa:ImageAwesome Width="14"
+                                           Height="14"
+                                           Foreground="White"
+                                           Icon="Edit" />
+                          <TextBlock VerticalAlignment="Center" />
                         </StackPanel>
-                    </Button>
+                      </Button>
 
-                </StackPanel>
-            </Border>
-        </Grid>
+                      <!--  Button delete  -->
+                      <Button Margin="2"
+                              Background="Red"
+                              Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                              CommandParameter="{Binding}"
+                              Style="{StaticResource ModernActionButton}">
+                        <StackPanel Orientation="Horizontal">
+                          <fa:ImageAwesome Width="14"
+                                           Height="14"
+                                           Foreground="White"
+                                           Icon="Trash" />
+                          <TextBlock VerticalAlignment="Center" />
+                        </StackPanel>
+                      </Button>
+                    </StackPanel>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+            </DataGrid.Columns>
+
+          </DataGrid>
+
+          <!--Pagination datagrid-->
+          <StackPanel Orientation="Horizontal"
+                      HorizontalAlignment="Center"
+                      Margin="10">
+            <!-- Go first page -->
+            <Button Command="{Binding GoToFirstPageCommand}"
+                    Style="{StaticResource PagingButtonStyle}">
+              <fa:ImageAwesome Icon="StepBackward"
+                               Width="16"
+                               Height="16"
+                               Foreground="White" />
+            </Button>
+
+            <!-- Prev page -->
+            <Button Command="{Binding PrevPageCommand}"
+                    Style="{StaticResource PagingButtonStyle}">
+              <fa:ImageAwesome Icon="ChevronLeft"
+                               Width="16"
+                               Height="16"
+                               Foreground="White" />
+            </Button>
+
+            <!-- Show page number -->
+            <TextBlock Text="{Binding CurrentPage}"
+                       Margin="10,0"
+                       VerticalAlignment="Center"
+                       FontWeight="Bold"
+                       FontSize="14" />
+            <TextBlock Text="/"
+                       Margin="2,0"
+                       VerticalAlignment="Center"
+                       FontSize="14" />
+            <TextBlock Text="{Binding TotalPages}"
+                       Margin="2,0"
+                       VerticalAlignment="Center"
+                       FontSize="14" />
+
+            <!-- Next page -->
+            <Button Command="{Binding NextPageCommand}"
+                    Style="{StaticResource PagingButtonStyle}">
+              <fa:ImageAwesome Icon="ChevronRight"
+                               Width="16"
+                               Height="16"
+                               Foreground="White" />
+            </Button>
+
+            <!-- Last page -->
+            <Button Command="{Binding GoToLastPageCommand}"
+                    Style="{StaticResource PagingButtonStyle}">
+              <fa:ImageAwesome Icon="StepForward"
+                               Width="16"
+                               Height="16"
+                               Foreground="White" />
+            </Button>
+          </StackPanel>
+
+          <Button Command="{Binding ExportExcelCommand}"
+                  Style="{StaticResource ExportButtonStyle}">
+            <StackPanel Orientation="Horizontal">
+              <!--  Icon FontAwesome  -->
+              <fa:FontAwesome Margin="0,0,6,0"
+                              FontSize="14"
+                              Icon="Download" />
+              <!--  Text  -->
+              <TextBlock Text="Xuất Excel" />
+            </StackPanel>
+          </Button>
+
+        </StackPanel>
+      </Border>
     </Grid>
+  </Grid>
 </UserControl>

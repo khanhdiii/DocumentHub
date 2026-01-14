@@ -1,10 +1,13 @@
-﻿using DocumentHub.Model;
-using DocumentHub.ViewModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+
+using DocumentHub.Components;
+using DocumentHub.FrontEnd;
+using DocumentHub.Model;
+using DocumentHub.ViewModel;
 
 namespace Frontend.Views
 {
@@ -38,10 +41,12 @@ namespace Frontend.Views
             foreach (var monthContainer in QuarterItemsControl.Items)
             {
                 var monthItem = QuarterItemsControl.ItemContainerGenerator.ContainerFromItem(monthContainer) as FrameworkElement;
-                if (monthItem == null) continue;
+                if (monthItem == null)
+                    continue;
 
                 var itemsControl = FindVisualChild<ItemsControl>(monthItem);
-                if (itemsControl == null) continue;
+                if (itemsControl == null)
+                    continue;
 
                 foreach (var dayContainer in itemsControl.Items)
                 {
@@ -58,7 +63,8 @@ namespace Frontend.Views
         // Function find Child
         private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
         {
-            if (parent == null) return null;
+            if (parent == null)
+                return null;
 
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
             {
@@ -72,5 +78,8 @@ namespace Frontend.Views
             }
             return null;
         }
+
+       
+
     }
 }

@@ -169,6 +169,55 @@
       </Setter>
     </Style>
 
+    <!--Style for button pagination-->
+    <Style x:Key="PagingButtonStyle"
+           TargetType="Button">
+      <Setter Property="Background"
+              Value="#FF2B6BEA" />
+      <Setter Property="Foreground"
+              Value="White" />
+      <Setter Property="FontWeight"
+              Value="Bold" />
+      <Setter Property="Padding"
+              Value="8,8" />
+      <Setter Property="Margin"
+              Value="4" />
+      <Setter Property="FontSize"
+              Value="12" />
+      <Setter Property="Cursor"
+              Value="Hand" />
+      <Setter Property="BorderBrush"
+              Value="#FF1E5AA8" />
+      <Setter Property="BorderThickness"
+              Value="1" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="6">
+              <ContentPresenter HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Margin="{TemplateBinding Padding}" />
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver"
+                       Value="True">
+                <Setter Property="Background"
+                        Value="#FF1E5AA8" />
+              </Trigger>
+              <Trigger Property="IsPressed"
+                       Value="True">
+                <Setter Property="Background"
+                        Value="#FF164A90" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
     <!--  Card header text style  -->
     <Style x:Key="CardHeader"
            TargetType="TextBlock">
@@ -265,40 +314,39 @@
                      Text="Danh sách cán bộ " />
 
           <!--  Search  -->
-          <DockPanel Margin="0,0,0,8">
-            <Grid Margin="0,4"
-                  DockPanel.Dock="Right">
-              <TextBox x:Name="SearchBox"
-                       VerticalContentAlignment="Center"
-                       Style="{StaticResource ModernTextBox}"
-                       Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}" />
-              <TextBlock Margin="12,0,0,0"
-                         VerticalAlignment="Center"
-                         Foreground="{StaticResource MutedTextBrush}"
-                         IsHitTestVisible="False"
-                         Text="Tìm kiếm theo tên cán bộ,...">
-                <TextBlock.Style>
-                  <Style TargetType="TextBlock">
-                    <Setter Property="Visibility"
-                            Value="Collapsed" />
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding Text, ElementName=SearchBox}"
-                                   Value="">
-                        <Setter Property="Visibility"
-                                Value="Visible" />
-                      </DataTrigger>
-                      <DataTrigger Binding="{Binding Text, ElementName=SearchBox}"
-                                   Value="{x:Null}">
-                        <Setter Property="Visibility"
-                                Value="Visible" />
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </TextBlock.Style>
-              </TextBlock>
-            </Grid>
-          </DockPanel>
+          <Grid>
+            <!-- TextBox tìm kiếm -->
+            <TextBox x:Name="SearchBox"
+                     Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource ModernTextBox}"
+                     Margin="0,0,0,10" />
 
+            <!-- Placeholder -->
+            <TextBlock Margin="12,0,0,0"
+                       VerticalAlignment="Center"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       IsHitTestVisible="False"
+                       Text="Tìm kiếm theo Tên công việc, Ngày...">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Visibility"
+                          Value="Collapsed" />
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Text, ElementName=SearchBox}"
+                                 Value="">
+                      <Setter Property="Visibility"
+                              Value="Visible" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Text, ElementName=SearchBox}"
+                                 Value="{x:Null}">
+                      <Setter Property="Visibility"
+                              Value="Visible" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </Grid>
           <!--  DataGrid  -->
           <DataGrid x:Name="PeopleDataGrid"
                     AutoGenerateColumns="False"
@@ -307,7 +355,7 @@
                     FontFamily="Montserrat"
                     HorizontalScrollBarVisibility="Visible"
                     IsReadOnly="False"
-                    ItemsSource="{Binding StaffList}"
+                    ItemsSource="{Binding FilteredStaffList}"
                     SelectedItem="{Binding SelectedStaff, Mode=TwoWay}"
                     ScrollViewer.CanContentScroll="False"
                     SelectionMode="Extended"
@@ -410,6 +458,61 @@
               </DataGridTemplateColumn>
             </DataGrid.Columns>
           </DataGrid>
+          <!--Pagination datagrid-->
+          <StackPanel Orientation="Horizontal"
+                      HorizontalAlignment="Center"
+                      Margin="10">
+            <!-- Go first page -->
+            <Button Command="{Binding GoToFirstPageCommand}"
+                    Style="{StaticResource PagingButtonStyle}">
+              <fa:ImageAwesome Icon="StepBackward"
+                               Width="16"
+                               Height="16"
+                               Foreground="White" />
+            </Button>
+
+            <!-- Prev page -->
+            <Button Command="{Binding PreviousPageCommand}"
+                    Style="{StaticResource PagingButtonStyle}">
+              <fa:ImageAwesome Icon="ChevronLeft"
+                               Width="16"
+                               Height="16"
+                               Foreground="White" />
+            </Button>
+
+            <!-- Show page number -->
+            <TextBlock Text="{Binding CurrentPage}"
+                       Margin="10,0"
+                       VerticalAlignment="Center"
+                       FontWeight="Bold"
+                       FontSize="14" />
+            <TextBlock Text="/"
+                       Margin="2,0"
+                       VerticalAlignment="Center"
+                       FontSize="14" />
+            <TextBlock Text="{Binding TotalPages}"
+                       Margin="2,0"
+                       VerticalAlignment="Center"
+                       FontSize="14" />
+
+            <!-- Next page -->
+            <Button Command="{Binding NextPageCommand}"
+                    Style="{StaticResource PagingButtonStyle}">
+              <fa:ImageAwesome Icon="ChevronRight"
+                               Width="16"
+                               Height="16"
+                               Foreground="White" />
+            </Button>
+
+            <!-- Last page -->
+            <Button Command="{Binding GoToLastPageCommand}"
+                    Style="{StaticResource PagingButtonStyle}">
+              <fa:ImageAwesome Icon="StepForward"
+                               Width="16"
+                               Height="16"
+                               Foreground="White" />
+            </Button>
+          </StackPanel>
         </StackPanel>
       </Border>
     </Grid>
