@@ -61,7 +61,7 @@ namespace DocumentHub.Helpers
             var cred = db.UserCredentials.FirstOrDefault();
             if (cred == null)
             {
-                message = "❌ Không tìm thấy thông tin người dùng!";
+                message = "Không tìm thấy thông tin người dùng!";
                 return false;
             }
 
@@ -69,7 +69,7 @@ namespace DocumentHub.Helpers
                       cred.SecurityAnswer2 == answer2 &&
                       cred.SecondaryPassword == secondaryPassword;
 
-            message = ok ? "✅ Xác minh thành công!" : "❌ Xác minh thất bại!";
+            message = ok ? "Xác minh thành công!" : "Xác minh thất bại!";
             return ok;
         }
 
@@ -79,14 +79,14 @@ namespace DocumentHub.Helpers
             var cred = db.UserCredentials.FirstOrDefault();
             if (cred == null)
             {
-                message = "❌ Không tìm thấy thông tin người dùng!";
+                message = "Không tìm thấy thông tin người dùng!";
                 return false;
             }
 
             cred.PIN = newPin;
             cred.LastUpdated = DateTime.Now;
             db.SaveChanges();
-            message = "✅ Reset PIN thành công!";
+            message = "Reset PIN thành công!";
             return true;
         }
     }
