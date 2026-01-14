@@ -3,6 +3,7 @@ using System;
 using DocumentHub.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DocumentHub.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260112002313_AddIs11MonthToWorkProgress")]
+    partial class AddIs11MonthToWorkProgress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
@@ -289,25 +292,6 @@ namespace DocumentHub.Migrations
                     b.ToTable("WorkProgressMonths");
                 });
 
-            modelBuilder.Entity("DocumentHub.Model.WorkProgressQuater", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Quarter")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("WorkProgressId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WorkProgressId");
-
-                    b.ToTable("WorkProgressQuaters");
-                });
-
             modelBuilder.Entity("DocumentHub.Model.WorkProgressYear", b =>
                 {
                     b.Property<int>("Id")
@@ -388,10 +372,6 @@ namespace DocumentHub.Migrations
 
                     b.Property<int>("Progress")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("QuarterNotifyDate")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("SeminarDate")
                         .HasColumnType("TEXT");
@@ -486,17 +466,6 @@ namespace DocumentHub.Migrations
                     b.Navigation("WorkProgress");
                 });
 
-            modelBuilder.Entity("DocumentHub.Model.WorkProgressQuater", b =>
-                {
-                    b.HasOne("DocumentHub.ViewModel.WorkProgress", "WorkProgress")
-                        .WithMany("Quarters")
-                        .HasForeignKey("WorkProgressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("WorkProgress");
-                });
-
             modelBuilder.Entity("DocumentHub.Model.WorkProgressYear", b =>
                 {
                     b.HasOne("DocumentHub.ViewModel.WorkProgress", "WorkProgress")
@@ -526,8 +495,6 @@ namespace DocumentHub.Migrations
             modelBuilder.Entity("DocumentHub.ViewModel.WorkProgress", b =>
                 {
                     b.Navigation("Months");
-
-                    b.Navigation("Quarters");
 
                     b.Navigation("Years");
                 });

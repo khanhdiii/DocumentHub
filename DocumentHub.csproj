@@ -23,6 +23,172 @@
 		<Resource Include="Assets\Image\backgroundred.jpg">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Image\Guideline\Analytic.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Analytic2.png" />
+		<Resource Include="Assets\Image\Guideline\ConstructionStaff.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\CreateForgotPIN.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\CreateForgotPIN2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\CreateForgotPIN3.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\CreateForgotPIN4.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\CreatePIN.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\CreatePIN2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Dashboard.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Dashboard2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Dashboard3.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Dashboard4.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Dashboard6.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\ForgotPIN.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\ForgotPIN2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\IncomingDocument.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\IncomingDocument2-2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\IncomingDocument2-3.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\IncomingDocument3-1.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\IncomingDocument3.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Login.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Login2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Main.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Main2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Main3.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Main4.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Main5.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\OutgoingDocument.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Person.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\RecevingOfficer.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\RecevingOfficer2-1.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\RecevingOfficer2-2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\RecevingOfficer2-3.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\RecevingOfficer2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\RecevingOfficer3.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\RecevingOfficer4-1.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\RecevingOfficer4.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Recipient.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Signer.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Signer2-1.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Signer2-2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\Signer2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress2-1.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress2-2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress2-3.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress3-1.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress3.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress4-1.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress4.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress5-1.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress5.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress6-1.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress6.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Image\Guideline\WorkProgress7.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -46,6 +212,74 @@
 
 	<ItemGroup>
 	  <EditorConfigFiles Remove="D:\DocumentHub\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Assets\Image\Guideline\Analytic.png" />
+	  <None Remove="Assets\Image\Guideline\Analytic2.png" />
+	  <None Remove="Assets\Image\Guideline\ConstructionStaff.png" />
+	  <None Remove="Assets\Image\Guideline\CreateForgotPIN.png" />
+	  <None Remove="Assets\Image\Guideline\CreateForgotPIN2.png" />
+	  <None Remove="Assets\Image\Guideline\CreateForgotPIN3.png" />
+	  <None Remove="Assets\Image\Guideline\CreateForgotPIN4.png" />
+	  <None Remove="Assets\Image\Guideline\CreatePIN.png" />
+	  <None Remove="Assets\Image\Guideline\CreatePIN2.png" />
+	  <None Remove="Assets\Image\Guideline\Dashboard.png" />
+	  <None Remove="Assets\Image\Guideline\Dashboard2.png" />
+	  <None Remove="Assets\Image\Guideline\Dashboard3.png" />
+	  <None Remove="Assets\Image\Guideline\Dashboard4.png" />
+	  <None Remove="Assets\Image\Guideline\Dashboard6.png" />
+	  <None Remove="Assets\Image\Guideline\ForgotPIN.png" />
+	  <None Remove="Assets\Image\Guideline\ForgotPIN2.png" />
+	  <None Remove="Assets\Image\Guideline\IncomingDocument.png" />
+	  <None Remove="Assets\Image\Guideline\IncomingDocument2-1.png" />
+	  <None Remove="Assets\Image\Guideline\IncomingDocument2-2.png" />
+	  <None Remove="Assets\Image\Guideline\IncomingDocument2-3.png" />
+	  <None Remove="Assets\Image\Guideline\IncomingDocument2.png" />
+	  <None Remove="Assets\Image\Guideline\IncomingDocument3-1.png" />
+	  <None Remove="Assets\Image\Guideline\IncomingDocument3.png" />
+	  <None Remove="Assets\Image\Guideline\Login.png" />
+	  <None Remove="Assets\Image\Guideline\Login2.png" />
+	  <None Remove="Assets\Image\Guideline\Main.png" />
+	  <None Remove="Assets\Image\Guideline\Main2.png" />
+	  <None Remove="Assets\Image\Guideline\Main3.png" />
+	  <None Remove="Assets\Image\Guideline\Main4.png" />
+	  <None Remove="Assets\Image\Guideline\Main5.png" />
+	  <None Remove="Assets\Image\Guideline\OutgoingDocument.png" />
+	  <None Remove="Assets\Image\Guideline\Person.png" />
+	  <None Remove="Assets\Image\Guideline\RecevingOfficer.png" />
+	  <None Remove="Assets\Image\Guideline\RecevingOfficer2-1.png" />
+	  <None Remove="Assets\Image\Guideline\RecevingOfficer2-2.png" />
+	  <None Remove="Assets\Image\Guideline\RecevingOfficer2-3.png" />
+	  <None Remove="Assets\Image\Guideline\RecevingOfficer2.png" />
+	  <None Remove="Assets\Image\Guideline\RecevingOfficer3.png" />
+	  <None Remove="Assets\Image\Guideline\RecevingOfficer4-1.png" />
+	  <None Remove="Assets\Image\Guideline\RecevingOfficer4.png" />
+	  <None Remove="Assets\Image\Guideline\Recipient.png" />
+	  <None Remove="Assets\Image\Guideline\Signer.png" />
+	  <None Remove="Assets\Image\Guideline\Signer2-1.png" />
+	  <None Remove="Assets\Image\Guideline\Signer2-2.png" />
+	  <None Remove="Assets\Image\Guideline\Signer2.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress2-1.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress2-2.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress2-3.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress3-1.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress3.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress4-1.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress4.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress5-1.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress5.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress6-1.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress6.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress7-1.png" />
+	  <None Remove="Assets\Image\Guideline\WorkProgress7.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Assets\Image\Guideline\WorkProgress7-1.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Resource>
 	</ItemGroup>
 
 	<ItemGroup>
