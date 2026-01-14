@@ -27,7 +27,7 @@ namespace DocumentHub.FrontEnd.Auth
         }
 
         // Submit
-        private void Submit_Click(object sender, RoutedEventArgs e)
+        private void btn_CreateForgotPIN_Click(object sender, RoutedEventArgs e)
         {
             // Reset notification
             tb_MessageQuestion1.Text = "";
@@ -224,6 +224,14 @@ namespace DocumentHub.FrontEnd.Auth
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
+        private void btn_Back_Click(object sender, RoutedEventArgs e)
+        {
+            var loginForm = new LoginForm();
+            loginForm.Show();
+
+            this.Close();
+        }
+
 
     }
 }
