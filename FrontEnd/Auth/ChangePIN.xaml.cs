@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 using DocumentHub.Helpers;
 
@@ -38,25 +39,60 @@ namespace DocumentHub.FrontEnd.Auth
             string newPin = pb_NewPIN.Password;
             string confirmPin = pb_ConfirmNewPIN.Password;
 
-            if (newPin != confirmPin)
+            // Reset message
+            tb_Message.Text = "";
+            tb_Message.Foreground = new SolidColorBrush(Colors.Red);
+
+            // Check null
+            if (string.IsNullOrEmpty(oldPin) || string.IsNullOrEmpty(newPin) || string.IsNullOrEmpty(confirmPin))
             {
-                tb_Message.Text = "❌ PIN mới không khớp!";
+                tb_Message.Text = "⚠️ Vui lòng nhập đầy đủ thông tin.";
                 return;
             }
 
-            var auth = new AuthService();
-            if (auth.ChangePin(oldPin, newPin))
+            // Check Length
+            if (newPin.Length != 6)
             {
-                tb_Message.Text = "✅ Đổi PIN thành công!";
+                tb_Message.Text = "⚠️ Mã PIN phải đúng 6 chữ số.";
+                return;
             }
-            else
+
+            //Check same
+            if (newPin != confirmPin)
             {
-                tb_Message.Text = "❌ Đổi PIN thất bại!";
+                tb_Message.Text = "PIN mới không khớp!";
+                return;
+            }
+
+            using (var db = new DocumentHub.Data.AppDbContext())
+            {
+                var credential = db.UserCredentials.FirstOrDefault(u => u.PIN == oldPin);
+                if (credential != null)
+                {
+                    credential.PIN = newPin;
+                    db.SaveChanges();
+
+                    DocumentHub.Components.NotificationManager.Show(
+                        NotificationContainer,
+                        " Đổi PIN thành công!",
+                        true
+                    );
+                }
+                else
+                {
+                    DocumentHub.Components.NotificationManager.Show(
+                        NotificationContainer,
+                        "Mã PIN cũ không đúng!",
+                        false
+                    );
+                }
             }
         }
 
-        private void btn_Cancel_Click(object sender, RoutedEventArgs e)
+        private void btn_Back_Click(object sender, RoutedEventArgs e)
         {
+            var loginForm = new LoginForm();
+            loginForm.Show();
             this.Close();
         }
     }

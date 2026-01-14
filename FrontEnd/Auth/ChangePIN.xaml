@@ -98,7 +98,13 @@
                         Stretch="UniformToFill"
                         Opacity="0.65" />
         </Grid.Background>
-
+        <!-- Notification container -->
+        <StackPanel x:Name="NotificationContainer"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="10"
+                    Panel.ZIndex="999" />
         <!-- Second border  -->
         <Border Opacity="0.7"
                 Width="580"
@@ -213,8 +219,8 @@
                             BorderThickness="2"
                             Click="btn_ChangePIN_Click" />
 
-                    <Button x:Name="btn_Cancel"
-                            Content="Hủy Bỏ"
+                    <Button x:Name="btn_Back"
+                            Content="Trở lại"
                             Width="150"
                             Height="45"
                             FontFamily="Montserrat"
@@ -222,17 +228,19 @@
                             Foreground="White"
                             BorderBrush="#A08013"
                             BorderThickness="2"
-                            Click="btn_Cancel_Click" />
+                            Click="btn_Back_Click" />
                 </StackPanel>
 
             </StackPanel>
 
         </Border>
-        <Label Content="© K02 - 2025"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Bottom"
+        <Label Content="© Văn bằng 2 - K02 TTHL, BDNV &amp; GDNN  số 2 2025-2026"
+               HorizontalAlignment="Left"
+               Margin="416,492,0,0"
+               VerticalAlignment="Top"
+               RenderTransformOrigin="2.048,-0.815"
                FontFamily="Montserrat"
-               Margin="0,0,50,0" />
-
+               FontWeight="Bold"
+               Foreground="Black" />
     </Grid>
 </Window>
