@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace DocumentHub.Model
 {
@@ -14,6 +15,7 @@ namespace DocumentHub.Model
         public string TaskDetail { get; set; }
         public bool IsPlaceholder { get;  set; }
         public bool IsToday { get; set; }
+        public Brush BackgroundBrush { get; set; }
 
     }
 
