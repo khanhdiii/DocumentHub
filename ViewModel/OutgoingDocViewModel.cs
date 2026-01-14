@@ -243,81 +243,27 @@ namespace DocumentHub.ViewModel
             }
             else
             {
-                var results = OutgoingDocs
-                    .Where(d =>
-                        (
-                            d
-                                .Id.ToString()
-                                .Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)
-                        )
-                        || (
-                            d.DocumentNumber?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.DocumentDate?.ToString("dd/MM/yyyy")
-                                .Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)
-                            ?? false
-                        )
-                        || (
-                            d.DocumentType?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.Summary?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)
-                            ?? false
-                        )
-                        || (
-                            d.SecurityLevel?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.ConstructionStaff?.FullName?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.ReceivingOfficer?.FullName?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.Signer?.FullName?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.Signer?.Position?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.Recipient?.Name?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                    )
-                    .ToList();
+                var results = OutgoingDocs.Where(d =>
+                    d.Id.ToString().Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)
+                    || d.DocumentNumber?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.DocumentDate?.ToString("dd/MM/yyyy").Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.DocumentType?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.Summary?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.SecurityLevel?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.ConstructionStaff?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.ReceivingOfficer?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.Signer?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.Signer?.Position?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.Recipient?.Name?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                ).ToList();
 
                 FilteredDocs = new ObservableCollection<OutgoingDocument>(results);
-                OnPropertyChanged(nameof(FilteredDocs));
-                CurrentPage = 1;
-                // reset first page
-                UpdatePagedDocs();
-                // Update Doc
             }
+
+            CurrentPage = 1;
+            UpdatePagedDocs();
         }
+
 
         /*Handle Pagination*/
         //Command go first page
@@ -490,7 +436,7 @@ namespace DocumentHub.ViewModel
                 else
                     Notify?.Invoke("Thêm văn bản đi thành công", true);
 
-                // Load lại danh sách từ DB
+                // Load list DB
                 LoadDocumentList();
                 RefreshDocumentList();
                 SelectedDocument = new OutgoingDocument();
@@ -532,8 +478,41 @@ namespace DocumentHub.ViewModel
         //Function Delete
         private void DeleteDocument()
         {
-            if (SelectedDocument != null)
+            if (SelectedDocument == null)
+            {
+                Notify?.Invoke("Vui lòng chọn văn bản để xóa.", false);
+                return;
+            }
+
+            var confirm = MessageBox.Show("Bạn có chắc muốn xóa văn bản này?", "Xác nhận", MessageBoxButton.YesNo);
+            if (confirm != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                using var db = new AppDbContext();
+                var existing = db.OutgoingDocuments.FirstOrDefault(d => d.Id == SelectedDocument.Id);
+                if (existing == null)
+                {
+                    Notify?.Invoke("Không tìm thấy văn bản để xóa.", false);
+                    return;
+                }
+
+                db.OutgoingDocuments.Remove(existing);
+                db.SaveChanges();
+
                 OutgoingDocs.Remove(SelectedDocument);
+                RefreshDocumentList();
+                ApplyFilter();
+                OnPropertyChanged(nameof(PagedDocs));
+
+
+                Notify?.Invoke("Xóa văn bản thành công", true);
+            }
+            catch (Exception ex)
+            {
+                Notify?.Invoke($"Lỗi khi xóa: {ex.Message}", false);
+            }
         }
 
         //Function Export excel

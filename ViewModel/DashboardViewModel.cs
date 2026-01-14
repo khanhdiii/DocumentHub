@@ -1,9 +1,13 @@
+using DocumentHub.Data;
 using DocumentHub.Model;
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace DocumentHub.ViewModel
 {
@@ -14,7 +18,6 @@ namespace DocumentHub.ViewModel
 
     public class DashboardViewModel : INotifyPropertyChanged
     {
-        public event Action RequestScrollToToday;
         public ObservableCollection<CalendarDay> CalendarDays
         {
             get; set;
@@ -36,6 +39,13 @@ namespace DocumentHub.ViewModel
         {
             get;
         }
+        public event Action RequestScrollToToday;
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
 
         private DateTime _currentDate;
         private ViewMode _selectedViewMode;
@@ -47,50 +57,21 @@ namespace DocumentHub.ViewModel
                 if (_selectedViewMode != value)
                 {
                     _selectedViewMode = value;
-
-                    if (_selectedViewMode == ViewMode.Quarter)
-                    {
-                        _currentDate = DateTime.Today;
-                        LoadCalendar();
-                        OnPropertyChanged(nameof(CurrentPeriodDisplay));
-
-                        // Event scroll
-                        RequestScrollToToday?.Invoke();
-                    }
-                    else
-                    {
-                        LoadCalendar();
-                        OnPropertyChanged(nameof(CurrentPeriodDisplay));
-                    }
-
+                    _currentDate = DateTime.Today;
+                    LoadCalendar();
+                    OnPropertyChanged(nameof(CurrentPeriodDisplay));
                     OnPropertyChanged(nameof(SelectedViewMode));
                 }
             }
         }
 
-        public string CurrentPeriodDisplay
+        public string CurrentPeriodDisplay => SelectedViewMode switch
         {
-            get
-            {
-                switch (SelectedViewMode)
-                {
-                    case ViewMode.Week:
-                        var dayOfWeek = _currentDate.DayOfWeek == DayOfWeek.Sunday ? 7 : (int)_currentDate.DayOfWeek;
-                        var startOfWeek = _currentDate.AddDays(-dayOfWeek + 1);
-                        var endOfWeek = startOfWeek.AddDays(6);
-                        return $"Tuần {startOfWeek:dd/MM} - {endOfWeek:dd/MM}";
-
-                    case ViewMode.Month:
-                        return _currentDate.ToString("MMMM yyyy");
-
-                    case ViewMode.Quarter:
-                        return $"Quý {((_currentDate.Month - 1) / 3) + 1} {_currentDate.Year}";
-
-                    default:
-                        return "";
-                }
-            }
-        }
+            ViewMode.Week => $"Tuần {_currentDate.AddDays(-(int)_currentDate.DayOfWeek + 1):dd/MM} - {_currentDate.AddDays(7 - (int)_currentDate.DayOfWeek):dd/MM}",
+            ViewMode.Month => _currentDate.ToString("MMMM yyyy"),
+            ViewMode.Quarter => $"Quý {((_currentDate.Month - 1) / 3) + 1} {_currentDate.Year}",
+            _ => ""
+        };
 
         public DashboardViewModel()
         {
@@ -106,25 +87,20 @@ namespace DocumentHub.ViewModel
             NextPeriodCommand = new RelayCommand(_ => ChangePeriod(1));
             LoadCalendar();
         }
+
         private void ChangePeriod(int offset)
         {
-            switch (SelectedViewMode)
+            _currentDate = SelectedViewMode switch
             {
-                case ViewMode.Week:
-                    _currentDate = _currentDate.AddDays(offset * 7);
-                    break;
-                case ViewMode.Month:
-                    _currentDate = _currentDate.AddMonths(offset);
-                    break;
-                case ViewMode.Quarter:
-                    _currentDate = _currentDate.AddMonths(offset * 3);
-                    break;
-            }
+                ViewMode.Week => _currentDate.AddDays(offset * 7),
+                ViewMode.Month => _currentDate.AddMonths(offset),
+                ViewMode.Quarter => _currentDate.AddMonths(offset * 3),
+                _ => _currentDate
+            };
             OnPropertyChanged(nameof(CurrentPeriodDisplay));
             LoadCalendar();
         }
 
-        //Funtion handle calendar
         private void LoadCalendar()
         {
             CalendarDays = new ObservableCollection<CalendarDay>();
@@ -138,51 +114,27 @@ namespace DocumentHub.ViewModel
                 for (int i = 0; i < offset; i++)
                 {
                     var date = firstDay.AddDays(-(offset - i));
-                    CalendarDays.Add(new CalendarDay
-                    {
-                        DayNumber = date.Day,
-                        Month = date.Month,
-                        TaskSummary = GetTaskSummary(date),
-                        TaskDetail = GetTaskDetail(date),
-                        IsPlaceholder = true,
-                        IsToday = date.Date == DateTime.Today
-                    });
+                    CalendarDays.Add(CreateCalendarDay(date, true));
                 }
 
                 int daysInMonth = DateTime.DaysInMonth(_currentDate.Year, _currentDate.Month);
                 for (int i = 1; i <= daysInMonth; i++)
                 {
                     var date = new DateTime(_currentDate.Year, _currentDate.Month, i);
-                    CalendarDays.Add(new CalendarDay
-                    {
-                        DayNumber = i,
-                        Month = date.Month,
-                        TaskSummary = GetTaskSummary(date),
-                        TaskDetail = GetTaskDetail(date),
-                        IsPlaceholder = false,
-                        IsToday = date.Date == DateTime.Today
-                    });
+                    CalendarDays.Add(CreateCalendarDay(date, false));
                 }
             }
+
             else if (SelectedViewMode == ViewMode.Week)
             {
-                var dayOfWeek = _currentDate.DayOfWeek == DayOfWeek.Sunday ? 7 : (int)_currentDate.DayOfWeek;
-                var startOfWeek = _currentDate.AddDays(-dayOfWeek + 1);
-
+                var startOfWeek = _currentDate.AddDays(-(int)_currentDate.DayOfWeek + 1);
                 for (int i = 0; i < 7; i++)
                 {
                     var date = startOfWeek.AddDays(i);
-                    CalendarDays.Add(new CalendarDay
-                    {
-                        DayNumber = date.Day,
-                        Month = date.Month,
-                        TaskSummary = GetTaskSummary(date),
-                        TaskDetail = GetTaskDetail(date),
-                        IsPlaceholder = false,
-                        IsToday = date.Date == DateTime.Today
-                    });
+                    CalendarDays.Add(CreateCalendarDay(date, false));
                 }
             }
+
             else if (SelectedViewMode == ViewMode.Quarter)
             {
                 int year = _currentDate.Year;
@@ -193,20 +145,36 @@ namespace DocumentHub.ViewModel
                 {
                     int month = startMonth + m;
                     var monthDays = new ObservableCollection<CalendarDay>();
-                    int daysInMonth = DateTime.DaysInMonth(year, month);
+                    var firstDay = new DateTime(year, month, 1);
+                    int offset = ((int)firstDay.DayOfWeek + 6) % 7;
 
+                    // Add placeholder first month
+                    for (int i = 0; i < offset; i++)
+                    {
+                        var date = firstDay.AddDays(-(offset - i));
+                        monthDays.Add(CreateCalendarDay(date, true));
+                    }
+
+                    int daysInMonth = DateTime.DaysInMonth(year, month);
                     for (int d = 1; d <= daysInMonth; d++)
                     {
                         var date = new DateTime(year, month, d);
-                        monthDays.Add(new CalendarDay
+
+                        // If date 29, 30, 31 và month is not enough -> placeholder
+                        bool isPlaceholder = d > daysInMonth;
+                        monthDays.Add(CreateCalendarDay(date, isPlaceholder));
+                    }
+
+                    // Add placeholder last month
+                    int totalCells = offset + daysInMonth;
+                    int remainder = totalCells % 7;
+                    if (remainder != 0)
+                    {
+                        for (int i = 0; i < 7 - remainder; i++)
                         {
-                            DayNumber = d,
-                            Month = date.Month,
-                            TaskSummary = GetTaskSummary(date),
-                            TaskDetail = GetTaskDetail(date),
-                            IsPlaceholder = false,
-                            IsToday = date.Date == DateTime.Today
-                        });
+                            var date = firstDay.AddDays(daysInMonth + i);
+                            monthDays.Add(CreateCalendarDay(date, true));
+                        }
                     }
 
                     CalendarMonths.Add(new CalendarMonth
@@ -215,21 +183,137 @@ namespace DocumentHub.ViewModel
                         Days = monthDays
                     });
                 }
+
             }
-
-
 
             OnPropertyChanged(nameof(CalendarDays));
             OnPropertyChanged(nameof(CalendarMonths));
         }
 
-        private string GetTaskSummary(DateTime date) => "• 2 tasks";
-        private string GetTaskDetail(DateTime date) => $"Chi tiết công việc ngày {date:dd/MM}: \n- Họp nhóm\n- Gửi báo cáo";
+        private CalendarDay CreateCalendarDay(DateTime date, bool isPlaceholder)
+        {
+            return new CalendarDay
+            {
+                DayNumber = date.Day,
+                Month = date.Month,
+                TaskSummary = GetTaskSummary(date),
+                TaskDetail = GetTaskDetail(date),
+                IsPlaceholder = isPlaceholder,
+                IsToday = date.Date == DateTime.Today,
+                BackgroundBrush = GetTaskColor(date)
+            };
+        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string name) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        private List<DateTime> ParseDates(string dateString)
+        {
+            return dateString?
+                .Split(',')
+                .Select(s => DateTime.TryParse(s.Trim(), out var d) ? d : (DateTime?)null)
+                .Where(d => d.HasValue)
+                .Select(d => d.Value)
+                .ToList() ?? new List<DateTime>();
+        }
 
+        private string GetTaskSummary(DateTime date)
+        {
+            using var db = new AppDbContext();
+            var allTasks = db.WorkProgresses.ToList();
+
+            var tasks = allTasks
+                .Where(w =>
+                    ParseDates(w.MonthNotifyDate).Contains(date) ||
+                    ParseDates(w.QuarterNotifyDate).Any(d => d.Date == date.Date) ||
+                    ParseDates(w.YearNotifyDate).Contains(date) ||
+                    (w.IsSudden && w.SuddenDate.HasValue && w.SuddenDate.Value.Date == date.Date) ||
+                    (w.IsSeminar && w.SeminarDate.HasValue && w.SeminarDate.Value.Date == date.Date))
+                .ToList();
+
+            return $"• {tasks.Count} task{(tasks.Count > 1 ? "s" : "")}";
+        }
+
+
+        private string GetTaskDetail(DateTime date)
+        {
+            using var db = new AppDbContext();
+
+            var allTasks = db.WorkProgresses.ToList();
+
+            var tasks = allTasks
+                .Where(w =>
+                    ParseDates(w.MonthNotifyDate).Contains(date) ||
+                    ParseDates(w.QuarterNotifyDate).Any(d => d.Date == date.Date) ||
+                    ParseDates(w.YearNotifyDate).Contains(date) ||
+                    (w.IsSudden && w.SuddenDate.HasValue && w.SuddenDate.Value.Date == date.Date) ||
+                    (w.IsSeminar && w.SeminarDate.HasValue && w.SeminarDate.Value.Date == date.Date))
+                .ToList();
+
+
+            if (!tasks.Any())
+                return $"Không có công việc nào vào ngày {date:dd/MM}";
+
+            var lines = tasks.Select(t =>
+            {
+                string type =
+                    ParseDates(t.MonthNotifyDate).Contains(date) ? "Thông báo tháng" :
+                    ParseDates(t.QuarterNotifyDate).Any(d => d.Date == date.Date) ? "Thông báo quý" :
+                    ParseDates(t.YearNotifyDate).Contains(date) ? "Thông báo năm" :
+                    (t.IsSudden && t.SuddenDate.HasValue && t.SuddenDate.Value.Date == date.Date) ? "Đột xuất" :
+                    (t.IsSeminar && t.SeminarDate.HasValue && t.SeminarDate.Value.Date == date.Date) ? "Chuyên đề" :
+                    "Khác";
+
+                return $"- {t.Name} ({type}, {t.Status}, {t.Priority}, {t.Progress}%)";
+            });
+
+            return $"Chi tiết công việc ngày {date:dd/MM}:\n" + string.Join("\n", lines);
+        }
+
+
+        private Brush GetTaskColor(DateTime date)
+        {
+            using var db = new AppDbContext();
+
+            var tasks = db.WorkProgresses.ToList();
+
+            var matchedTasks = tasks.Where(t =>
+                ParseDates(t.MonthNotifyDate).Contains(date) ||
+                ParseDates(t.QuarterNotifyDate).Any(d => d.Date == date.Date) ||
+                ParseDates(t.YearNotifyDate).Contains(date) ||
+                (t.IsSudden && t.SuddenDate.HasValue && t.SuddenDate.Value.Date == date.Date) ||
+                (t.IsSeminar && t.SeminarDate.HasValue && t.SeminarDate.Value.Date == date.Date)).ToList();
+
+            if (!matchedTasks.Any())
+                return Brushes.White;
+
+            // If complete
+            if (matchedTasks.All(t => t.Status == "Hoàn thành"))
+                return Brushes.LightGreen;
+
+            // If task in next 5 date
+            if (matchedTasks.Any(t =>
+                 ParseDates(t.MonthNotifyDate).Any(d => d.Date == date.Date && (DateTime.Today - d).TotalDays > 5 && t.Status != "Hoàn thành") ||
+                 ParseDates(t.QuarterNotifyDate).Any(d => d.Date == date.Date && (DateTime.Today - d).TotalDays > 5 && t.Status != "Hoàn thành") ||
+                 ParseDates(t.YearNotifyDate).Any(d => d.Date == date.Date && (DateTime.Today - d).TotalDays > 5 && t.Status != "Hoàn thành") ||
+                 (t.IsSudden && t.SuddenDate.HasValue && t.SuddenDate.Value.Date == date.Date && (DateTime.Today - t.SuddenDate.Value).TotalDays > 5 && t.Status != "Hoàn thành") ||
+                 (t.IsSeminar && t.SeminarDate.HasValue && t.SeminarDate.Value.Date == date.Date && (DateTime.Today - t.SeminarDate.Value).TotalDays > 5 && t.Status != "Hoàn thành")
+             ))
+                return Brushes.IndianRed;
+
+            return Brushes.LightGoldenrodYellow;
+
+            // If date notifiction > 5 date and not complete
+            if (matchedTasks.Any(t =>
+                ParseDates(t.MonthNotifyDate).Any(d => d.Date == date.Date && (DateTime.Today - d).TotalDays > 5 && t.Status != "Hoàn thành") ||
+                ParseDates(t.QuarterNotifyDate).Any(d => d.Date == date.Date && (DateTime.Today - d).TotalDays > 5 && t.Status != "Hoàn thành") ||
+                ParseDates(t.YearNotifyDate).Any(d => d.Date == date.Date && (DateTime.Today - d).TotalDays > 5 && t.Status != "Hoàn thành") ||
+                (t.IsSudden && t.SuddenDate.HasValue && t.SuddenDate.Value.Date == date.Date && (DateTime.Today - t.SuddenDate.Value).TotalDays > 5 && t.Status != "Hoàn thành") ||
+                (t.IsSeminar && t.SeminarDate.HasValue && t.SeminarDate.Value.Date == date.Date && (DateTime.Today - t.SeminarDate.Value).TotalDays > 5 && t.Status != "Hoàn thành")
+            ))
+                return Brushes.IndianRed;
+
+            return Brushes.IndianRed;
+
+            return Brushes.White;
+        }
 
     }
 }

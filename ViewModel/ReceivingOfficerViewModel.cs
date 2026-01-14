@@ -49,7 +49,15 @@ namespace DocumentHub.ViewModel
             DeleteCommand = new RelayCommand(param => DeleteStaff(param as ReceivingOfficer));
             SaveCommand = new RelayCommand(param => SaveStaff());
             SelectedStaff = new ReceivingOfficer();
+
+            //pagination
+            GoToFirstPageCommand = new RelayCommand(_ => { CurrentPage = 1; ApplyFilter(); });
+            GoToLastPageCommand = new RelayCommand(_ => { CurrentPage = TotalPages; ApplyFilter(); });
+            NextPageCommand = new RelayCommand(_ => { if (CurrentPage < TotalPages) CurrentPage++; ApplyFilter(); });
+            PreviousPageCommand = new RelayCommand(_ => { if (CurrentPage > 1) CurrentPage--; ApplyFilter(); });
+
             LoadStaffList();
+            ApplyFilter();
         }
 
         /*Function Load*/
@@ -59,6 +67,8 @@ namespace DocumentHub.ViewModel
             var staffFromDb = db.ReceivingOfficers.ToList();
             StaffList = new ObservableCollection<ReceivingOfficer>(staffFromDb);
             OnPropertyChanged(nameof(StaffList));
+
+            ApplyFilter();
         }
 
         /*Function Save*/
@@ -67,7 +77,7 @@ namespace DocumentHub.ViewModel
 
             if (SelectedStaff == null || string.IsNullOrWhiteSpace(SelectedStaff.FullName))
             {
-                Notify?.Invoke("Vui lòng nhập tên cán bộ xử lý.", false);
+                Notify?.Invoke("Vui lòng nhập tên cán bộ tiếp nhận  .", false);
                 return;
             }
 
@@ -75,23 +85,36 @@ namespace DocumentHub.ViewModel
             {
                 using var db = new AppDbContext();
 
+                // Nomalize name
+                string normalizedName = SelectedStaff.FullName.Trim();
+
                 if (SelectedStaff.Id > 0)
                 {
+                    // Edit staff
                     var existing = db.ReceivingOfficers.FirstOrDefault(x => x.Id == SelectedStaff.Id);
                     if (existing != null)
                     {
-                        existing.FullName = SelectedStaff.FullName;
-                    }
-                    else
-                    {
-                        db.ReceivingOfficers.Add(new ReceivingOfficer
+                        // Check name same name difference
+                        bool isDuplicate = db.ReceivingOfficers
+                           .Any(x => x.Id != SelectedStaff.Id && x.FullName.Trim() == normalizedName);
+                        if (isDuplicate)
                         {
-                            FullName = SelectedStaff.FullName,
-                        });
+                            Notify?.Invoke("Tên cán bộ đã tồn tại. Vui lòng chọn tên khác.", false);
+                            return;
+                        }
+                        existing.FullName = SelectedStaff.FullName;
                     }
                 }
                 else
                 {
+                    // Add and check same name
+                    bool isDuplicate = db.ReceivingOfficers
+                       .Any(x => x.FullName.Trim() == normalizedName);
+                    if (isDuplicate)
+                    {
+                        Notify?.Invoke("Tên cán bộ đã tồn tại. Vui lòng chọn tên khác.", false);
+                        return;
+                    }
                     db.ReceivingOfficers.Add(new ReceivingOfficer
                     {
                         FullName = SelectedStaff.FullName,
@@ -99,6 +122,7 @@ namespace DocumentHub.ViewModel
                 }
 
                 db.SaveChanges();
+
                 if (SelectedStaff.Id > 0)
                     Notify?.Invoke("Sửa cán bộ thành công", true);
                 else
@@ -107,11 +131,45 @@ namespace DocumentHub.ViewModel
                 // Load List View Table from DB
                 LoadStaffList();
                 SelectedStaff = new ReceivingOfficer();
+                ApplyFilter();
             }
             catch (Exception ex)
             {
                 Notify?.Invoke($"Không thể lưu cán bộ: {ex.Message}", false);
             }
+        }
+
+
+        private void ApplyFilter()
+        {
+            if (StaffList == null)
+                return;
+
+            var query = StaffList.AsQueryable();
+
+            //Filter Name
+            if (!string.IsNullOrWhiteSpace(SearchKeyword))
+            {
+                query = query.Where(s => s.FullName.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase));
+            }
+
+            // Total page
+            TotalPages = (int)Math.Ceiling((double)query.Count() / PageSize);
+
+            if (CurrentPage > TotalPages)
+                CurrentPage = TotalPages == 0 ? 1 : TotalPages;
+
+            // Take date page
+            var paged = query
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            FilteredStaffList = new ObservableCollection<ReceivingOfficer>(paged);
+
+            OnPropertyChanged(nameof(FilteredStaffList));
+            OnPropertyChanged(nameof(TotalPages));
+            OnPropertyChanged(nameof(CurrentPage));
         }
 
         /*Function Edit*/
@@ -175,6 +233,62 @@ namespace DocumentHub.ViewModel
             }
         }
 
+        // Filter keyword
+        private string _searchKeyword;
+        public string SearchKeyword
+        {
+            get => _searchKeyword;
+            set
+            {
+                _searchKeyword = value;
+                OnPropertyChanged(nameof(SearchKeyword));
+                ApplyFilter();
+            }
+        }
+
+        // List after filter
+        public ObservableCollection<ReceivingOfficer> FilteredStaffList { get; set; } = new();
+
+        // Pagination
+        private int _currentPage = 1;
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                if (_currentPage != value)
+                {
+                    _currentPage = value;
+                    OnPropertyChanged(nameof(CurrentPage));
+                }
+            }
+        }
+
+
+
+        public int PageSize { get; set; } = 10;
+        public int TotalPages
+        {
+            get; set;
+        }
+
+        // Command pagination
+        public ICommand GoToFirstPageCommand
+        {
+            get;
+        }
+        public ICommand GoToLastPageCommand
+        {
+            get;
+        }
+        public ICommand NextPageCommand
+        {
+            get;
+        }
+        public ICommand PreviousPageCommand
+        {
+            get;
+        }
 
         //  INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

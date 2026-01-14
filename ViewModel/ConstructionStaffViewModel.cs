@@ -37,7 +37,15 @@ namespace DocumentHub.ViewModel
             DeleteCommand = new RelayCommand(param => DeleteStaff(param as ConstructionStaff));
             SaveCommand = new RelayCommand(param => SaveStaff());
             SelectedStaff = new ConstructionStaff();
+
+            //pagination
+            GoToFirstPageCommand = new RelayCommand(_ => { CurrentPage = 1; });
+            GoToLastPageCommand = new RelayCommand(_ => { CurrentPage = TotalPages; });
+            NextPageCommand = new RelayCommand(_ => { if (CurrentPage < TotalPages) CurrentPage++; });
+            PreviousPageCommand = new RelayCommand(_ => { if (CurrentPage > 1) CurrentPage--; });
+
             LoadStaffList();
+            ApplyFilter();
         }
 
         /*Function Load*/
@@ -47,6 +55,8 @@ namespace DocumentHub.ViewModel
             var staffFromDb = db.ConstructionStaff.ToList();
             StaffList = new ObservableCollection<ConstructionStaff>(staffFromDb);
             OnPropertyChanged(nameof(StaffList));
+
+            ApplyFilter();
         }
 
         /*Function Save*/
@@ -54,7 +64,7 @@ namespace DocumentHub.ViewModel
         {
             if (SelectedStaff == null || string.IsNullOrWhiteSpace(SelectedStaff.FullName))
             {
-                Notify?.Invoke("Vui lòng nhập tên cán bộ xử lý.", false);
+                Notify?.Invoke("Vui lòng nhập tên cán bộ tiếp.", false);
                 return;
             }
 
@@ -62,44 +72,90 @@ namespace DocumentHub.ViewModel
             {
                 using var db = new AppDbContext();
 
+                // Nomalize name
+                string normalizedName = SelectedStaff.FullName.Trim();
+
                 if (SelectedStaff.Id > 0)
                 {
-                    var existing = db.ConstructionStaff.FirstOrDefault(x =>
-                        x.Id == SelectedStaff.Id
-                    );
+                    // Edit staff
+                    var existing = db.ConstructionStaff.FirstOrDefault(x => x.Id == SelectedStaff.Id);
                     if (existing != null)
                     {
-                        existing.FullName = SelectedStaff.FullName;
-                    }
-                    else
-                    {
-                        db.ConstructionStaff.Add(
-                            new ConstructionStaff { FullName = SelectedStaff.FullName }
-                        );
+                        // Check name same name difference
+                        bool isDuplicate = db.ConstructionStaff
+                            .Any(x => x.Id != SelectedStaff.Id && x.FullName.Trim() == normalizedName);
+
+                        if (isDuplicate)
+                        {
+                            Notify?.Invoke("Tên cán bộ đã tồn tại. Vui lòng chọn tên khác.", false);
+                            return;
+                        }
+
+                        existing.FullName = normalizedName;
                     }
                 }
                 else
                 {
-                    db.ConstructionStaff.Add(
-                        new ConstructionStaff { FullName = SelectedStaff.FullName }
-                    );
+                    // Add and check same name
+                    bool isDuplicate = db.ConstructionStaff
+                        .Any(x => x.FullName.Trim() == normalizedName);
+
+                    if (isDuplicate)
+                    {
+                        Notify?.Invoke("Tên cán bộ đã tồn tại. Vui lòng chọn tên khác.", false);
+                        return;
+                    }
+
+                    db.ConstructionStaff.Add(new ConstructionStaff { FullName = normalizedName });
                 }
 
                 db.SaveChanges();
-                if (SelectedStaff.Id > 0)
-                    Notify?.Invoke("Sửa cán bộ thành công", true);
-                else
-                    Notify?.Invoke("Thêm cán bộ thành công", true);
 
-                // Load List View Table from DB
+                Notify?.Invoke(SelectedStaff.Id > 0 ? "Sửa cán bộ thành công" : "Thêm cán bộ thành công", true);
+
                 LoadStaffList();
                 SelectedStaff = new ConstructionStaff();
+                ApplyFilter();
             }
             catch (Exception ex)
             {
                 Notify?.Invoke($"Không thể lưu cán bộ: {ex.Message}", false);
             }
         }
+
+
+        private void ApplyFilter()
+        {
+            if (StaffList == null)
+                return;
+
+            var query = StaffList.AsQueryable();
+
+            // Filter keywork
+            if (!string.IsNullOrWhiteSpace(SearchKeyword))
+            {
+                query = query.Where(s => s.FullName.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase));
+            }
+
+            // Total page
+            TotalPages = (int)Math.Ceiling((double)query.Count() / PageSize);
+
+            if (CurrentPage > TotalPages)
+                CurrentPage = TotalPages == 0 ? 1 : TotalPages;
+
+            //pagination
+            var paged = query
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            FilteredStaffList = new ObservableCollection<ConstructionStaff>(paged);
+            OnPropertyChanged(nameof(FilteredStaffList));
+            OnPropertyChanged(nameof(TotalPages));
+            OnPropertyChanged(nameof(CurrentPage));
+        }
+
+
 
         /*Function Edit*/
         private void EditStaff(ConstructionStaff constructionStaff)
@@ -119,6 +175,7 @@ namespace DocumentHub.ViewModel
                     Notify?.Invoke("Sửa cán bộ thành công", true);
                 }
                 LoadStaffList();
+                ApplyFilter();
             }
             catch (Exception ex)
             {
@@ -168,6 +225,60 @@ namespace DocumentHub.ViewModel
                 Notify?.Invoke($"Không thể xóa cán bộ: {ex.Message}", false);
             }
         }
+
+        // Filter keyword
+        private string _searchKeyword;
+        public string SearchKeyword
+        {
+            get => _searchKeyword;
+            set
+            {
+                _searchKeyword = value;
+                OnPropertyChanged(nameof(SearchKeyword));
+                ApplyFilter(); 
+            }
+        }
+
+        // List after filter
+        public ObservableCollection<ConstructionStaff> FilteredStaffList { get; set; } = new();
+
+        // Pagination
+        private int _currentPage = 1;
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged(nameof(CurrentPage));
+                ApplyFilter();
+            }
+        }
+
+        public int PageSize { get; set; } = 10; 
+        public int TotalPages
+        {
+            get; set;
+        }
+
+        // Command pagination
+        public ICommand GoToFirstPageCommand
+        {
+            get;
+        }
+        public ICommand GoToLastPageCommand
+        {
+            get;
+        }
+        public ICommand NextPageCommand
+        {
+            get;
+        }
+        public ICommand PreviousPageCommand
+        {
+            get;
+        }
+
 
         //  INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

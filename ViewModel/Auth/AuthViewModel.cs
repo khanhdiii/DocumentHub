@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 
 using DocumentHub.Helpers;
@@ -7,6 +8,9 @@ namespace DocumentHub.ViewModel.Auth
 {
     public class AuthViewModel : INotifyPropertyChanged
     {
+        //Action call Notification
+        public event Action<string, bool> Notify;
+
         private string _pin;
         private string _message;
 
@@ -52,22 +56,36 @@ namespace DocumentHub.ViewModel.Auth
 
             if (string.IsNullOrEmpty(PIN))
             {
-                Message = "⚠️ Vui lòng nhập mã PIN!";
+                Notify?.Invoke("⚠️ Vui lòng nhập mã PIN!", false);
                 return;
             }
 
             if (auth.TryLogin(PIN, out string resultMessage))
             {
                 // Login Success 
-                Message = resultMessage; 
+                Message = resultMessage;
+
+                // Open Main and noti job
+                var mainWindow = new DocumentHub.FrontEnd.Main();
+                mainWindow.Show();
+
+                // Close LoginForm
+                foreach (Window win in Application.Current.Windows)
+                {
+                    if (win is DocumentHub.FrontEnd.Auth.LoginForm)
+                    {
+                        win.Close();
+                        break;
+                    }
+                }
             }
             else
             {
                 // Login Fail
-                Message = resultMessage; 
+                Notify?.Invoke(resultMessage, false);
             }
-
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>

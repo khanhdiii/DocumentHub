@@ -28,6 +28,24 @@ namespace DocumentHub.ViewModel
             get;
         }
 
+        // Pagination commands
+        public ICommand GoToFirstPageCommand
+        {
+            get;
+        }
+        public ICommand GoToLastPageCommand
+        {
+            get;
+        }
+        public ICommand NextPageCommand
+        {
+            get;
+        }
+        public ICommand PreviousPageCommand
+        {
+            get;
+        }
+
         private Person _selectedStaff;
         public Person SelectedStaff
         {
@@ -39,8 +57,47 @@ namespace DocumentHub.ViewModel
             }
         }
 
-        // List Staff
+        // Full list
         public ObservableCollection<Person> StaffList
+        {
+            get; set;
+        }
+
+        // Filtered list (after search + pagination)
+        public ObservableCollection<Person> FilteredStaffList { get; set; } = new();
+
+        // Search keyword
+        private string _searchKeyword;
+        public string SearchKeyword
+        {
+            get => _searchKeyword;
+            set
+            {
+                _searchKeyword = value;
+                OnPropertyChanged(nameof(SearchKeyword));
+                CurrentPage = 1; 
+                ApplyFilter();
+            }
+        }
+
+        // Pagination properties
+        private int _currentPage = 1;
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                if (_currentPage != value)
+                {
+                    _currentPage = value;
+                    OnPropertyChanged(nameof(CurrentPage));
+                    ApplyFilter();
+                }
+            }
+        }
+
+        public int PageSize { get; set; } = 10;
+        public int TotalPages
         {
             get; set;
         }
@@ -49,8 +106,17 @@ namespace DocumentHub.ViewModel
         {
             DeleteCommand = new RelayCommand(param => DeleteStaff(param as Person));
             SaveCommand = new RelayCommand(param => SaveStaff());
+            EditCommand = new RelayCommand(param => EditStaff(param as Person));
             SelectedStaff = new Person();
+
+            // Pagination commands
+            GoToFirstPageCommand = new RelayCommand(_ => { CurrentPage = 1; });
+            GoToLastPageCommand = new RelayCommand(_ => { CurrentPage = TotalPages; });
+            NextPageCommand = new RelayCommand(_ => { if (CurrentPage < TotalPages) CurrentPage++; });
+            PreviousPageCommand = new RelayCommand(_ => { if (CurrentPage > 1) CurrentPage--; });
+
             LoadStaffList();
+            ApplyFilter();
         }
 
         /*Function Load*/
@@ -60,6 +126,8 @@ namespace DocumentHub.ViewModel
             var staffFromDb = db.People.ToList();
             StaffList = new ObservableCollection<Person>(staffFromDb);
             OnPropertyChanged(nameof(StaffList));
+
+            ApplyFilter();
         }
 
         private void SaveStaff()
@@ -76,7 +144,6 @@ namespace DocumentHub.ViewModel
 
                 if (SelectedStaff.Id > 0)
                 {
-                    // Sửa cán bộ
                     var existing = db.People.FirstOrDefault(x => x.Id == SelectedStaff.Id);
                     if (existing != null)
                     {
@@ -90,7 +157,6 @@ namespace DocumentHub.ViewModel
                 }
                 else
                 {
-                    // Thêm mới cán bộ (KHÔNG gán Id)
                     var newPerson = new Person
                     {
                         FullName = SelectedStaff.FullName
@@ -103,7 +169,8 @@ namespace DocumentHub.ViewModel
                 Notify?.Invoke(SelectedStaff.Id > 0 ? "Sửa cán bộ thành công" : "Thêm cán bộ thành công", true);
 
                 LoadStaffList();
-                SelectedStaff = new Person(); // Reset để tránh giữ lại Id cũ
+                SelectedStaff = new Person();
+                ApplyFilter();
             }
             catch (Exception ex)
             {
@@ -111,8 +178,6 @@ namespace DocumentHub.ViewModel
             }
         }
 
-
-        /*Function Edit*/
         private void EditStaff(Person person)
         {
             if (person == null)
@@ -135,7 +200,6 @@ namespace DocumentHub.ViewModel
             }
         }
 
-        /*Function Delete*/
         private void DeleteStaff(Person person)
         {
             if (person == null || person.Id <= 0)
@@ -172,8 +236,38 @@ namespace DocumentHub.ViewModel
             }
         }
 
+        private void ApplyFilter()
+        {
+            if (StaffList == null)
+                return;
 
-        //  INotifyPropertyChanged
+            var query = StaffList.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(SearchKeyword))
+            {
+                query = query.Where(s => s.FullName != null &&
+                    s.FullName.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase));
+            }
+
+            TotalPages = (int)Math.Ceiling((double)query.Count() / PageSize);
+
+            if (CurrentPage > TotalPages)
+                CurrentPage = TotalPages == 0 ? 1 : TotalPages;
+            if (CurrentPage < 1)
+                CurrentPage = 1;
+
+            var paged = query
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            FilteredStaffList = new ObservableCollection<Person>(paged);
+            OnPropertyChanged(nameof(FilteredStaffList));
+            OnPropertyChanged(nameof(TotalPages));
+            OnPropertyChanged(nameof(CurrentPage));
+        }
+
+        // INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

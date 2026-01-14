@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -27,6 +28,24 @@ namespace DocumentHub.ViewModel
             get;
         }
 
+        // Pagination commands
+        public ICommand GoToFirstPageCommand
+        {
+            get;
+        }
+        public ICommand GoToLastPageCommand
+        {
+            get;
+        }
+        public ICommand NextPageCommand
+        {
+            get;
+        }
+        public ICommand PreviousPageCommand
+        {
+            get;
+        }
+
         private Signer _selectedSigner;
         public Signer SelectedSigner
         {
@@ -38,8 +57,47 @@ namespace DocumentHub.ViewModel
             }
         }
 
-        // List Signer
+        // Full list
         public ObservableCollection<Signer> SignerList
+        {
+            get; set;
+        }
+
+        // Filtered list (after search + pagination)
+        public ObservableCollection<Signer> FilteredSignerList { get; set; } = new();
+
+        // Search keyword
+        private string _searchKeyword;
+        public string SearchKeyword
+        {
+            get => _searchKeyword;
+            set
+            {
+                _searchKeyword = value;
+                OnPropertyChanged(nameof(SearchKeyword));
+
+                ApplyFilter();
+            }
+        }
+
+        // Pagination properties
+        private int _currentPage = 1;
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                if (_currentPage != value)
+                {
+                    _currentPage = value;
+                    OnPropertyChanged(nameof(CurrentPage));
+                    ApplyFilter();
+                }
+            }
+        }
+
+        public int PageSize { get; set; } = 10;
+        public int TotalPages
         {
             get; set;
         }
@@ -50,7 +108,15 @@ namespace DocumentHub.ViewModel
             DeleteCommand = new RelayCommand(param => DeleteSigner(param as Signer));
             EditCommand = new RelayCommand(param => EditSigner(param as Signer));
             SelectedSigner = new Signer();
+
+            // Pagination commands
+            GoToFirstPageCommand = new RelayCommand(_ => { CurrentPage = 1; ApplyFilter(); });
+            GoToLastPageCommand = new RelayCommand(_ => { CurrentPage = TotalPages; ApplyFilter(); });
+            NextPageCommand = new RelayCommand(_ => { if (CurrentPage < TotalPages) CurrentPage++; ApplyFilter(); });
+            PreviousPageCommand = new RelayCommand(_ => { if (CurrentPage > 1) CurrentPage--; ApplyFilter(); });
+
             LoadSignerList();
+            ApplyFilter();
         }
 
         /*Function Load*/
@@ -60,12 +126,13 @@ namespace DocumentHub.ViewModel
             var signerFromDb = db.Signers.ToList();
             SignerList = new ObservableCollection<Signer>(signerFromDb);
             OnPropertyChanged(nameof(SignerList));
+
+            ApplyFilter();
         }
 
         /*Function Save*/
         private void SaveSigner()
         {
-
             if (SelectedSigner == null || string.IsNullOrWhiteSpace(SelectedSigner.FullName))
             {
                 Notify?.Invoke("Vui lòng nhập tên người ký.", false);
@@ -84,14 +151,6 @@ namespace DocumentHub.ViewModel
                         existing.FullName = SelectedSigner.FullName;
                         existing.Position = SelectedSigner.Position;
                     }
-                    else
-                    {
-                        db.Signers.Add(new Signer
-                        {
-                            FullName = SelectedSigner.FullName,
-                            Position = SelectedSigner.Position,
-                        });
-                    }
                 }
                 else
                 {
@@ -103,12 +162,12 @@ namespace DocumentHub.ViewModel
                 }
 
                 db.SaveChanges();
+
                 if (SelectedSigner.Id > 0)
                     Notify?.Invoke("Sửa người ký thành công", true);
                 else
                     Notify?.Invoke("Thêm người ký thành công", true);
 
-                // Load List View Table from DB
                 LoadSignerList();
                 SelectedSigner = new Signer();
             }
@@ -178,6 +237,46 @@ namespace DocumentHub.ViewModel
                 Notify?.Invoke($"Không thể xóa người ký: {ex.Message}", false);
             }
         }
+
+        /*Function Filter + Pagination*/
+        private void ApplyFilter()
+        {
+            if (SignerList == null)
+                return;
+
+            var query = SignerList.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(SearchKeyword))
+            {
+                query = query.Where(s =>
+                    (s.FullName != null && s.FullName.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)) ||
+                    (s.Position != null && s.Position.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase))
+                );
+            }
+
+            TotalPages = (int)Math.Ceiling((double)query.Count() / PageSize);
+
+            if (CurrentPage > TotalPages)
+            {
+                _currentPage = TotalPages == 0 ? 1 : TotalPages;
+            }
+            else if (CurrentPage < 1)
+            {
+                _currentPage = 1;
+            }
+
+            var paged = query
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            FilteredSignerList = new ObservableCollection<Signer>(paged);
+
+            OnPropertyChanged(nameof(FilteredSignerList));
+            OnPropertyChanged(nameof(TotalPages));
+            OnPropertyChanged(nameof(CurrentPage));
+        }
+
 
 
         // INotifyPropertyChanged

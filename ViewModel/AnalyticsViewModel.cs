@@ -1,10 +1,15 @@
-﻿using LiveCharts;
-using LiveCharts.Wpf;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Media;
+
+using DocumentHub.Data;
 using DocumentHub.Model;
+
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace DocumentHub.ViewModel
 {
@@ -22,95 +27,136 @@ namespace DocumentHub.ViewModel
             }
         }
 
-        //Define chart
-        public SeriesCollection Series { get; set; }
-        public string[] Labels { get; set; }
-        public List<int> Years { get; set; }
+        public SeriesCollection Series
+        {
+            get; set;
+        }
+        public string[] Labels
+        {
+            get; set;
+        }
+        public List<int> Years
+        {
+            get; set;
+        }
 
-        //Sum Doc
-        public int TotalIncoming { get; set; }
-        public int TotalOutgoing { get; set; }
-
-        private Dictionary<int, List<Analytics>> _dataByYear;
+        public int TotalIncoming
+        {
+            get; set;
+        }
+        public int TotalOutgoing
+        {
+            get; set;
+        }
+        public int TotalProgress
+        {
+            get; set;
+        }
 
         public AnalyticsViewModel()
         {
-            // Data test
-            _dataByYear = new Dictionary<int, List<Analytics>>
+            using (var db = new AppDbContext())
             {
-                {
-                    2024, new List<Analytics>
-                    {
-                        new Analytics { Month = 1, IncomingDocument = 12, OutgoingDocument = 10 },
-                        new Analytics { Month = 2, IncomingDocument = 15, OutgoingDocument = 12 },
-                        new Analytics { Month = 3, IncomingDocument = 20, OutgoingDocument = 18 },
-                        new Analytics { Month = 4, IncomingDocument = 18, OutgoingDocument = 22 },
-                        new Analytics { Month = 5, IncomingDocument = 25, OutgoingDocument = 20 },
-                        new Analytics { Month = 6, IncomingDocument = 30, OutgoingDocument = 28 },
-                        new Analytics { Month = 7, IncomingDocument = 22, OutgoingDocument = 24 },
-                        new Analytics { Month = 8, IncomingDocument = 27, OutgoingDocument = 26 },
-                        new Analytics { Month = 9, IncomingDocument = 35, OutgoingDocument = 30 },
-                        new Analytics { Month = 10, IncomingDocument = 40, OutgoingDocument = 38 },
-                        new Analytics { Month = 11, IncomingDocument = 32, OutgoingDocument = 35 },
-                        new Analytics { Month = 12, IncomingDocument = 28, OutgoingDocument = 25 }
-                    }
-                },
-                {
-                    2025, new List<Analytics>
-                    {
-                        new Analytics { Month = 1, IncomingDocument = 10, OutgoingDocument = 8 },
-                        new Analytics { Month = 2, IncomingDocument = 14, OutgoingDocument = 11 },
-                        new Analytics { Month = 3, IncomingDocument = 19, OutgoingDocument = 15 },
-                        new Analytics { Month = 4, IncomingDocument = 21, OutgoingDocument = 20 },
-                        new Analytics { Month = 5, IncomingDocument = 26, OutgoingDocument = 22 },
-                        new Analytics { Month = 6, IncomingDocument = 33, OutgoingDocument = 29 },
-                        new Analytics { Month = 7, IncomingDocument = 24, OutgoingDocument = 23 },
-                        new Analytics { Month = 8, IncomingDocument = 29, OutgoingDocument = 27 },
-                        new Analytics { Month = 9, IncomingDocument = 36, OutgoingDocument = 31 },
-                        new Analytics { Month = 10, IncomingDocument = 42, OutgoingDocument = 39 },
-                        new Analytics { Month = 11, IncomingDocument = 34, OutgoingDocument = 36 },
-                        new Analytics { Month = 12, IncomingDocument = 30, OutgoingDocument = 26 }
-                    }
-                }
-            };
+                Years = db.WorkProgresses
+                          .Where(w => w.StartDate.HasValue)
+                          .Select(w => w.StartDate.Value.Year)
+                          .Union(db.IncomingDocuments
+                                   .Where(d => d.ArrivalDate.HasValue)
+                                   .Select(d => d.ArrivalDate.Value.Year))
+                          .Union(db.OutgoingDocuments
+                                   .Where(d => d.DocumentDate.HasValue)
+                                   .Select(d => d.DocumentDate.Value.Year))
+                          .Distinct()
+                          .OrderBy(y => y)
+                          .ToList();
+            }
 
-            Years = _dataByYear.Keys.ToList();
-            //Default First year in combobox
-            SelectedYear = Years.First(); 
+            SelectedYear = Years.Any() ? Years.First() : DateTime.Now.Year;
+            if (!Years.Any())
+                Years = new List<int> { SelectedYear };
         }
 
         private void LoadDataForYear(int year)
         {
-            var data = _dataByYear[year];
-
-            Series = new SeriesCollection
+            using (var db = new AppDbContext())
             {
-                new LineSeries
-                {
-                    Title = "Văn bản đến",
-                    Values = new ChartValues<int>(data.Select(d => d.IncomingDocument))
-                },
-                new LineSeries
-                {
-                    Title = "Văn bản đi",
-                    Values = new ChartValues<int>(data.Select(d => d.OutgoingDocument))
-                }
-            };
+                var months = Enumerable.Range(1, 12).ToList();
 
-            Labels = data.Select(d => $"Tháng {d.Month}").ToArray();
-            
-            //Function Sum Docs
-            TotalIncoming = data.Sum(d => d.IncomingDocument); 
-            TotalOutgoing = data.Sum(d => d.OutgoingDocument);
-            
-            OnPropertyChanged(nameof(Series));
-            OnPropertyChanged(nameof(Labels));
+                // Incoming theo tháng
+                var incoming = db.IncomingDocuments
+                    .Where(d => d.ArrivalDate.HasValue && d.ArrivalDate.Value.Year == year)
+                    .GroupBy(d => d.ArrivalDate.Value.Month)
+                    .Select(g => new { Month = g.Key, Count = g.Count() })
+                    .ToList();
+
+                var incomingByMonth = months
+                    .Select(m => incoming.FirstOrDefault(i => i.Month == m)?.Count ?? 0)
+                    .ToList();
+
+                // Outgoing theo tháng
+                var outgoing = db.OutgoingDocuments
+                    .Where(d => d.DocumentDate.HasValue && d.DocumentDate.Value.Year == year)
+                    .GroupBy(d => d.DocumentDate.Value.Month)
+                    .Select(g => new { Month = g.Key, Count = g.Count() })
+                    .ToList();
+
+                var outgoingByMonth = months
+                    .Select(m => outgoing.FirstOrDefault(o => o.Month == m)?.Count ?? 0)
+                    .ToList();
+
+                // Tiến độ: tính tổng Progress theo tháng (dựa vào ngày bắt đầu)
+                var progress = db.WorkProgresses
+                    .Where(w => w.StartDate.HasValue && w.StartDate.Value.Year == year)
+                    .GroupBy(w => w.StartDate.Value.Month)
+                    .Select(g => new { Month = g.Key, Count = g.Count() }) // đếm số công việc
+                    .ToList();
+
+                var progressByMonth = months
+                    .Select(m => progress.FirstOrDefault(p => p.Month == m)?.Count ?? 0)
+                    .ToList();
+
+
+                // Gán vào Series
+                Series = new SeriesCollection
+{
+                    new LineSeries
+                    {
+                        Title = "Văn bản đến",
+                        Values = new ChartValues<int>(incomingByMonth),
+                        Fill = new SolidColorBrush(Color.FromArgb(50, 33, 150, 243)) // xanh nhạt
+                    },
+                    new LineSeries
+                    {
+                        Title = "Văn bản đi",
+                        Values = new ChartValues<int>(outgoingByMonth),
+                        Fill = new SolidColorBrush(Color.FromArgb(50, 244, 67, 54)) // đỏ nhạt
+                    },
+                    new LineSeries
+                    {
+                        Title = "Tiến độ (số công việc)",
+                        Values = new ChartValues<int>(progressByMonth),
+                        Fill = new SolidColorBrush(Color.FromArgb(50, 76, 175, 80)) // xanh lá nhạt
+                    }
+                };
+
+
+
+                Labels = months.Select(m => $"Tháng {m}").ToArray();
+
+                TotalIncoming = incomingByMonth.Sum();
+                TotalOutgoing = outgoingByMonth.Sum();
+                TotalProgress = progressByMonth.Sum();
+
+                OnPropertyChanged(nameof(Series));
+                OnPropertyChanged(nameof(Labels));
+                OnPropertyChanged(nameof(TotalIncoming));
+                OnPropertyChanged(nameof(TotalOutgoing));
+                OnPropertyChanged(nameof(TotalProgress));
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

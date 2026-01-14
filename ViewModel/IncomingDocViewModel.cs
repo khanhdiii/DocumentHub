@@ -4,9 +4,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+
 using ClosedXML.Excel;
+
 using DocumentHub.Data;
 using DocumentHub.Model;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 
@@ -14,43 +17,173 @@ namespace DocumentHub.ViewModel
 {
     public class IncomingDocViewModel : INotifyPropertyChanged
     {
-        //Action call Notification
+        // 🔔 Notification event
         public event Action<string, bool> Notify;
-        public ICommand SaveCommand { get; }
-        public ICommand EditCommand { get; }
-        public ICommand DeleteCommand { get; }
-        public ICommand ExportExcelCommand { get; }
 
+        // Commands
+        public ICommand SaveCommand
+        {
+            get;
+        }
+        public ICommand EditCommand
+        {
+            get;
+        }
+        public ICommand DeleteCommand
+        {
+            get;
+        }
+        public ICommand ExportExcelCommand
+        {
+            get;
+        }
+        public ICommand NextPageCommand
+        {
+            get;
+        }
+        public ICommand PrevPageCommand
+        {
+            get;
+        }
+        public ICommand GoToFirstPageCommand
+        {
+            get;
+        }
+        public ICommand GoToLastPageCommand
+        {
+            get;
+        }
+
+        // Data collections
         //Call Data from database
-        public ObservableCollection<ConstructionStaff> StaffList { get; } =
+        public ObservableCollection<ConstructionStaff> StaffList
+        {
+            get;
+        } =
             new ObservableCollection<ConstructionStaff>(
                 new AppDbContext().ConstructionStaff.ToList()
             );
 
-        public ObservableCollection<ReceivingOfficer> StaffReceivingOfficerList { get; } =
+        public ObservableCollection<ReceivingOfficer> StaffReceivingOfficerList
+        {
+            get;
+        } =
             new ObservableCollection<ReceivingOfficer>(
                 new AppDbContext().ReceivingOfficers.ToList()
             );
 
-        public ObservableCollection<Signer> SignerList { get; } =
+        public ObservableCollection<Signer> SignerList
+        {
+            get;
+        } =
             new ObservableCollection<Signer>(new AppDbContext().Signers.ToList());
 
-        public ObservableCollection<Recipient> RecipientList { get; } =
+        public ObservableCollection<Recipient> RecipientList
+        {
+            get;
+        } =
             new ObservableCollection<Recipient>(new AppDbContext().Recipients.ToList());
+        public ObservableCollection<DocumentTypeItem> DocumentTypes
+        {
+            get;
+        }
+        public ObservableCollection<SecurityLevelItem> SecurityLevel
+        {
+            get;
+        }
 
-        // List Incoming Doc
-        public ObservableCollection<IncomingDocument> IncomingDocs { get; } =
-            new ObservableCollection<IncomingDocument>();
-
-        //Event of INotifyPropertyChanged
+        // Main list
+        public ObservableCollection<IncomingDocument> IncomingDocs
+        {
+            get; private set;
+        }
+        public ObservableCollection<IncomingDocument> FilteredDocs
+        {
+            get; private set;
+        }
         public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); private string _summary; public string Summary
+        {
+            get => _summary; set
+            {
+                _summary = value;
+                OnPropertyChanged(nameof(Summary));
+            }
+        }
 
-        protected void OnPropertyChanged(string propertyName) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        // Selected document
+        private IncomingDocument _selectedDocument;
+        public IncomingDocument SelectedDocument
+        {
+            get => _selectedDocument;
+            set
+            {
+                if (_selectedDocument?.Signer != null)
+                    _selectedDocument.Signer.PropertyChanged -= Signer_PropertyChanged;
 
-        //List DocumentTypeItem data
-        public ObservableCollection<DocumentTypeItem> DocumentTypes { get; } =
-            new ObservableCollection<DocumentTypeItem>
+                _selectedDocument = value;
+
+                if (_selectedDocument != null)
+                {
+                    if (StaffList != null)
+                        _selectedDocument.ConstructionStaff = StaffList.FirstOrDefault(s => s.Id == _selectedDocument.ConstructionStaffId);
+
+                    if (StaffReceivingOfficerList != null)
+                        _selectedDocument.ReceivingOfficer = StaffReceivingOfficerList.FirstOrDefault(s => s.Id == _selectedDocument.ReceivingOfficerId);
+
+                    if (SignerList != null)
+                        _selectedDocument.Signer = SignerList.FirstOrDefault(s => s.Id == _selectedDocument.SignerId);
+
+                    if (RecipientList != null)
+                        _selectedDocument.Recipient = RecipientList.FirstOrDefault(s => s.Id == _selectedDocument.RecipientId);
+
+                    if (_selectedDocument.Signer != null)
+                        _selectedDocument.Signer.PropertyChanged += Signer_PropertyChanged;
+                }
+
+
+                OnPropertyChanged(nameof(SelectedDocument));
+                OnPropertyChanged(nameof(CurrentSignerPosition));
+            }
+        }
+
+        // Current signer position
+        private void Signer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Signer.Position))
+                OnPropertyChanged(nameof(CurrentSignerPosition));
+        }
+        public string CurrentSignerPosition => string.IsNullOrWhiteSpace(SelectedDocument?.Signer?.Position) ? " " : SelectedDocument.Signer.Position;
+
+        // Search keyword
+        private string _searchKeyword;
+        public string SearchKeyword
+        {
+            get => _searchKeyword;
+            set
+            {
+                _searchKeyword = value;
+                OnPropertyChanged(nameof(SearchKeyword));
+                ApplyFilter();
+            }
+        }
+
+
+        // Constructor
+        public IncomingDocViewModel()
+        {
+            SelectedDocument = new IncomingDocument();
+
+            using var db = new AppDbContext();
+            IncomingDocs = new ObservableCollection<IncomingDocument>(
+                db.IncomingDocuments.Include(o => o.ConstructionStaff)
+                    .Include(o => o.ReceivingOfficer)
+                    .Include(o => o.Signer)
+                    .Include(o => o.Recipient)
+                    .ToList()
+            );
+
+            DocumentTypes = new ObservableCollection<DocumentTypeItem>
             {
                 new DocumentTypeItem { Name = "Nghị quyết (cá biệt)", Abbreviation = "NQ" },
                 new DocumentTypeItem { Name = "Quyết định (cá biệt)", Abbreviation = "QĐ" },
@@ -81,395 +214,57 @@ namespace DocumentHub.ViewModel
                 new DocumentTypeItem { Name = "Phiếu báo", Abbreviation = "PB" },
             };
 
-        //List SecurityLevelItem data
-        public ObservableCollection<SecurityLevelItem> SecurityLevel { get; } =
-            new ObservableCollection<SecurityLevelItem>
+            SecurityLevel = new ObservableCollection<SecurityLevelItem>
             {
-                new SecurityLevelItem { Name = "Tuyệt mật", Abbreviation = "1" },
-                new SecurityLevelItem { Name = "Tối mật", Abbreviation = "2" },
-                new SecurityLevelItem { Name = "Mật", Abbreviation = "3" },
-                new SecurityLevelItem { Name = "Thường", Abbreviation = "4" },
+                new SecurityLevelItem { Name = "Thường", Abbreviation = "1" },
+                new SecurityLevelItem { Name = "Mật", Abbreviation = "2" },
+                new SecurityLevelItem { Name = "Tuyệt mật", Abbreviation = "3" },
+                new SecurityLevelItem { Name = "Tối mật", Abbreviation = "4" },
             };
 
-        // Selected incoming document
-        private IncomingDocument _selectedDocument;
-        public IncomingDocument SelectedDocument
-        {
-            get => _selectedDocument;
-            set
-            {
-                if (_selectedDocument?.Signer != null)
-                    _selectedDocument.Signer.PropertyChanged -= Signer_PropertyChanged;
-
-                _selectedDocument = value;
-
-                if (_selectedDocument != null)
-                {
-                    // Gán lại từ danh sách để ComboBox nhận đúng
-                    _selectedDocument.ConstructionStaff = StaffList.FirstOrDefault(s =>
-                        s.Id == _selectedDocument.ConstructionStaffId
-                    );
-                    _selectedDocument.ReceivingOfficer = StaffReceivingOfficerList.FirstOrDefault(
-                        s => s.Id == _selectedDocument.ReceivingOfficerId
-                    );
-                    _selectedDocument.Signer = SignerList.FirstOrDefault(s =>
-                        s.Id == _selectedDocument.SignerId
-                    );
-                    _selectedDocument.Recipient = RecipientList.FirstOrDefault(s =>
-                        s.Id == _selectedDocument.RecipientId
-                    );
-
-                    if (_selectedDocument.Signer != null)
-                        _selectedDocument.Signer.PropertyChanged += Signer_PropertyChanged;
-                }
-
-                OnPropertyChanged(nameof(SelectedDocument));
-                OnPropertyChanged(nameof(CurrentSignerPosition));
-            }
-        }
-
-        // Property SelectedStaff
-        private ConstructionStaff _selectedStaff;
-        public ConstructionStaff SelectedStaff
-        {
-            get => _selectedStaff;
-            set
-            {
-                _selectedStaff = value;
-                OnPropertyChanged(nameof(SelectedStaff));
-
-                if (SelectedDocument != null)
-                {
-                    SelectedDocument.ConstructionStaff = _selectedStaff;
-                    OnPropertyChanged(nameof(SelectedDocument));
-                }
-            }
-        }
-
-        //  Event Signer change
-        private void Signer_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(Signer.Position))
-                OnPropertyChanged(nameof(CurrentSignerPosition));
-        }
-
-        public string CurrentSignerPosition
-        {
-            get
-            {
-                var position = SelectedDocument?.Signer?.Position;
-                return string.IsNullOrWhiteSpace(position) ? " " : position;
-            }
-        }
-
-        //Recipient
-        private Recipient _recipient;
-        public Recipient Recipient
-        {
-            get => _recipient;
-            set
-            {
-                _recipient = value;
-                OnPropertyChanged(nameof(Recipient));
-            }
-        }
-        public string RecipientName => Recipient?.Name;
-
-        //Constructor
-        public IncomingDocViewModel()
-        {
-            //Defind value for Signer
-            SelectedDocument = new IncomingDocument();
-
-            using var db = new AppDbContext();
-            db.Database.EnsureCreated();
             IncomingDocs = new ObservableCollection<IncomingDocument>(
                 db.IncomingDocuments.Include(o => o.ConstructionStaff)
-                    .Include(o => o.ReceivingOfficer)
-                    .Include(o => o.Signer)
-                    .Include(o => o.Recipient)
-                    .ToList()
+                                    .Include(o => o.ReceivingOfficer)
+                                    .Include(o => o.Signer)
+                                    .Include(o => o.Recipient)
+                                    .ToList()
             );
 
             FilteredDocs = new ObservableCollection<IncomingDocument>(IncomingDocs);
             UpdatePagedDocs();
+
+
             SaveCommand = new RelayCommand(param => SaveDocument());
             EditCommand = new RelayCommand(param => EditDocument());
             DeleteCommand = new RelayCommand(param => DeleteDocument());
             ExportExcelCommand = new RelayCommand(param => ExportToExcel());
+            NextPageCommand = new RelayCommand(param => { if (CurrentPage < TotalPages) CurrentPage++; });
+            PrevPageCommand = new RelayCommand(param => { if (CurrentPage > 1) CurrentPage--; });
+            GoToFirstPageCommand = new RelayCommand(param => { CurrentPage = 1; });
+            GoToLastPageCommand = new RelayCommand(param => { CurrentPage = TotalPages; });
         }
 
-        // List Staff
-        public ObservableCollection<IncomingDocument> DocumentList { get; set; }
-
-        /*Function Load*/
-        private void LoadDocumentList()
-        {
-            using var db = new AppDbContext();
-            var documentFromDb = db.IncomingDocuments.ToList();
-            DocumentList = new ObservableCollection<IncomingDocument>(documentFromDb);
-            OnPropertyChanged(nameof(DocumentList));
-        }
-
-        /*Check valid*/
-        private bool IsValidDocument(IncomingDocument doc, out string error)
-        {
-            if (string.IsNullOrWhiteSpace(doc.ArrivalNumber))
-            {
-                error = "Vui lòng nhập Số đến.";
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(doc.DocumentNumber))
-            {
-                error = "Vui lòng nhập Số/Ký hiệu văn bản.";
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(doc.Sender))
-            {
-                error = "Vui lòng nhập Nơi gửi.";
-                return false;
-            }
-            if (!doc.DocumentDate.HasValue)
-            {
-                error = "Vui lòng chọn Ngày văn bản.";
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(doc.DocumentType))
-            {
-                error = "Vui lòng chọn Loại văn bản.";
-                return false;
-            }
-
-            error = "";
-            return true;
-        }
-
-        /*Function Save Document*/
-        private void SaveDocument()
-        {
-            if (!IsValidDocument(SelectedDocument, out string error))
-            {
-                Notify?.Invoke(error, false);
-                return;
-            }
-
-            try
-            {
-                using var db = new AppDbContext();
-
-                if (SelectedDocument.Id > 0)
-                {
-                    var existing = db
-                        .IncomingDocuments.Include(o => o.ConstructionStaff)
-                        .Include(o => o.ReceivingOfficer)
-                        .Include(o => o.Signer)
-                        .Include(o => o.Recipient)
-                        .FirstOrDefault(x => x.Id == SelectedDocument.Id);
-
-                    if (existing != null)
-                    {
-                        existing.ArrivalNumber = SelectedDocument.ArrivalNumber;
-                        existing.Sender = SelectedDocument.Sender;
-                        existing.DocumentNumber = SelectedDocument.DocumentNumber;
-                        existing.DocumentDate = SelectedDocument.DocumentDate;
-                        existing.ArrivalDate = SelectedDocument.ArrivalDate;
-
-                        existing.DocumentType = SelectedDocument.DocumentType;
-                        existing.Summary = SelectedDocument.Summary;
-                        existing.SecurityLevel = SelectedDocument.SecurityLevel;
-
-                        existing.ConstructionStaffId = SelectedDocument.ConstructionStaff?.Id;
-                        existing.ReceivingOfficerId = SelectedDocument.ReceivingOfficer?.Id;
-                        existing.SignerId = SelectedDocument.Signer?.Id;
-                        existing.RecipientId = SelectedDocument.Recipient?.Id;
-
-                        //  Udate time update
-                        existing.UpdatedAt = DateTime.Now;
-                    }
-                    else
-                    {
-                        SelectedDocument.CreatedAt = DateTime.Now;
-                        db.IncomingDocuments.Add(SelectedDocument);
-                    }
-                }
-                else
-                {
-                    db.IncomingDocuments.Add(
-                        new IncomingDocument
-                        {
-                            ArrivalNumber = SelectedDocument.ArrivalNumber,
-                            Sender = SelectedDocument.Sender,
-                            DocumentNumber = SelectedDocument.DocumentNumber,
-                            DocumentDate = SelectedDocument.DocumentDate,
-                            ArrivalDate = SelectedDocument.ArrivalDate,
-                            DocumentType = SelectedDocument.DocumentType,
-                            Summary = SelectedDocument.Summary,
-                            SecurityLevel = SelectedDocument.SecurityLevel,
-                            ConstructionStaffId = SelectedDocument.ConstructionStaff?.Id,
-                            ReceivingOfficerId = SelectedDocument.ReceivingOfficer?.Id,
-                            SignerId = SelectedDocument.Signer?.Id,
-                            RecipientId = SelectedDocument.Recipient?.Id,
-
-                            // ✅ Create time
-                            CreatedAt = DateTime.Now,
-                        }
-                    );
-                }
-
-                db.SaveChanges();
-
-                if (SelectedDocument.Id > 0)
-                    Notify?.Invoke("Sửa văn bản đến thành công", true);
-                else
-                    Notify?.Invoke("Thêm văn bản đến thành công", true);
-
-                RefreshDocumentList();
-                SelectedDocument = new IncomingDocument();
-            }
-            catch (Exception ex)
-            {
-                Notify?.Invoke($"Không thể lưu văn bản đến: {ex.Message}", false);
-            }
-        }
-
-        /*Refresh Document*/
-        private void RefreshDocumentList()
-        {
-            using var db = new AppDbContext();
-            var updatedDocs = db
-                .IncomingDocuments.Include(o => o.ConstructionStaff)
-                .Include(o => o.ReceivingOfficer)
-                .Include(o => o.Signer)
-                .Include(o => o.Recipient)
-                .ToList();
-
-            IncomingDocs.Clear();
-            foreach (var doc in updatedDocs)
-                IncomingDocs.Add(doc);
-
-            FilteredDocs = new ObservableCollection<IncomingDocument>(IncomingDocs);
-            UpdatePagedDocs();
-        }
-
-        //Function Edit
-        private void EditDocument()
-        {
-            if (SelectedDocument == null)
-                return;
-
-            SelectedDocument.Summary += " (đã chỉnh sửa)";
-            SelectedDocument.UpdatedAt = DateTime.Now;
-            OnPropertyChanged(nameof(SelectedDocument));
-        }
-
-        //Function Delete
-        private void DeleteDocument()
-        {
-            if (SelectedDocument != null)
-                IncomingDocs.Remove(SelectedDocument);
-        }
-
-        //Search and filtered
-        private ObservableCollection<IncomingDocument> _filteredDocs;
-        public ObservableCollection<IncomingDocument> FilteredDocs
-        {
-            get => _filteredDocs;
-            set
-            {
-                _filteredDocs = value;
-                OnPropertyChanged(nameof(FilteredDocs));
-            }
-        }
-
-        private string _searchKeyword;
-        public string SearchKeyword
-        {
-            get => _searchKeyword;
-            set
-            {
-                _searchKeyword = value;
-                OnPropertyChanged(nameof(SearchKeyword));
-                ApplyFilter();
-            }
-        }
-
-        //Function filter data
+        // 🔍 Filter
         public void ApplyFilter()
         {
             if (string.IsNullOrWhiteSpace(SearchKeyword))
-            {
                 FilteredDocs = new ObservableCollection<IncomingDocument>(IncomingDocs);
-            }
             else
             {
-                var results = IncomingDocs
-                    .Where(d =>
-                        (
-                            d
-                                .Id.ToString()
-                                .Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)
-                        )
-                        || (
-                            d.ArrivalNumber?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.DocumentNumber?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.DocumentDate?.ToString("dd/MM/yyyy")
-                                .Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)
-                            ?? false
-                        )
-                        || (
-                            d.DocumentType?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.SecurityLevel?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.Sender?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)
-                            ?? false
-                        )
-                        || (
-                            d.Signer?.FullName?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.Position?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)
-                            ?? false
-                        )
-                        || (
-                            d.Recipient?.Name?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.ConstructionStaff?.FullName?.Contains(
-                                SearchKeyword,
-                                StringComparison.OrdinalIgnoreCase
-                            ) ?? false
-                        )
-                        || (
-                            d.Summary?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)
-                            ?? false
-                        )
-                    )
-                    .ToList();
+                var results = IncomingDocs.Where(d =>
+                    d.Id.ToString().Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase)
+                    || d.ArrivalNumber?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.DocumentNumber?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.DocumentDate?.ToString("dd/MM/yyyy").Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.DocumentType?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.Summary?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.SecurityLevel?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.Sender?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.Signer?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.Signer?.Position?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.Recipient?.Name?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                    || d.ConstructionStaff?.FullName?.Contains(SearchKeyword, StringComparison.OrdinalIgnoreCase) == true
+                ).ToList();
 
                 FilteredDocs = new ObservableCollection<IncomingDocument>(results);
             }
@@ -478,7 +273,6 @@ namespace DocumentHub.ViewModel
             UpdatePagedDocs();
         }
 
-        //Function pagination
         // Pagination
         private int _currentPage = 1;
 
@@ -499,7 +293,10 @@ namespace DocumentHub.ViewModel
 
         public int TotalPages => (int)Math.Ceiling((double)(FilteredDocs?.Count ?? 0) / PageSize);
 
-        public ObservableCollection<IncomingDocument> PagedDocs { get; set; } =
+        public ObservableCollection<IncomingDocument> PagedDocs
+        {
+            get; set;
+        } =
             new ObservableCollection<IncomingDocument>();
 
         private void UpdatePagedDocs()
@@ -515,21 +312,213 @@ namespace DocumentHub.ViewModel
             OnPropertyChanged(nameof(TotalPages));
         }
 
-        public ICommand NextPageCommand =>
-            new RelayCommand(param =>
-            {
-                if (CurrentPage < TotalPages)
-                    CurrentPage++;
-            });
 
-        public ICommand PrevPageCommand =>
-            new RelayCommand(param =>
-            {
-                if (CurrentPage > 1)
-                    CurrentPage--;
-            });
+        // List Staff
+        public ObservableCollection<IncomingDocument> DocumentList
+        {
+            get; set;
+        }
 
-        // Export Excel
+        /*Function Load*/
+        private void LoadDocumentList()
+        {
+            using var db = new AppDbContext();
+            var documentFromDb = db.IncomingDocuments.ToList();
+            DocumentList = new ObservableCollection<IncomingDocument>(documentFromDb);
+            OnPropertyChanged(nameof(DocumentList));
+        }
+
+        /*Check valid*/
+        private bool IsValidDocument(IncomingDocument doc, out string error)
+        {
+            if (string.IsNullOrWhiteSpace(doc.ArrivalNumber))
+            {
+                error = "Vui lòng chọn Số đến.";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(doc.DocumentNumber))
+            {
+                error = "Vui lòng nhập Số/Ký hiệu văn bản.";
+                return false;
+            }
+            if (!doc.DocumentDate.HasValue)
+            {
+                error = "Vui lòng chọn Ngày văn bản.";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(doc.DocumentType))
+            {
+                error = "Vui lòng chọn Loại văn bản.";
+                return false;
+            }
+            if (doc.ReceivingOfficer == null || string.IsNullOrWhiteSpace(doc.ReceivingOfficer.FullName))
+            {
+                error = "Vui lòng chọn Cán bộ tiếp nhận.";
+                return false;
+            }
+            if (doc.ConstructionStaff == null || string.IsNullOrWhiteSpace(doc.ConstructionStaff.FullName))
+            {
+                error = "Vui lòng chọn Cán bộ xử lý.";
+                return false;
+            }
+
+            error = "";
+            return true;
+        }
+
+        // 💾 Save
+        private void SaveDocument()
+        {
+            if (!IsValidDocument(SelectedDocument, out string error))
+            {
+                Notify?.Invoke(error, false);
+                return;
+            }
+            if (SelectedDocument == null)
+            {
+                Notify?.Invoke("Không có văn bản nào được chọn để lưu.", false);
+                return;
+            }
+            try
+            {
+                using var db = new AppDbContext();
+
+                if (SelectedDocument.Id > 0)
+                {
+                    var existing = db
+                        .IncomingDocuments.Include(o => o.ConstructionStaff)
+                        .Include(o => o.ReceivingOfficer)
+                        .Include(o => o.Signer)
+                        .Include(o => o.Recipient)
+                        .FirstOrDefault(x => x.Id == SelectedDocument.Id);
+                    if (existing != null)
+                    {
+                        existing.ArrivalNumber = SelectedDocument.ArrivalNumber;
+                        existing.ArrivalDate = SelectedDocument.ArrivalDate;
+                        existing.DocumentNumber = SelectedDocument.DocumentNumber;
+                        existing.DocumentDate = SelectedDocument.DocumentDate;
+                        existing.SecurityLevel = SelectedDocument.SecurityLevel;
+                        existing.DocumentType = SelectedDocument.DocumentType;
+                        existing.Sender = SelectedDocument.Sender;
+                        existing.Position = SelectedDocument.Position;
+                        existing.Summary = SelectedDocument.Summary;
+                        existing.ConstructionStaffId = SelectedDocument.ConstructionStaff?.Id;
+                        existing.ReceivingOfficerId = SelectedDocument.ReceivingOfficer?.Id;
+                        existing.SignerId = SelectedDocument.Signer?.Id;
+                        existing.RecipientId = SelectedDocument.Recipient?.Id;
+                        existing.UpdatedAt = DateTime.Now;
+                    }
+                    else
+                    {
+                        db.IncomingDocuments.Add(SelectedDocument);
+                    }
+                }
+                else
+                {
+                    db.IncomingDocuments.Add(
+                        new IncomingDocument
+                        {
+                            ArrivalNumber = SelectedDocument.ArrivalNumber,
+                            ArrivalDate = SelectedDocument.ArrivalDate,
+                            DocumentNumber = SelectedDocument.DocumentNumber,
+                            DocumentDate = SelectedDocument.DocumentDate,
+                            SecurityLevel = SelectedDocument.SecurityLevel,
+                            DocumentType = SelectedDocument.DocumentType,
+                            Sender = SelectedDocument.Sender,
+                            Position = SelectedDocument.Position,
+                            Summary = SelectedDocument.Summary,
+                            ConstructionStaffId = SelectedDocument.ConstructionStaff?.Id,
+                            ReceivingOfficerId = SelectedDocument.ReceivingOfficer?.Id,
+                            SignerId = SelectedDocument.Signer?.Id,
+                            RecipientId = SelectedDocument.Recipient?.Id,
+                            CreatedAt = DateTime.Now
+                        }
+                    );
+                }
+
+                db.SaveChanges();
+                OnPropertyChanged(nameof(SelectedDocument));
+                Notify?.Invoke(SelectedDocument.Id > 0 ? "Sửa văn bản đến thành công" : "Thêm văn bản đến thành công", true);
+                RefreshDocumentList();
+                ApplyFilter();
+
+                SelectedDocument = new IncomingDocument();
+            }
+            catch (Exception ex)
+            {
+                Notify?.Invoke($"Không thể lưu văn bản đến: {ex.Message}", false);
+            }
+        }
+        private void RefreshDocumentList()
+        {
+            using var db = new AppDbContext();
+            var updatedDocs = db
+                .IncomingDocuments
+                .Include(o => o.ConstructionStaff)
+                .Include(o => o.ReceivingOfficer)
+                .Include(o => o.Signer)
+                .Include(o => o.Recipient)
+                .ToList();
+
+            IncomingDocs.Clear();
+            foreach (var doc in updatedDocs)
+                IncomingDocs.Add(doc);
+
+            FilteredDocs = new ObservableCollection<IncomingDocument>(IncomingDocs);
+        }
+
+
+        // ✏️ Edit
+        private void EditDocument()
+        {
+            if (SelectedDocument == null)
+                return;
+            SelectedDocument.Summary += " (đã chỉnh sửa)";
+            SaveDocument();
+            OnPropertyChanged(nameof(SelectedDocument));
+        }
+
+        // 🗑️ Delete
+        private void DeleteDocument()
+        {
+            if (SelectedDocument == null)
+            {
+                Notify?.Invoke("Vui lòng chọn văn bản để xóa.", false);
+                return;
+            }
+
+            var confirm = MessageBox.Show("Bạn có chắc muốn xóa văn bản này?", "Xác nhận", MessageBoxButton.YesNo);
+            if (confirm != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                using var db = new AppDbContext();
+                var existing = db.IncomingDocuments.FirstOrDefault(d => d.Id == SelectedDocument.Id);
+                if (existing == null)
+                {
+                    Notify?.Invoke("Không tìm thấy văn bản để xóa.", false);
+                    return;
+                }
+
+                db.IncomingDocuments.Remove(existing);
+                db.SaveChanges();
+
+                IncomingDocs.Remove(SelectedDocument);
+                RefreshDocumentList();
+                ApplyFilter();
+                OnPropertyChanged(nameof(PagedDocs));
+
+
+                Notify?.Invoke("Xóa văn bản thành công", true);
+            }
+            catch (Exception ex)
+            {
+                Notify?.Invoke($"Lỗi khi xóa: {ex.Message}", false);
+            }
+        }
+
+        // 📤 Export Excel
         private void ExportToExcel()
         {
             var dialog = new SaveFileDialog
@@ -565,13 +554,9 @@ namespace DocumentHub.ViewModel
                     {
                         ws.Cell(row, 1).Value = doc.Id;
                         ws.Cell(row, 2).Value = doc.ArrivalNumber;
-                        ws.Cell(row, 3).Value = doc.ArrivalDate.HasValue
-                            ? doc.ArrivalDate.Value.ToString("dd/MM/yyyy")
-                            : "";
+                        ws.Cell(row, 3).Value = doc.ArrivalDate?.ToString("dd/MM/yyyy");
                         ws.Cell(row, 4).Value = doc.DocumentNumber;
-                        ws.Cell(row, 5).Value = doc.DocumentDate.HasValue
-                            ? doc.DocumentDate.Value.ToString("dd/MM/yyyy")
-                            : "";
+                        ws.Cell(row, 5).Value = doc.DocumentDate?.ToString("dd/MM/yyyy");
                         ws.Cell(row, 6).Value = doc.SecurityLevel;
                         ws.Cell(row, 7).Value = doc.DocumentType;
                         ws.Cell(row, 8).Value = doc.Summary;
@@ -581,7 +566,6 @@ namespace DocumentHub.ViewModel
                         ws.Cell(row, 12).Value = doc.Recipient?.Name;
                         ws.Cell(row, 13).Value = doc.ReceivingOfficer?.FullName;
                         ws.Cell(row, 14).Value = doc.ConstructionStaff?.FullName;
-
                         row++;
                     }
 
@@ -600,7 +584,6 @@ namespace DocumentHub.ViewModel
                     // Fit column
                     ws.Columns().AdjustToContents();
 
-                    // Save file
                     workbook.SaveAs(dialog.FileName);
                 }
             }
