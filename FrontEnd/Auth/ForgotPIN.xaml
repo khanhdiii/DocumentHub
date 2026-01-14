@@ -12,419 +12,442 @@
         Width="800"
         WindowStartupLocation="CenterScreen">
 
-  <Window.Resources>
-    <!-- Style for PasswordBox -->
-    <Style x:Key="RoundedPasswordBoxStyle"
-           TargetType="PasswordBox">
-      <Setter Property="Background"
-              Value="White" />
-      <Setter Property="BorderBrush"
-              Value="#D4A017" />
-      <Setter Property="BorderThickness"
-              Value="2" />
-      <Setter Property="Foreground"
-              Value="Black" />
-      <Setter Property="PasswordChar"
-              Value="•" />
-      <Setter Property="Padding"
-              Value="10,0,0,0" />
-      <Setter Property="Height"
-              Value="35" />
+    <Window.Resources>
+        <!-- Style for PasswordBox -->
+        <Style x:Key="RoundedPasswordBoxStyle"
+               TargetType="PasswordBox">
+            <Setter Property="Background"
+                    Value="White" />
+            <Setter Property="BorderBrush"
+                    Value="#D4A017" />
+            <Setter Property="BorderThickness"
+                    Value="2" />
+            <Setter Property="Foreground"
+                    Value="Black" />
+            <Setter Property="PasswordChar"
+                    Value="•" />
+            <Setter Property="Padding"
+                    Value="10,0,0,0" />
+            <Setter Property="Height"
+                    Value="35" />
 
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="PasswordBox">
-            <Border Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="12"
-                    SnapsToDevicePixels="True">
-              <ScrollViewer x:Name="PART_ContentHost"
-                            Margin="{TemplateBinding Padding}"
-                            VerticalAlignment="Center" />
-            </Border>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-    <!-- Style for Textbox -->
-    <Style x:Key="RoundedTextBoxStyle"
-           TargetType="TextBox">
-      <Setter Property="Background"
-              Value="White" />
-      <Setter Property="BorderBrush"
-              Value="#D4A017" />
-      <Setter Property="BorderThickness"
-              Value="2" />
-      <Setter Property="Foreground"
-              Value="Black" />
-      <Setter Property="Padding"
-              Value="10,0,0,0" />
-      <Setter Property="Height"
-              Value="35" />
-      <Setter Property="VerticalContentAlignment"
-              Value="Center" />
+        <!-- Style for Textbox -->
+        <Style x:Key="RoundedTextBoxStyle"
+               TargetType="TextBox">
+            <Setter Property="Background"
+                    Value="White" />
+            <Setter Property="BorderBrush"
+                    Value="#D4A017" />
+            <Setter Property="BorderThickness"
+                    Value="2" />
+            <Setter Property="Foreground"
+                    Value="Black" />
+            <Setter Property="Padding"
+                    Value="10,0,0,0" />
+            <Setter Property="Height"
+                    Value="35" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
 
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="TextBox">
-            <Border Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="12">
-              <ScrollViewer x:Name="PART_ContentHost" />
-            </Border>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-    <!-- Style for button -->
-    <Style TargetType="Button">
-      <Setter Property="Margin"
-              Value="10" />
-      <Setter Property="FontWeight"
-              Value="Bold" />
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="Button">
-            <Border Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="15">
-              <ContentPresenter HorizontalAlignment="Center"
-                                VerticalAlignment="Center" />
-            </Border>
-            <ControlTemplate.Triggers>
-              <!-- Hover Button hand-->
-              <Trigger Property="IsMouseOver"
-                       Value="True">
-                <Setter Property="Cursor"
-                        Value="Hand" />
-              </Trigger>
+        <!-- Style for button -->
+        <Style TargetType="Button">
+            <Setter Property="Margin"
+                    Value="10" />
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover Button hand-->
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Cursor"
+                                        Value="Hand" />
+                            </Trigger>
 
-            </ControlTemplate.Triggers>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-    <!-- Style for ComboBox and TextBox for consistent appearance -->
-    <Style TargetType="ComboBox">
-      <Setter Property="Height"
-              Value="35" />
-      <Setter Property="BorderBrush"
-              Value="#D4A017" />
-      <Setter Property="BorderThickness"
-              Value="2" />
-      <Setter Property="Margin"
-              Value="0,5,0,5" />
-    </Style>
+        <!-- Style for ComboBox and TextBox for consistent appearance -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Height"
+                    Value="35" />
+            <Setter Property="BorderBrush"
+                    Value="#D4A017" />
+            <Setter Property="BorderThickness"
+                    Value="2" />
+            <Setter Property="Margin"
+                    Value="0,5,0,5" />
+        </Style>
 
-    <Style TargetType="TextBox">
-      <Setter Property="Height"
-              Value="35" />
-      <Setter Property="Padding"
-              Value="10 0" />
-      <Setter Property="Margin"
-              Value="0,5,0,5" />
-      <Setter Property="BorderBrush"
-              Value="#D4A017" />
-      <Setter Property="BorderThickness"
-              Value="2" />
-      <Setter Property="VerticalContentAlignment"
-              Value="Center" />
-      <Setter Property="FontFamily"
-              Value="Montserrat" />
-    </Style>
-  </Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Height"
+                    Value="35" />
+            <Setter Property="Padding"
+                    Value="10 0" />
+            <Setter Property="Margin"
+                    Value="0,5,0,5" />
+            <Setter Property="BorderBrush"
+                    Value="#D4A017" />
+            <Setter Property="BorderThickness"
+                    Value="2" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="FontFamily"
+                    Value="Montserrat" />
+        </Style>
+    </Window.Resources>
 
-  <!-- BACKGROUND  -->
-  <Window.Background>
-    <LinearGradientBrush StartPoint="0,0"
-                         EndPoint="1,1">
-      <GradientStop Color="#2F5A3A"
-                    Offset="0.3" />
-      <GradientStop Color="#4F8A54"
-                    Offset="0.5" />
-      <GradientStop Color="#ffffff"
-                    Offset="0.7" />
-      <GradientStop Color="#7BBF7B"
-                    Offset="0.8" />
-    </LinearGradientBrush>
-  </Window.Background>
+    <!-- BACKGROUND  -->
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0"
+                             EndPoint="1,1">
+            <GradientStop Color="#2F5A3A"
+                          Offset="0.3" />
+            <GradientStop Color="#4F8A54"
+                          Offset="0.5" />
+            <GradientStop Color="#ffffff"
+                          Offset="0.7" />
+            <GradientStop Color="#7BBF7B"
+                          Offset="0.8" />
+        </LinearGradientBrush>
+    </Window.Background>
 
-  <Grid>
-    <!-- URL image -->
-    <Grid.Background>
-      <ImageBrush ImageSource="/Assets/Image/backgroundred.jpg"
-                  Stretch="UniformToFill"
-                  Opacity="0.65" />
-    </Grid.Background>
-    
-    <!-- Notification -->
-    <components:NotificationControl x:Name="notificationControl"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    Margin="10" />
+    <Grid>
+        <!-- URL image -->
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/Image/backgroundred.jpg"
+                        Stretch="UniformToFill"
+                        Opacity="0.65" />
+        </Grid.Background>
 
+        <!-- Notification -->
+        <StackPanel x:Name="NotificationContainer"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="10"
+                    Grid.ColumnSpan="2"
+                    Panel.ZIndex="999" />
 
-    <!-- Second border  -->
-    <Border Opacity="0.8"
-            Width="600"
-            Height="620"
-            BorderBrush="#FFD966"
-            Background="#F7E7C3"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            CornerRadius="15"
-            BorderThickness="3">
+        <!-- Second border  -->
+        <Border Opacity="0.8"
+                Width="600"
+                Height="620"
+                BorderBrush="#FFD966"
+                Background="#F7E7C3"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                CornerRadius="15"
+                BorderThickness="3">
 
-      <StackPanel Orientation="Vertical"
-                  Margin="40,20,40,20">
-        <!-- Title FORGOT PIN -->
-        <Label Content="QUÊN MÃ PIN"
-               FontFamily="Montserrat"
-               Foreground="#FFE20B0B"
-               FontSize="28"
-               FontWeight="Bold"
-               HorizontalAlignment="Center"
-               Margin="0,5,0,10" />
-
-        <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-          </Grid.RowDefinitions>
-
-          <!-- Question 1 -->
-          <StackPanel Grid.Row="0">
-            <TextBlock FontWeight="SemiBold"
+            <StackPanel Orientation="Vertical"
+                        Margin="40,20,40,20">
+                <!-- Title FORGOT PIN -->
+                <Label Content="QUÊN MÃ PIN"
                        FontFamily="Montserrat"
-                       Margin="5,0,0,0">
+                       Foreground="#FFE20B0B"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,5,0,10" />
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Question 1 -->
+                    <StackPanel Grid.Row="0">
+                        <TextBlock FontWeight="SemiBold"
+                                   FontFamily="Montserrat"
+                                   Margin="5,0,0,0">
                             <Run Text="Câu hỏi 1 " />
                             <Run Text="(*)"
                                  Foreground="Red" />
                             <Run Text=":" />
-            </TextBlock>
-            <ComboBox Name="cbQuestion1" />
-            <TextBox Name="tbAnswer1" />
-            <!-- Message/Error Block -->
-            <TextBlock x:Name="tb_MessageQuestion1"
-                       Text=""
-                       Foreground="#FFE20B0B"
-                       FontWeight="Bold"
-                       FontSize="12"
-                       Margin="0,5,0,5" />
+                        </TextBlock>
+                        <ComboBox Name="cbQuestion1" />
+                        <TextBox Name="tbAnswer1" />
+                        <!-- Message/Error Block -->
+                        <TextBlock x:Name="tb_MessageQuestion1"
+                                   Text=""
+                                   Foreground="#FFE20B0B"
+                                   FontWeight="Bold"
+                                   FontSize="12"
+                                   Margin="0,5,0,5" />
 
-          </StackPanel>
+                    </StackPanel>
 
-          <!-- Question 2 -->
-          <StackPanel Grid.Row="1"
-                      Margin="0,5">
-            <TextBlock FontWeight="SemiBold"
-                       FontFamily="Montserrat"
-                       Margin="5,0,0,0">
+                    <!-- Question 2 -->
+                    <StackPanel Grid.Row="1"
+                                Margin="0,5">
+                        <TextBlock FontWeight="SemiBold"
+                                   FontFamily="Montserrat"
+                                   Margin="5,0,0,0">
                             <Run Text="Câu hỏi 2 " />
                             <Run Text="(*)"
                                  Foreground="Red" />
                             <Run Text=":" />
-            </TextBlock>
-            <ComboBox Name="cbQuestion2" />
-            <TextBox Name="tbAnswer2" />
-            <TextBlock x:Name="tb_MessageQuestion2"
-                       Text=""
-                       Foreground="#FFE20B0B"
-                       FontWeight="Bold"
-                       FontSize="12"
-                       Margin="0,5,0,9" />
-          </StackPanel>
+                        </TextBlock>
+                        <ComboBox Name="cbQuestion2" />
+                        <TextBox Name="tbAnswer2" />
+                        <TextBlock x:Name="tb_MessageQuestion2"
+                                   Text=""
+                                   Foreground="#FFE20B0B"
+                                   FontWeight="Bold"
+                                   FontSize="12"
+                                   Margin="0,5,0,9" />
+                    </StackPanel>
 
-          <!-- Create password 2 (New Password) -->
-          <StackPanel Grid.Row="2"
-                      Margin="0,15,0,5">
-            <TextBlock FontWeight="SemiBold"
-                       FontFamily="Montserrat"
-                       Margin="5,0,0,0">
-                            <Run Text="Tạo mật khẩu  " />
+                    <!-- Create password 2 (New Password) -->
+                    <StackPanel Grid.Row="2"
+                                Margin="0,15,0,5">
+                        <TextBlock FontWeight="SemiBold"
+                                   FontFamily="Montserrat"
+                                   Margin="5,0,0,0">
+                            <Run Text="Nhập mật khẩu bảo mật" />
                             <Run Text="(*)"
                                  Foreground="Red" />
                             <Run Text=":" />
-            </TextBlock>
+                        </TextBlock>
 
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20*" />
-                <ColumnDefinition Width="197*" />
-                <ColumnDefinition Width="40" />
-                <ColumnDefinition Width="40" />
-              </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20*" />
+                                <ColumnDefinition Width="197*" />
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="40" />
+                            </Grid.ColumnDefinitions>
 
-              <!-- PasswordBox  -->
-              <PasswordBox x:Name="pbNewPassword"
-                           Style="{StaticResource RoundedPasswordBoxStyle}"
-                           Visibility="Visible"
-                           Grid.ColumnSpan="2"
-                           Margin="0,2,0,2" />
+                            <!-- PasswordBox  -->
+                            <PasswordBox x:Name="pbNewPassword"
+                                         Style="{StaticResource RoundedPasswordBoxStyle}"
+                                         Visibility="Visible"
+                                         Grid.ColumnSpan="2"
+                                         Margin="0,2,0,2" />
 
-              <!-- TextBox Show new password -->
-              <TextBox x:Name="tbNewPassword"
-                       Style="{StaticResource RoundedTextBoxStyle}"
-                       Visibility="Collapsed"
-                       Grid.ColumnSpan="2"
-                       Margin="0,2,0,2" />
+                            <!-- TextBox Show new password -->
+                            <TextBox x:Name="tbNewPassword"
+                                     Style="{StaticResource RoundedTextBoxStyle}"
+                                     Visibility="Collapsed"
+                                     Grid.ColumnSpan="2"
+                                     Margin="0,2,0,2" />
 
-              <!-- Toggle Eye -->
-              <Button Grid.Column="2"
-                      Click="ToggleNewPassword_Click"
-                      BorderThickness="0"
-                      Margin="10,10,10,10">
-                <fa:FontAwesome Icon="Eye"
-                                Foreground="#D4A017"
-                                FontSize="18" />
-              </Button>
+                            <!-- Toggle Eye -->
+                            <Button Grid.Column="2"
+                                    Click="ToggleNewPassword_Click"
+                                    BorderThickness="0"
+                                    Margin="10,10,10,10">
+                                <fa:FontAwesome Icon="Eye"
+                                                Foreground="#D4A017"
+                                                FontSize="18" />
+                            </Button>
 
-              <!-- Info -->
-              <Button Grid.Column="3"
-                      BorderThickness="0"
-                      Background="Transparent"
-                      Padding="0"
-                      Margin="10,10,10,10">
+                            <!-- Info -->
+                            <Button Grid.Column="3"
+                                    BorderThickness="0"
+                                    Background="Transparent"
+                                    Padding="0"
+                                    Margin="10,10,10,10">
 
-                <Button.Content>
-                  <fa:FontAwesome Icon="InfoCircle"
-                                  Foreground="#D4A017"
-                                  FontSize="18" />
-                </Button.Content>
+                                <Button.Content>
+                                    <fa:FontAwesome Icon="InfoCircle"
+                                                    Foreground="#D4A017"
+                                                    FontSize="18" />
+                                </Button.Content>
 
-                <Button.ToolTip>
-                  <ToolTip Style="{x:Null}">
-                    <StackPanel>
-                      <TextBlock FontWeight="Bold"
-                                 Margin="0,0,0,5">Quy định mật khẩu:</TextBlock>
-                      <TextBlock Foreground="#D4A017">• Không dùng tiếng Việt</TextBlock>
-                      <TextBlock Foreground="#D4A017">• Không dấu</TextBlock>
-                      <TextBlock Foreground="#D4A017">• Ít nhất 6 ký tự</TextBlock>
-                      <TextBlock Foreground="#D4A017">• Nên có chữ &amp; số</TextBlock>
+                                <Button.ToolTip>
+                                    <ToolTip Style="{x:Null}">
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold"
+                                                       Margin="0,0,0,5">Quy định mật khẩu:</TextBlock>
+                                            <TextBlock Foreground="#D4A017">• Không dùng tiếng Việt</TextBlock>
+                                            <TextBlock Foreground="#D4A017">• Không dấu</TextBlock>
+                                            <TextBlock Foreground="#D4A017">• Ít nhất 6 ký tự</TextBlock>
+                                            <TextBlock Foreground="#D4A017">• Nên có chữ &amp; số</TextBlock>
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Button.ToolTip>
+                            </Button>
+
+                        </Grid>
+
+                        <TextBlock x:Name="tb_MessagePassword"
+                                   Foreground="#FFE20B0B"
+                                   FontWeight="Bold"
+                                   FontSize="12" />
                     </StackPanel>
-                  </ToolTip>
-                </Button.ToolTip>
-              </Button>
 
-            </Grid>
-
-            <TextBlock x:Name="tb_MessagePassword"
-                       Foreground="#FFE20B0B"
-                       FontWeight="Bold"
-                       FontSize="12" />
-          </StackPanel>
-
-          <!-- Confirm password 2  -->
-          <StackPanel Grid.Row="3"
-                      Margin="0,5,0,15">
-            <TextBlock FontWeight="SemiBold"
-                       FontFamily="Montserrat"
-                       Margin="5,0,0,0">
-                            <Run Text="Xác nhận mật khẩu 2 " />
+                    <!-- Confirm password 2  -->
+                    <StackPanel Grid.Row="3"
+                                Margin="0,5,0,15">
+                        <TextBlock FontWeight="SemiBold"
+                                   FontFamily="Montserrat"
+                                   Margin="5,0,0,0">
+                            <Run Text="Xác nhận mật khẩu bảo mật " />
                             <Run Text="(*)"
                                  Foreground="Red" />
                             <Run Text=":" />
-            </TextBlock>
+                        </TextBlock>
 
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="47*" />
-                <ColumnDefinition Width="170*" />
-                <ColumnDefinition Width="40" />
-                <ColumnDefinition Width="40" />
-              </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="47*" />
+                                <ColumnDefinition Width="170*" />
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="40" />
+                            </Grid.ColumnDefinitions>
 
-              <!-- PasswordBox -->
-              <PasswordBox x:Name="pbConfirmPassword"
-                           Style="{StaticResource RoundedPasswordBoxStyle}"
-                           Visibility="Visible"
-                           Grid.ColumnSpan="2"
-                           Margin="0,2,0,2" />
+                            <!-- PasswordBox -->
+                            <PasswordBox x:Name="pbConfirmPassword"
+                                         Style="{StaticResource RoundedPasswordBoxStyle}"
+                                         Visibility="Visible"
+                                         Grid.ColumnSpan="2"
+                                         Margin="0,2,0,2" />
 
-              <!-- TextBox Show -->
-              <TextBox x:Name="tbConfirmPassword"
-                       Style="{StaticResource RoundedTextBoxStyle}"
-                       Visibility="Collapsed"
-                       Grid.ColumnSpan="2"
-                       Margin="0,2,0,2" />
+                            <!-- TextBox Show -->
+                            <TextBox x:Name="tbConfirmPassword"
+                                     Style="{StaticResource RoundedTextBoxStyle}"
+                                     Visibility="Collapsed"
+                                     Grid.ColumnSpan="2"
+                                     Margin="0,2,0,2" />
 
-              <!-- Toggle Eye -->
-              <Button Grid.Column="2"
-                      Click="ToggleConfirmPassword_Click"
-                      BorderThickness="0"
-                      Margin="10,10,10,10">
-                <fa:FontAwesome Icon="Eye"
-                                Foreground="#D4A017"
-                                FontSize="18" />
-              </Button>
+                            <!-- Toggle Eye -->
+                            <Button Grid.Column="2"
+                                    Click="ToggleConfirmPassword_Click"
+                                    BorderThickness="0"
+                                    Margin="10,10,10,10">
+                                <fa:FontAwesome Icon="Eye"
+                                                Foreground="#D4A017"
+                                                FontSize="18" />
+                            </Button>
 
-              <!-- Info -->
-              <Button Grid.Column="3"
-                      BorderThickness="0"
-                      Background="Transparent"
-                      Padding="0"
-                      Margin="10,10,10,10">
+                            <!-- Info -->
+                            <Button Grid.Column="3"
+                                    BorderThickness="0"
+                                    Background="Transparent"
+                                    Padding="0"
+                                    Margin="10,10,10,10">
 
-                <Button.Content>
-                  <fa:FontAwesome Icon="InfoCircle"
-                                  Foreground="#D4A017"
-                                  FontSize="18" />
-                </Button.Content>
+                                <Button.Content>
+                                    <fa:FontAwesome Icon="InfoCircle"
+                                                    Foreground="#D4A017"
+                                                    FontSize="18" />
+                                </Button.Content>
 
-                <Button.ToolTip>
-                  <ToolTip Style="{x:Null}">
-                    <StackPanel>
-                      <TextBlock FontWeight="Bold"
-                                 Margin="0,0,0,5">Quy định mật khẩu:</TextBlock>
-                      <TextBlock Foreground="#D4A017">• Không dùng tiếng Việt</TextBlock>
-                      <TextBlock Foreground="#D4A017">• Không dấu</TextBlock>
-                      <TextBlock Foreground="#D4A017">• Ít nhất 6 ký tự</TextBlock>
-                      <TextBlock Foreground="#D4A017">• Nên có chữ &amp; số</TextBlock>
+                                <Button.ToolTip>
+                                    <ToolTip Style="{x:Null}">
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold"
+                                                       Margin="0,0,0,5">Quy định mật khẩu:</TextBlock>
+                                            <TextBlock Foreground="#D4A017">• Không dùng tiếng Việt</TextBlock>
+                                            <TextBlock Foreground="#D4A017">• Không dấu</TextBlock>
+                                            <TextBlock Foreground="#D4A017">• Ít nhất 6 ký tự</TextBlock>
+                                            <TextBlock Foreground="#D4A017">• Nên có chữ &amp; số</TextBlock>
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Button.ToolTip>
+                            </Button>
+
+                        </Grid>
+
+                        <TextBlock x:Name="tb_MessageConfirmPassword"
+                                   Foreground="#FFE20B0B"
+                                   FontWeight="Bold"
+                                   FontSize="12" />
                     </StackPanel>
-                  </ToolTip>
-                </Button.ToolTip>
-              </Button>
 
-            </Grid>
+                    <!-- Button Confirm-->
+                    <Button Grid.Row="5"
+                            Content="Xác nhận"
+                            HorizontalAlignment="Left"
+                            Width="180"
+                            Height="40"
+                            FontSize="16"
+                            Background="#D4A017"
+                            BorderBrush="#A08013"
+                            BorderThickness="2"
+                            Foreground="#000000"
+                            Click="Submit_Click"
+                            VerticalAlignment="Top"
+                            Margin="76,3,0,0" />
 
-            <TextBlock x:Name="tb_MessageConfirmPassword"
-                       Foreground="#FFE20B0B"
-                       FontWeight="Bold"
-                       FontSize="12" />
-          </StackPanel>
+                    <!-- Back Confirm-->
+                    <Button Grid.Row="3"
+                            Content="Trở lại"
+                            HorizontalAlignment="Left"
+                            Width="180"
+                            Height="40"
+                            FontSize="16"
+                            Background="#FF222020"
+                            Foreground="White"
+                            BorderThickness="2"
+                            Click="btn_Back_Click"
+                            VerticalAlignment="Top"
+                            Margin="294,88,0,0"
+                            Grid.RowSpan="3" />
+                </Grid>
 
-          <!-- Button Confirm-->
-          <Button Grid.Row="5"
-                  Content="Xác nhận"
-                  HorizontalAlignment="Center"
-                  Width="180"
-                  Height="40"
-                  FontSize="16"
-                  Background="#D4A017"
-                  BorderBrush="#A08013"
-                  BorderThickness="2"
-                  Foreground="#000000"
-                  Click="Submit_Click"
-                  VerticalAlignment="Center" />
-        </Grid>
+            </StackPanel>
 
-      </StackPanel>
+        </Border>
 
-    </Border>
-    <Label Content="© K02 - 2025"
-           HorizontalAlignment="Right"
-           VerticalAlignment="Bottom"
-           Margin="0,0,50,0" />
+        <Label Content="© Văn bằng 2 - K02 TTHL, BDNV &amp; GDNN  số 2 2025-2026"
+               HorizontalAlignment="Left"
+               Margin="406,661,0,0"
+               VerticalAlignment="Top"
+               RenderTransformOrigin="2.048,-0.815"
+               FontFamily="Montserrat"
+               FontWeight="Bold"
+               Foreground="Black" />
 
-  </Grid>
+    </Grid>
 </Window>

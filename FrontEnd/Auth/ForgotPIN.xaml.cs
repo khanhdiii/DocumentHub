@@ -41,7 +41,9 @@ namespace DocumentHub.FrontEnd.Auth
             string answer2 = tbAnswer2.Text.Trim();
             string newPassword = pbNewPassword.Visibility == Visibility.Visible ? pbNewPassword.Password.Trim() : tbNewPassword.Text.Trim();
 
-            string confirmPassword = pbConfirmPassword.Visibility == Visibility.Visible ? pbConfirmPassword.Password.Trim(): tb_MessageConfirmPassword.Text.Trim();
+            string confirmPassword = pbConfirmPassword.Visibility == Visibility.Visible
+            ? pbConfirmPassword.Password.Trim()
+            : tbConfirmPassword.Text.Trim();
 
 
             bool hasError = false;
@@ -82,7 +84,8 @@ namespace DocumentHub.FrontEnd.Auth
                 hasError = true;
             }
 
-            if (hasError) return;
+            if (hasError)
+                return;
 
             if (newPassword != confirmPassword)
             {
@@ -104,45 +107,67 @@ namespace DocumentHub.FrontEnd.Auth
             // Successful
             using (var db = new DocumentHub.Data.AppDbContext())
             {
-                var credential = db.UserCredentials.FirstOrDefault(u => u.Id == _userId);
+                var credential = db.UserCredentials.FirstOrDefault(u =>
+                     u.SecondaryPassword == newPassword);
 
-                if (credential != null)
+
+                if (credential == null)
                 {
-                    bool matchQ1 = credential.SecurityQuestion1 == cbQuestion1.SelectedItem?.ToString()
-                                   && credential.SecurityAnswer1 == tbAnswer1.Text.Trim();
-
-                    bool matchQ2 = credential.SecurityQuestion2 == cbQuestion2.SelectedItem?.ToString()
-                                   && credential.SecurityAnswer2 == tbAnswer2.Text.Trim();
-
-                    if (matchQ1 && matchQ2)
-                    {
-                        var createPinWindow = new CreatePIN(_userId);
-                        createPinWindow.Show();
-                        this.Close();
-
-                        tb_MessagePassword.Foreground = Brushes.Green;
-                        tb_MessagePassword.Text = "Xác minh thành công!";
-                        pbNewPassword.Clear();
-                        pbConfirmPassword.Clear();
-                    }
-                    else
-                    {
-                        notificationControl.Show("❌ Câu hỏi hoặc câu trả lời không đúng!", false);
-                    }
+                    // Not find account
+                    NotificationManager.Show(NotificationContainer, "Không tìm thấy tài khoản!", false);
+                    return;
                 }
+
+                bool matchQ1 = string.Equals(
+                   credential.SecurityQuestion1?.Trim(),
+                   cbQuestion1.SelectedItem?.ToString()?.Trim(),
+                   StringComparison.OrdinalIgnoreCase)
+               && string.Equals(
+                   credential.SecurityAnswer1?.Trim(),
+                   tbAnswer1.Text.Trim(),
+                   StringComparison.OrdinalIgnoreCase);
+
+                bool matchQ2 = string.Equals(
+                    credential.SecurityQuestion2?.Trim(),
+                    cbQuestion2.SelectedItem?.ToString()?.Trim(),
+                    StringComparison.OrdinalIgnoreCase)
+                && string.Equals(
+                    credential.SecurityAnswer2?.Trim(),
+                    tbAnswer2.Text.Trim(),
+                    StringComparison.OrdinalIgnoreCase);
+
+
+
+                if (!matchQ1 || !matchQ2)
+                {
+                    // Check Answer or quesion wrong
+                    NotificationManager.Show(NotificationContainer, "Câu hỏi hoặc câu trả lời không đúng!", false);
+                    return;
+                }
+
+                // If true -> successful
+                NotificationManager.Show(NotificationContainer, "Xác minh thành công!", true);
+                pbNewPassword.Clear();
+                pbConfirmPassword.Clear();
+
+                var createPinWindow = new CreatePIN(_userId, credential.SecondaryPassword);
+                createPinWindow.Show();
+                this.Close();
             }
 
-            tb_MessagePassword.Foreground = Brushes.Green;
-            tb_MessagePassword.Text = "Xác minh thành công!";
-            pbNewPassword.Clear();
-            pbConfirmPassword.Clear();
         }
 
         // Load Question JSON
         public class SecurityQuestions
         {
-            public List<string> textQuestions { get; set; }
-            public List<string> numberQuestions { get; set; }
+            public List<string> textQuestions
+            {
+                get; set;
+            }
+            public List<string> numberQuestions
+            {
+                get; set;
+            }
         }
 
         private void LoadQuestions()
@@ -221,6 +246,14 @@ namespace DocumentHub.FrontEnd.Auth
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
+        private void btn_Back_Click(object sender, RoutedEventArgs e)
+        {
+            var loginForm = new LoginForm();
+            loginForm.Show();
+
+            this.Close();
+        }
+
 
     }
 }
