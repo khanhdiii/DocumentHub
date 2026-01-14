@@ -366,15 +366,105 @@
       <ColumnDefinition Width="Auto" />
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
-
-    <!-- Notification -->
+    <!-- Notification container (toast messages) -->
     <StackPanel x:Name="NotificationContainer"
                 Orientation="Vertical"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Margin="10"
                 Grid.ColumnSpan="2"
-                Panel.ZIndex="999" />
+                Panel.ZIndex="1000" />
+
+    <!-- Nút chuông -->
+    <Button x:Name="BtnNotification"
+            Grid.Column="1"
+            Width="40"
+            Height="40"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,20,50,0"
+            ToolTip="Thông báo công việc tuần"
+            Click="BtnNotification_Click"
+            FocusVisualStyle="{x:Null}"
+            Cursor="Hand"
+            Panel.ZIndex="1000"
+            Background="Transparent"
+            BorderThickness="0">
+      <Button.Template>
+        <ControlTemplate TargetType="Button">
+          <Border 
+                  CornerRadius="20"
+                  SnapsToDevicePixels="True"
+                  Effect="{DynamicResource DropShadow}">
+            <ContentPresenter HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <!-- Hover -->
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+              <Setter Property="Background"
+                      Value="#DCE6FF" />
+            </Trigger>
+            <!-- Pressed -->
+            <Trigger Property="IsPressed"
+                     Value="True">
+              <Setter Property="Background"
+                      Value="#2B6BEA" />
+              <Setter Property="Foreground"
+                      Value="White" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Button.Template>
+      <TextBlock FontFamily="Segoe MDL2 Assets"
+                 FontSize="20"
+                 Foreground="#2B6BEA"
+                 Text="&#xEA8F;" />
+      <!-- Chuông solid -->
+    </Button>
+
+    <!-- Popup thông báo -->
+    <Popup x:Name="NotificationPopup"
+           PlacementTarget="{Binding ElementName=BtnNotification}"
+           Placement="Bottom"
+           Panel.ZIndex="999"
+           StaysOpen="False">
+      <Border Background="White"
+              CornerRadius="8"
+              BorderBrush="#2B6BEA"
+              BorderThickness="1"
+              Padding="10"
+              Width="300">
+        <StackPanel>
+          <TextBlock Text="📅 Công việc trong tuần"
+                     FontSize="16"
+                     FontWeight="Bold"
+                     Foreground="#2B6BEA"
+                     Margin="0,0,0,10" />
+          <ItemsControl x:Name="NotificationList">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Margin="0,4">
+                  <TextBlock Text="{Binding Name}"
+                             FontWeight="Bold"
+                             Foreground="#333" />
+                  <TextBlock Text="{Binding StartDate, StringFormat='Ngày bắt đầu: {0:dd/MM/yyyy}'}"
+                             FontSize="12"
+                             Foreground="#666" />
+                  <TextBlock Text="{Binding Progress, StringFormat='Tiến độ: {0}%'}"
+                             FontSize="12"
+                             Foreground="#666" />
+                  <TextBlock Text="{Binding Status}"
+                             FontSize="12"
+                             Foreground="#666" />
+                </StackPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+    </Popup>
 
     <!--  Sidebar (make field explicit so code-behind can reference it)  -->
     <Border x:Name="Sidebar"
@@ -539,6 +629,12 @@
                   Content="Về Chúng Tôi"
                   Style="{StaticResource SidebarButtonStyle}"
                   Tag="&#xE902;" />
+          <Button x:Name="btnGuideline"
+                  Margin="0,6,0,0"
+                  Click="btnGuide_Click"
+                  Content="Hướng dẫn"
+                  Style="{StaticResource SidebarButtonStyle}"
+                  Tag="&#xE897;" />
           <Button x:Name="btnExit"
                   Margin="0,6,0,0"
                   Click="btnExit_Click"

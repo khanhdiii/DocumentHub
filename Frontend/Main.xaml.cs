@@ -1,4 +1,6 @@
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media.Animation;
 
 using DocumentHub.Components;
@@ -26,6 +28,9 @@ namespace DocumentHub.FrontEnd
             // Show notification after UI is loaded
             Loaded += (s, e) =>
             {
+                //Show notify after login
+                ShowWeeklyWorkScreen();
+
                 if (!string.IsNullOrEmpty(notificationMessage))
                 {
                     var toast = new NotificationControl();
@@ -48,6 +53,34 @@ namespace DocumentHub.FrontEnd
             // Load default sub-form
             ContentArea.Content = new DashboardView();
         }
+        private void ShowWeeklyWorkNotification()
+        {
+            var vm = new WorkProgressViewModel();
+            vm.LoadWorkItems();
+            vm.LoadWeeklyWork();
+            // Filter job in week
+            if (vm.WeeklyWorkList != null && vm.WeeklyWorkList.Any())
+            {
+                string message = "📅 Công việc trong tuần:\n" + string.Join("\n", vm.WeeklyWorkList.Select(w => "• " + w.Name));
+                var toast = new NotificationControl();
+                toast.Show(message, true);
+                NotificationContainer.Children.Add(toast);
+            }
+        }
+        private void ShowWeeklyWorkScreen()
+        {
+            var vm = new WorkProgressViewModel();
+            vm.LoadWorkItems();
+            vm.LoadWeeklyWork();
+
+            if (vm.WeeklyWorkList != null && vm.WeeklyWorkList.Any())
+            {
+                var view = new WeeklyWorkView();
+                view.DataContext = vm;
+
+                ContentArea.Content = view;
+            }
+        }
 
         private void BtnDashboard_Click(object sender, RoutedEventArgs e)
         {
@@ -62,6 +95,10 @@ namespace DocumentHub.FrontEnd
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {
             ContentArea.Content = new AboutView();
+        }
+        private void btnGuide_Click(object sender, RoutedEventArgs e)
+        {
+            ContentArea.Content = new UserGuide();
         }
 
         private void btnIncomingDoc_Click(object sender, RoutedEventArgs e)
@@ -295,5 +332,54 @@ namespace DocumentHub.FrontEnd
                 Sidebar.Width = toWidth;
             };
         }
+
+        public void ShowWeeklyWorkPopup()
+        {
+            var vm = new WorkProgressViewModel();
+            vm.LoadWorkItems();
+            vm.LoadWeeklyWork();
+
+            if (vm.WeeklyWorkList != null && vm.WeeklyWorkList.Any())
+            {
+                var popup = new Popup
+                {
+                    Placement = PlacementMode.Bottom,
+                    PlacementTarget = BtnNotification, 
+                    StaysOpen = false,
+                    AllowsTransparency = true,
+                    Child = new WeeklyWorkView { DataContext = vm }
+                };
+
+                popup.IsOpen = true;
+            }
+            else
+            {
+                MessageBox.Show("Không có công việc nào trong tuần này.",
+                                "Thông báo",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+            }
+        }
+        private void BtnNotification_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = new WorkProgressViewModel();
+            vm.LoadWorkItems();
+            vm.LoadWeeklyWork();
+
+            if (vm.WeeklyWorkList != null && vm.WeeklyWorkList.Any())
+            {
+                NotificationList.ItemsSource = vm.WeeklyWorkList;
+                NotificationPopup.IsOpen = true; // mở popup
+            }
+            else
+            {
+                MessageBox.Show("Không có công việc nào trong tuần này.",
+                                "Thông báo",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+            }
+        }
+
+
     }
 }
