@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
-using DocumentHub.Model; // để dùng Person
+using DocumentHub.Model; 
 
 namespace DocumentHub.ViewModel
 {
