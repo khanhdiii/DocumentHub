@@ -145,6 +145,17 @@ namespace DocumentHub.ViewModel
             }
         }
 
+        private bool _is11Months;
+        public bool Is11Months
+        {
+            get => _is11Months;
+            set
+            {
+                _is11Months = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _isSudden;
         public bool IsSudden
         {
@@ -175,10 +186,24 @@ namespace DocumentHub.ViewModel
 
         public DateTime? SeminarDate { get; set; }
         public DateTime? SuddenDate { get; set; }
+        public string? MonthNotifyDate { get; set; }  
+        public string? YearNotifyDate { get; set; }   
+        public string QuarterNotifyDate { get; set; }
+
+
 
         // Navigation properties  EF know relation ship 1-more
         public ICollection<WorkProgressMonth> Months { get; set; } = new List<WorkProgressMonth>();
+        public ICollection<WorkProgressQuater> Quarters { get; set; } = new List<WorkProgressQuater>();
+
+        [NotMapped]
+        public string SelectedQuarters
+        {
+            get; set;
+        }
+
         public ICollection<WorkProgressYear> Years { get; set; } = new List<WorkProgressYear>();
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
