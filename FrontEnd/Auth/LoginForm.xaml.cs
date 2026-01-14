@@ -6,14 +6,20 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
+using DocumentHub.FrontEnd.Views;
 using DocumentHub.ViewModel.Auth;
 
 namespace DocumentHub.FrontEnd.Auth
 {
     public partial class LoginForm : Window
     {
+        //Action call Notification
+        public event Action<string, bool> Notify;
+
         private readonly AuthViewModel _viewModel;
         private readonly char[] _pinDigits = new char[6];
+        private readonly string _message;
+        private readonly bool _isSuccess;
 
         public LoginForm()
         {
@@ -21,6 +27,14 @@ namespace DocumentHub.FrontEnd.Auth
             _viewModel = new AuthViewModel();
             DataContext = _viewModel;
             tb_Pin1.Focus();
+        }
+
+        public LoginForm(string message, bool isSuccess) : this()
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                DocumentHub.Components.NotificationManager.Show(NotificationContainer, message, isSuccess);
+            }
         }
 
         private static bool IsTextNumeric(string text) => Regex.IsMatch(text, "^[0-9]$");
@@ -120,6 +134,7 @@ namespace DocumentHub.FrontEnd.Auth
                         {
                             // Not find PIN → Notification Error
                             ClearPinAndFocus();
+                            DocumentHub.Components.NotificationManager.Show(NotificationContainer, "Mã PIN không chính xác", false);
                         }
                     }
                 };
@@ -127,6 +142,17 @@ namespace DocumentHub.FrontEnd.Auth
             }
         }
 
+        private void OpenGuide_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new Window
+            {
+                Title = "Hướng dẫn sử dụng",
+                Content = new DocumentHub.FrontEnd.Views.UserGuide(),
+                Height = 600,
+                Width = 900
+            };
+            window.ShowDialog();
+        }
 
         private void ClearPinAndFocus()
         {
@@ -171,6 +197,23 @@ namespace DocumentHub.FrontEnd.Auth
                 }
                 MoveFocusToPrevious(tb);
             }
+        }
+
+        private void ForgotPIN_Click(object sender, RoutedEventArgs e)
+        {
+            // Open ForgotPIN
+            var forgotPinWindow = new ForgotPIN(0); 
+            forgotPinWindow.Show();
+
+            this.Close();
+        }
+
+        private void ChangePIN_Click(object sender, RoutedEventArgs e)
+        {
+            var changePinWindow = new ChangePIN();
+            changePinWindow.Show();
+
+            this.Close();
         }
     }
 }
