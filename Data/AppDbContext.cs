@@ -1,11 +1,13 @@
 using DocumentHub.Model;
 using DocumentHub.ViewModel;
+using System.IO;
+using System.Windows;
 
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentHub.Data
 {
-    internal class AppDbContext : DbContext
+    public class AppDbContext : DbContext
     {
         public DbSet<IncomingDocument> IncomingDocuments
         {
@@ -57,10 +59,14 @@ namespace DocumentHub.Data
         }
 
 
-
-
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=D:\\DocumentHub\\app.db");
+        {
+            var dbPath = @"D:\DocumentHub\app.db";
+
+            options.UseSqlite($"Data Source={dbPath}");
+        }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
