@@ -70,7 +70,7 @@
                          FontSize="14"
                          Foreground="#333"
                          Margin="0,6" />
-                        </StackPanel>
+            </StackPanel>
 
             <!-- Block 3 -->
             <StackPanel Margin="12,6,0,0">
@@ -113,6 +113,33 @@
             </TextBlock>
           </StackPanel>
         </GroupBox>
+
+        <!-- Support Section -->
+        <Border Background="#FFF9F9F9"
+                CornerRadius="8"
+                Padding="12"
+                Margin="0,0,0,25"
+                BorderBrush="#2B6BEA"
+                BorderThickness="1">
+          <StackPanel HorizontalAlignment="Center">
+            <TextBlock Text="💖 Ủng hộ tôi"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="#2B6BEA"
+                       Margin="0,0,0,12"
+                       TextAlignment="Center"/>
+            <TextBlock Text="Nếu bạn thấy DocumentHub hữu ích, hãy quét mã QR bên dưới để ủng hộ tôi."
+                       FontSize="14"
+                       Foreground="#444"
+                       TextAlignment="Center"
+                       Margin="0,0,0,12"/>
+            <Image Source="/Assets/Image/About/qr.jpg"
+                   Width="180"
+                   Height="180"
+                   Stretch="Uniform"
+                   HorizontalAlignment="Center"/>
+          </StackPanel>
+        </Border>
 
         <!-- Footer -->
         <TextBlock Text="© Văn bằng 2 - TTHL, BDNV &amp; GDNN  số 2 2025-2026. All rights reserved"

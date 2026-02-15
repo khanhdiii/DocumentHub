@@ -21,9 +21,12 @@
 
 	<ItemGroup>
 		<None Update="app.db"> <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> </None>
+		<None Update="Assets\Questions\SecurityQuestions.json"> <CopyToOutputDirectory>Always</CopyToOutputDirectory> </None>
 	</ItemGroup>
 	<ItemGroup>
-	
+		<Resource Include="Assets\Image\About\qr.jpg">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
 		<Resource Include="Assets\Image\backgroundred.jpg">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
