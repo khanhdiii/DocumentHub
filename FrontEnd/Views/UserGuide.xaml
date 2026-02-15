@@ -1,1013 +1,316 @@
 ﻿<UserControl x:Class="DocumentHub.FrontEnd.Views.UserGuide"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d"
-             d:DesignHeight="450"
-             d:DesignWidth="800">
-  <Grid Background="White"
-        Margin="20">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-      <StackPanel>
-
-        <!-- Tiêu đề -->
-        <TextBlock Text="HƯỚNG DẪN SỬ DỤNG PHẦN MỀM"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   Foreground="DarkBlue"
-                   Margin="0,0,0,20" />
-
-        <!-- Giới thiệu -->
-        <TextBlock Text="1. Giới thiệu"
-                   FontSize="18"
-                   FontWeight="SemiBold"
-                   Margin="0,0,0,10" />
-        <TextBlock Text="DocumentHub là nền tảng quản lý văn bản giúp đơn giản hóa quy trình xử lý, lưu trữ và phân tích tài liệu. Phần mềm hỗ trợ các chức năng như đăng nhập, tạo mã PIN, quản lý văn bản đến/đi, theo dõi tiến độ và thống kê phân tích."
-                   TextWrapping="Wrap"
-                   Margin="0,0,0,20" />
-
-        <!-- Đăng nhập -->
-        <Border BorderBrush="#2B6BEA"
-                BorderThickness="1"
-                CornerRadius="8"
-                Padding="12"
-                Margin="0,0,0,20"
-                Background="#F9FBFF">
-          <StackPanel>
-            <TextBlock Text="Chức năng: Đăng nhập"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       Foreground="#2B6BEA"
-                       Margin="0,0,0,10" />
-            <Image Source="pack://application:,,,/Assets/Image/Guideline/Login.png"
-                   Height="250"
-                   Stretch="Uniform"
-                   Margin="0,0,0,10" />
-            <TextBlock Text="Người dùng có thể đăng nhập bằng mã PIN gồm 6 số để truy cập hệ thống DocumentHub."
-                       TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="#333"
-                       Margin="0,0,0,10" />
-            <TextBlock Text="Hướng dẫn sử dụng:"
-                       FontSize="16"
-                       FontWeight="SemiBold"
-                       Foreground="#2B6BEA"
-                       Margin="0,10,0,6" />
-            <StackPanel Margin="12,0,0,0">
-              <TextBlock Text="• Mở phần đầu tiên sẽ hiển thị màn hình Đăng nhập"
-                         FontSize="14"
-                         Margin="0,2" />
-              <TextBlock Text="• Nhập mã PIN"
-                         FontSize="14"
-                         Margin="0,2" />
-              <TextBlock Text="• Sau khi đăng nhập thành công, bạn sẽ được chuyển đến màn hình chính."
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Main.png"
-                     Height="250"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <!-- CreateForgotPIN -->
-        <Border BorderBrush="#2B6BEA"
-                BorderThickness="1"
-                CornerRadius="8"
-                Padding="12"
-                Margin="0,0,0,20"
-                Background="#F9FBFF">
-          <StackPanel>
-            <!-- Tiêu đề -->
-            <TextBlock Text="Chức năng:  Tạo mã PIN cấp 2"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       Foreground="#2B6BEA"
-                       Margin="0,0,0,10" />
-
-            <!-- Ảnh minh họa -->
-            <Image Source="pack://application:,,,/Assets/Image/Guideline/CreateForgotPIN.png"
-                   Height="250"
-                   Stretch="Uniform"
-                   Margin="0,0,0,10" />
-
-            <!-- Mô tả -->
-            <TextBlock Text="Chức năng này cho phép người dùng tạo lại mã PIN khi quên, đảm bảo vẫn có thể đăng nhập và sử dụng hệ thống DocumentHub."
-                       TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="#333"
-                       Margin="0,0,0,10" />
-
-            <!-- Hướng dẫn -->
-            <TextBlock Text="Hướng dẫn sử dụng:"
-                       FontSize="16"
-                       FontWeight="SemiBold"
-                       Foreground="#2B6BEA"
-                       Margin="0,10,0,6" />
-
-            <StackPanel Margin="12,0,0,0">
-              <!-- Bước 1 -->
-              <TextBlock Text="• Bước 1: Khi đăng nhập khi chưa tạo mã pin cấp 2 thì màn hình sẽ chuyển đến màn hinh này. "
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/CreateForgotPIN.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- Bước 2 -->
-              <TextBlock Text="• Bước 2: Nhập thông tin câu hỏi"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/CreateForgotPIN2.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- Bước 3 -->
-              <TextBlock FontSize="14"
-                         Margin="0,2">
-                          <Run Text="• Bước 3: Nhập đầy đủ thông tin trong form và nhấn " />
-                          <Run Text="Tạo mã PIN cấp 2"
-                               FontWeight="Bold" />
-              </TextBlock>
-
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/CreateForgotPIN4.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- Bước 4 -->
-              <TextBlock FontSize="14"
-                         Margin="0,2">
-             <Run Text="• Bước 4: Tạo thành công và trở về màn hình" />
-             <Run Text="Đăng nhập"
-                  FontWeight="Bold" />
-              </TextBlock>
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Login2.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <!-- ForgotPIN -->
-        <Border BorderBrush="#2B6BEA"
-                BorderThickness="1"
-                CornerRadius="8"
-                Padding="12"
-                Margin="0,0,0,20"
-                Background="#F9FBFF">
-          <StackPanel>
-            <!-- Tiêu đề -->
-            <TextBlock Text="Chức năng: Quên mã PIN"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       Foreground="#2B6BEA"
-                       Margin="0,0,0,10" />
-
-            <!-- Ảnh minh họa tổng quan -->
-            <Image Source="pack://application:,,,/Assets/Image/Guideline/ForgotPIN.png"
-                   Height="250"
-                   Stretch="Uniform"
-                   Margin="0,0,0,10" />
-
-            <!-- Mô tả -->
-            <TextBlock Text="Chức năng Quên mã PIN cho phép người dùng tạo lại mã PIN khi không nhớ, đảm bảo vẫn có thể đăng nhập và sử dụng hệ thống DocumentHub. Ở màn hình có 3 phần chính là phần nhập, ô Xác nhận và ô Trở lại(khi nhấn sẽ chuyến đến màn hình Đăng nhập)."
-                       TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="#333"
-                       Margin="0,0,0,10" />
-
-            <!-- Hướng dẫn -->
-            <TextBlock Text="Hướng dẫn sử dụng:"
-                       FontSize="16"
-                       FontWeight="SemiBold"
-                       Foreground="#2B6BEA"
-                       Margin="0,10,0,6" />
-
-            <StackPanel Margin="12,0,0,0">
-              <!-- Bước 1 -->
-              <TextBlock FontSize="14"
-                         Margin="0,2">
-                <Run Text="• Bước 1: Chọn chức năng " />
-                <Run Text="Quên mã PIN"
-                     FontWeight="Bold" />
-                <Run Text=" trên màn hình đăng nhập." />
-              </TextBlock>
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/ForgotPIN.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- Bước 2 -->
-              <TextBlock Text="• Bước 2: Nhập thông tin xác thực (ví dụ: câu hỏi Họ và tên của bạn là gì?, Bạn sinh năm bao nhiêu?, nhập mật khẩu bảo mật )."
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/ForgotPIN2.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- Bước 3 -->
-              <TextBlock FontSize="14"
-                         Margin="0,2">
-                <Run Text="• Bước 3: Nhập đầy đủ thông tin trong form và nhấn " />
-                <Run Text="Tạo mã PIN mới."
-                     FontWeight="Bold" />
-                Khi nhập đúng thông tin thì màn hình sẽ chuyển đến màn hình
-                 <TextBlock Text=" "
-                            FontSize="14"
-                            >
-                   <Run Text="Tạo mã PIN"
-                         FontWeight="Bold" />
-                 </TextBlock>
-              </TextBlock>
-
-             
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/CreateForgotPIN4.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <!-- CreatePIN -->
-        <Border BorderBrush="#2B6BEA"
-                BorderThickness="1"
-                CornerRadius="8"
-                Padding="12"
-                Margin="0,0,0,20"
-                Background="#F9FBFF">
-          <StackPanel>
-            <!-- Tiêu đề -->
-            <TextBlock Text="Chức năng: Tạo mã PIN"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       Foreground="#2B6BEA"
-                       Margin="0,0,0,10" />
-
-            <!-- Ảnh minh họa tổng quan -->
-            <Image Source="pack://application:,,,/Assets/Image/Guideline/CreatePIN.png"
-                   Height="250"
-                   Stretch="Uniform"
-                   Margin="0,0,0,10" />
-
-            <!-- Mô tả -->
-            <TextBlock Text="Tạo mã PIN giúp tạo lại Mã PIN khi đã xác thực qua bước Quên mã PIN"
-                       TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="#333"
-                       Margin="0,0,0,10" />
-
-            <!-- Hướng dẫn -->
-            <TextBlock Text="Hướng dẫn sử dụng:"
-                       FontSize="16"
-                       FontWeight="SemiBold"
-                       Foreground="#2B6BEA"
-                       Margin="0,10,0,6" />
-
-            <StackPanel Margin="12,0,0,0">
-              <!-- Bước 1 -->
-              <TextBlock Text="• Bước 1: Nhập Mã PIN"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/CreatePIN.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- Bước 2 -->
-              <TextBlock FontSize="14"
-                         Margin="0,2">
-        <Run Text="• Bước 2: Nhập đầy đủ thông tin và nhấn " />
-        <Run Text="Tạo mã PIN"
-                FontWeight="Bold" />
-              </TextBlock>
-              <TextBlock Text="Khi tạo thành công sẽ hiện thông báo và chuyển về màn hình đăng nhập"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/CreatePIN2.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <!-- Main -->
-        <Border BorderBrush="#2B6BEA"
-                BorderThickness="1"
-                CornerRadius="8"
-                Padding="12"
-                Margin="0,0,0,20"
-                Background="#F9FBFF">
-          <StackPanel>
-            <!-- Tiêu đề -->
-            <TextBlock Text="Chức năng: Màn hình chính"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       Foreground="#2B6BEA"
-                       Margin="0,0,0,10" />
-
-            <!-- Ảnh minh họa tổng quan -->
-            <Image Source="pack://application:,,,/Assets/Image/Guideline/Main.png"
-                   Height="250"
-                   Stretch="Uniform"
-                   Margin="0,0,0,10" />
-            <Image Source="pack://application:,,,/Assets/Image/Guideline/Main2.png"
-                   Height="250"
-                   Stretch="Uniform"
-                   Margin="0,0,0,10" />
-
-            <!-- Mô tả -->
-            <TextBlock Text="Màn hình chính cung cấp giao diện tổng quan, nơi người dùng có thể truy cập nhanh đến các chức năng như Dashboard, Văn bản đến/đi, Tiến độ công việc, Phân tích và Quản lý nâng cao,... Ở đây 1. Hiển thị nội dung thông báo công việc trong tuần 2. Nút nhấn để hiện thị thông báo công việc trong tuần 3. Hiển thị Bar chứa các chức năng khác trong hệ thống 4. Dùng để thu nhỏ Bar để phóng to nội dung hơn."
-                       TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="#333"
-                       Margin="0,0,0,10" />
-
-            <!-- Hướng dẫn -->
-            <TextBlock Text="Hướng dẫn sử dụng:"
-                       FontSize="16"
-                       FontWeight="SemiBold"
-                       Foreground="#2B6BEA"
-                       Margin="0,10,0,6" />
-
-            <StackPanel Margin="12,0,0,0">
-              <!-- Bước 1 -->
-              <TextBlock Text="• Bước 1: Sau khi đăng nhập thành công, hệ thống sẽ tự động chuyển đến màn hình chính. và nhấn biểu tượng chuông ở góc trên bên phải sẽ hiển thị nội dung thông báo công việc trong tuần"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Main3.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- Bước 2 -->
-              <TextBlock Text="• Bước 2: Sử dụng menu bên trái nhấn vào biểu tượng Bar ở góc trên bên phải để thu nhỏ menu"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Main4.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- Bước 3 -->
-              <TextBlock Text="• Bước 3: Quan sát phần nội dung bên phải hiển thị chi tiết theo chức năng đã chọn."
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Main3.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <!-- Dashboard -->
-        <Border BorderBrush="#2B6BEA"
-                BorderThickness="1"
-                CornerRadius="8"
-                Padding="12"
-                Margin="0,0,0,20"
-                Background="#F9FBFF">
-          <StackPanel>
-            <!-- Tiêu đề -->
-            <TextBlock Text="Chức năng: Dashboard"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       Foreground="#2B6BEA"
-                       Margin="0,0,0,10" />
-
-            <!-- Ảnh minh họa tổng quan -->
-            <Image Source="pack://application:,,,/Assets/Image/Guideline/Dashboard.png"
-                   Height="250"
-                   Stretch="Uniform"
-                   Margin="0,0,0,10" />
-
-            <!-- Mô tả -->
-            <TextBlock Text="Dashboard cung cấp cái nhìn tổng quan về tiến độ xử lý văn bản, trạng thái các phòng ban và thống kê hoạt động."
-                       TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="#333"
-                       Margin="0,0,0,10" />
-
-            <!-- Hướng dẫn -->
-            <TextBlock Text="Hướng dẫn sử dụng:"
-                       FontSize="16"
-                       FontWeight="SemiBold"
-                       Foreground="#2B6BEA"
-                       Margin="0,10,0,6" />
-
-            <StackPanel Margin="12,0,0,0">
-              <!-- Bước 1 -->
-              <TextBlock Text="• Bước 1: Truy cập Dashboard từ menu chính."
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Dashboard.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-              <TextBlock Text="Màn hình khi đã chuyển qua tháng khác"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Dashboard2.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- Bước 2 -->
-              <TextBlock Text="• Bước 2: Khi chọn vào lực chọn Qúy thì sẽ hiển thị 3 quý trong 1 năm"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Dashboard3.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- Bước 3 -->
-              <TextBlock Text="• Bước 3: Nhấn vào từng mục để xem chi tiết hoặc chuyển hướng đến chức năng liên quan."
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Dashboard3.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Dashboard4.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-              <TextBlock Text="Khi chỉ vào 1 ô lịch thì sẽ hiển thị công việc đến hạn"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Dashboard6.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <!-- Analytic -->
-        <Border BorderBrush="#2B6BEA"
-                BorderThickness="1"
-                CornerRadius="8"
-                Padding="12"
-                Margin="0,0,0,20"
-                Background="#F9FBFF">
-          <StackPanel>
-            <!-- Tiêu đề -->
-            <TextBlock Text="Chức năng: Phân tích"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       Foreground="#2B6BEA"
-                       Margin="0,0,0,10" />
-
-            <!-- Ảnh minh họa tổng quan -->
-            <Image Source="pack://application:,,,/Assets/Image/Guideline/Analytic.png"
-                   Height="250"
-                   Stretch="Uniform"
-                   Margin="0,0,0,10" />
-
-            <!-- Mô tả -->
-            <TextBlock Text="Màn hình Phân tích cung cấp các biểu đồ và số liệu thống kê giúp người dùng theo dõi hiệu quả xử lý văn bản, khối lượng công việc và xu hướng hoạt động."
-                       TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="#333"
-                       Margin="0,0,0,10" />
-
-            <!-- Hướng dẫn -->
-            <TextBlock Text="Hướng dẫn sử dụng:"
-                       FontSize="16"
-                       FontWeight="SemiBold"
-                       Foreground="#2B6BEA"
-                       Margin="0,10,0,6" />
-
-            <StackPanel Margin="12,0,0,0">
-              <!-- Bước 1 -->
-              <TextBlock Text="• Bước 1: Truy cập mục Phân tích từ menu chính."
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Analytic.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- Bước 2 -->
-              <TextBlock Text="• Bước 2: Xem các biểu đồ thống kê theo lựa chọn năm"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/Analytic2.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <!-- IncomingDocument -->
-        <Border BorderBrush="#2B6BEA"
-                BorderThickness="1"
-                CornerRadius="8"
-                Padding="12"
-                Margin="0,0,0,20"
-                Background="#F9FBFF">
-          <StackPanel>
-            <TextBlock Text="Chức năng: Văn bản đến"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       Foreground="#2B6BEA"
-                       Margin="0,0,0,10" />
-            <TextBlock Text="Quản lý văn bản đến giúp người dùng tiếp nhận, phân loại và xử lý các văn bản được gửi đến đơn vị."
-                       TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="#333"
-                       Margin="0,0,0,10" />
-            <TextBlock Text="Hướng dẫn sử dụng:"
-                       FontSize="16"
-                       FontWeight="SemiBold"
-                       Foreground="#2B6BEA"
-                       Margin="0,10,0,6" />
-            <StackPanel Margin="12,0,0,0">
-              <TextBlock Text="• Bước 1: Truy cập mục Văn bản đến từ menu."
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/IncomingDocument.png"
-                     Height="250"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-              <TextBlock Text="• Bước 2: Nhập thông tin và nhấn nút lưu thì thông tin đã nhập lưu vào bảng và thông báo lưu thành công"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/IncomingDocument2-2.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/IncomingDocument2-3.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-              <TextBlock Text="• Bước 3: Nhấn vào xuất excel, màn hình sẽ chuyển đến màn chỏ đến đường dẫn file cần dẫn đến và lưu về."
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/IncomingDocument3.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-              <TextBlock Text="Màn hình file excel khi được tải về"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/IncomingDocument3-1.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <!-- OutgoingDocument -->
-        <Border BorderBrush="#2B6BEA"
-                BorderThickness="1"
-                CornerRadius="8"
-                Padding="12"
-                Margin="0,0,0,20"
-                Background="#F9FBFF">
-          <StackPanel>
-            <!-- Tiêu đề -->
-            <TextBlock Text="Chức năng: Văn bản đi"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       Foreground="#2B6BEA"
-                       Margin="0,0,0,10" />
-
-            <!-- Mô tả -->
-            <TextBlock Text="Chức năng Văn bản đi cho phép người dùng soạn thảo, phê duyệt và gửi văn bản đến các đơn vị khác một cách nhanh chóng và chính xác."
-                       TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="#333"
-                       Margin="0,0,0,10" />
-
-            <!-- Hướng dẫn -->
-            <TextBlock Text="Hướng dẫn sử dụng:"
-                       FontSize="16"
-                       FontWeight="SemiBold"
-                       Foreground="#2B6BEA"
-                       Margin="0,10,0,6" />
-
-            <StackPanel Margin="12,0,0,0">
-              <!-- Bước 1 -->
-              <TextBlock Text="• Bước sử dụng tương tự Văn bản đến"
-                         FontSize="14"
-                         Margin="0,2" />
-              <Image Source="pack://application:,,,/Assets/Image/Guideline/OutgoingDocument.png"
-                     Height="200"
-                     Stretch="Uniform"
-                     Margin="0,0,0,10" />
-
-              <!-- WorkProgress -->
-              <Border BorderBrush="#2B6BEA"
-                      BorderThickness="1"
-                      CornerRadius="8"
-                      Padding="12"
-                      Margin="0,0,0,20"
-                      Background="#F9FBFF">
-                <StackPanel>
-                  <!-- Tiêu đề -->
-                  <TextBlock Text="Chức năng: Tiến độ công việc"
-                             FontSize="20"
-                             FontWeight="Bold"
-                             Foreground="#2B6BEA"
-                             Margin="0,0,0,10" />
-
-                  <!-- Ảnh tổng quan -->
-                  <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress.png"
-                         Height="250"
-                         Stretch="Uniform"
-                         Margin="0,0,0,10" />
-
-                  <!-- Mô tả -->
-                  <TextBlock Text="Chức năng Tiến độ công việc giúp người dùng theo dõi trạng thái xử lý văn bản theo từng bước, từng phòng ban và từng người phụ trách."
-                             TextWrapping="Wrap"
-                             FontSize="14"
-                             Foreground="#333"
-                             Margin="0,0,0,10" />
-
-                  <!-- Hướng dẫn -->
-                  <TextBlock Text="Hướng dẫn sử dụng:"
-                             FontSize="16"
-                             FontWeight="SemiBold"
-                             Foreground="#2B6BEA"
-                             Margin="0,10,0,6" />
-
-                  <StackPanel Margin="12,0,0,0">
-                    <!-- Trường hợp 1 -->
-                    <TextBlock Text="• Trường hợp 1: Truy cập mục Tiến độ công việc từ menu bên trái. chọn thông tin Qúy và lưu thông tin"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress2-1.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress2-2.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <TextBlock Text="Màn hình đã lưu thành công"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress2-3.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <!-- Trường hợp 2 -->
-                    <TextBlock Text="• Trường hợp 2: Lựa chọn Tháng"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress3.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress3-1.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-
-                    <!-- Trường hợp 3 -->
-                    <TextBlock Text="• Trường hợp 3: Lựa chọn Năm"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress4.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress4-1.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-
-                    <!-- Trường hợp 4 -->
-                    <TextBlock Text="• Trường hợp 4:Lựa chọn đột xuất"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress5.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress5-1.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <!-- Trường hợp 5 -->
-                    <TextBlock Text="• Trường hợp 5: Lựa chọn chuyên đề"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress6.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress6-1.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <!-- Bước 1 -->
-                    <TextBlock Text="• Bước 1: Lọc công việc theo lựa chọn, khi chọn và nhấn nút lọc thì sẽ hiện ra những dữ liệu cần cho bảng"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress7.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress7-1.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <!-- Bước 7 -->
-                    <TextBlock Text="• Bước 7: Theo dõi tổng quan tiến độ toàn hệ thống qua biểu đồ."
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress7.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                  </StackPanel>
-                </StackPanel>
-              </Border>
-
-              <!-- ReceivingOfficer -->
-              <Border BorderBrush="#2B6BEA"
-                      BorderThickness="1"
-                      CornerRadius="8"
-                      Padding="12"
-                      Margin="0,0,0,20"
-                      Background="#F9FBFF">
-                <StackPanel>
-                  <!-- Tiêu đề -->
-                  <TextBlock Text="Chức năng: Người tiếp nhận"
-                             FontSize="20"
-                             FontWeight="Bold"
-                             Foreground="#2B6BEA"
-                             Margin="0,0,0,10" />
-
-                  <!-- Ảnh tổng quan -->
-                  <Image Source="pack://application:,,,/Assets/Image/Guideline/RecevingOfficer.png"
-                         Height="200"
-                         Stretch="Uniform"
-                         Margin="0,0,0,10" />
-
-                  <!-- Mô tả -->
-                  <TextBlock Text="Chức năng Người tiếp nhận cho phép xác định ai là người phụ trách tiếp nhận văn bản đến, đảm bảo quy trình xử lý được phân công rõ ràng và minh bạch."
-                             TextWrapping="Wrap"
-                             FontSize="14"
-                             Foreground="#333"
-                             Margin="0,0,0,10" />
-
-                  <!-- Hướng dẫn -->
-                  <TextBlock Text="Hướng dẫn sử dụng:"
-                             FontSize="16"
-                             FontWeight="SemiBold"
-                             Foreground="#2B6BEA"
-                             Margin="0,10,0,6" />
-
-                  <StackPanel Margin="12,0,0,0">
-                    <!-- Bước 1 -->
-                    <TextBlock Text="• Bước 1: Truy cập mục Người tiếp nhận từ menu bên trái. Đây là các chức năng của màn hình"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/RecevingOfficer2.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/RecevingOfficer2-1.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-
-                    <!-- Bước 2 -->
-                    <TextBlock Text="• Bước 2: Chọn chức năng sửa"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/RecevingOfficer2-2.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/RecevingOfficer2-3.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-
-                    <!-- Bước 3 -->
-                    <TextBlock FontSize="14"
-                               Margin="0,2">• Bước 3:
-                       Lọc dữ liệu trong danh sách
-                    </TextBlock>
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/RecevingOfficer3.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-
-                    <!-- Bước 4 -->
-                    <TextBlock Text="• Bước 4: Chọn chức năng xóa"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/RecevingOfficer4.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/RecevingOfficer4-1.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                  </StackPanel>
-
-                  <!-- ConstructionStaff -->
-                  <Border BorderBrush="#2B6BEA"
-                          BorderThickness="1"
-                          CornerRadius="8"
-                          Padding="12"
-                          Margin="0,0,0,20"
-                          Background="#F9FBFF">
-                    <StackPanel>
-                      <TextBlock Text="Chức năng: Cán bộ xử lý"
-                                 FontSize="20"
-                                 FontWeight="Bold"
-                                 Foreground="#2B6BEA"
-                                 Margin="0,0,0,10" />
-                      <Image Source="pack://application:,,,/Assets/Image/Guideline/ConstructionStaff.png"
-                             Height="250"
-                             Stretch="Uniform"
-                             Margin="0,0,0,10" />
-                      <TextBlock Text="Chức năng này giúp quản lý danh sách nhân sự tham gia thi công, phân công nhiệm vụ và theo dõi tiến độ thực hiện."
-                                 TextWrapping="Wrap"
-                                 FontSize="14"
-                                 Foreground="#333"
-                                 Margin="0,0,0,10" />
-                      <TextBlock Text="Hướng dẫn sử dụng:"
-                                 FontSize="16"
-                                 FontWeight="SemiBold"
-                                 Foreground="#2B6BEA"
-                                 Margin="0,10,0,6" />
-                      <StackPanel Margin="12,0,0,0">
-                        <TextBlock Text="• Bước 1: Truy cập mục Nhân sự thi công từ menu."
-                                   FontSize="14"
-                                   Margin="0,2" />
-                        <TextBlock Text="• Bước 2: Xem danh sách nhân sự và trạng thái công việc."
-                                   FontSize="14"
-                                   Margin="0,2" />
-                        <TextBlock Text="• Bước 3: Phân công nhiệm vụ và cập nhật tiến độ."
-                                   FontSize="14"
-                                   Margin="0,2" />
-                      </StackPanel>
-                    </StackPanel>
-                  </Border>
-                  
-
-                </StackPanel>
-              </Border>
-
-              <!-- Signer -->
-              <Border BorderBrush="#2B6BEA"
-                      BorderThickness="1"
-                      CornerRadius="8"
-                      Padding="12"
-                      Margin="0,0,0,20"
-                      Background="#F9FBFF">
-                <StackPanel>
-                  <TextBlock Text="Chức năng: Người ký duyệt"
-                             FontSize="20"
-                             FontWeight="Bold"
-                             Foreground="#2B6BEA"
-                             Margin="0,0,0,10" />
-                  <Image Source="pack://application:,,,/Assets/Image/Guideline/Signer.png"
-                         Height="250"
-                         Stretch="Uniform"
-                         Margin="0,0,0,10" />
-                  <TextBlock Text="Người ký duyệt là người có thẩm quyền phê duyệt văn bản trước khi ban hành hoặc chuyển tiếp."
-                             TextWrapping="Wrap"
-                             FontSize="14"
-                             Foreground="#333"
-                             Margin="0,0,0,10" />
-                  <TextBlock Text="Hướng dẫn sử dụng:"
-                             FontSize="16"
-                             FontWeight="SemiBold"
-                             Foreground="#2B6BEA"
-                             Margin="0,10,0,6" />
-                  <StackPanel Margin="12,0,0,0">
-                    <TextBlock Text="• Bước 1: Truy cập mục Người ký duyệt từ menu. Thêm người ký"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/Signer2-1.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                    <TextBlock Text="Người ký khi thêm thì sẽ hiển thị màn hình Văn bán đến, văn bản đi"
-                               FontSize="14"
-                               Margin="0,2" />
-                    <Image Source="pack://application:,,,/Assets/Image/Guideline/Signer2-2.png"
-                           Height="200"
-                           Stretch="Uniform"
-                           Margin="0,0,0,10" />
-                  </StackPanel>
-                </StackPanel>
-              </Border>
-
-              <!-- Recipient -->
-              <Border BorderBrush="#2B6BEA"
-                      BorderThickness="1"
-                      CornerRadius="8"
-                      Padding="12"
-                      Margin="0,0,0,20"
-                      Background="#F9FBFF">
-                <StackPanel>
-                  <TextBlock Text="Chức năng: Người nhận"
-                             FontSize="20"
-                             FontWeight="Bold"
-                             Foreground="#2B6BEA"
-                             Margin="0,0,0,10" />
-                  <Image Source="pack://application:,,,/Assets/Image/Guideline/Recipient.png"
-                         Height="250"
-                         Stretch="Uniform"
-                         Margin="0,0,0,10" />
-                  <TextBlock Text="Người nhận là người cuối cùng tiếp nhận văn bản sau khi đã được xử lý và ký duyệt."
-                             TextWrapping="Wrap"
-                             FontSize="14"
-                             Foreground="#333"
-                             Margin="0,0,0,10" />
-                  <TextBlock Text="Hướng dẫn sử dụng:"
-                             FontSize="16"
-                             FontWeight="SemiBold"
-                             Foreground="#2B6BEA"
-                             Margin="0,10,0,6" />
-                  <StackPanel Margin="12,0,0,0">
-                    <TextBlock Text="• Bước 1: Truy cập mục Người nhận từ menu. Và chức năng như các màn hình trước "
-                               FontSize="14"
-                               Margin="0,2" />
-                 
-    
-                  </StackPanel>
-                </StackPanel>
-              </Border>
-
-              <!-- Person -->
-              <Border BorderBrush="#2B6BEA"
-                      BorderThickness="1"
-                      CornerRadius="8"
-                      Padding="12"
-                      Margin="0,0,0,20"
-                      Background="#F9FBFF">
-                <StackPanel>
-                  <!-- Tiêu đề -->
-                  <TextBlock Text="Chức năng: Cán bộ"
-                             FontSize="20"
-                             FontWeight="Bold"
-                             Foreground="#2B6BEA"
-                             Margin="0,0,0,10" />
-
-                  <!-- Ảnh tổng quan -->
-                  <Image Source="pack://application:,,,/Assets/Image/Guideline/Person.png"
-                         Height="250"
-                         Stretch="Uniform"
-                         Margin="0,0,0,10" />
-
-                  <!-- Mô tả -->
-                  <TextBlock Text="Chức năng Cánn cho phép xác định các cá nhân có liên quan đến văn bản, giúp theo dõi trách nhiệm và phối hợp xử lý hiệu quả."
-                             TextWrapping="Wrap"
-                             FontSize="14"
-                             Foreground="#333"
-                             Margin="0,0,0,10" />
-
-                  <!-- Hướng dẫn -->
-                  <TextBlock Text="Hướng dẫn sử dụng:"
-                             FontSize="16"
-                             FontWeight="SemiBold"
-                             Foreground="#2B6BEA"
-                             Margin="0,10,0,6" />
-
-                  <StackPanel Margin="12,0,0,0">
-                    <TextBlock Text="• Bước 1: Truy cập mục Người liên quan từ menu bên trái. Và thực hiện các chức năng tương tự khác"
-                               FontSize="14"
-                               Margin="0,2" />
-                   
-                  </StackPanel>
-                </StackPanel>
-              </Border>
-
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <!-- Footer -->
-        <TextBlock Text="© 2026 DocumentHub. All rights reserved."
-                   FontSize="12"
-                   Foreground="#888"
-                   HorizontalAlignment="Center"
-                   Margin="0,10,0,0" />
-
-      </StackPanel>
-    </ScrollViewer>
-  </Grid>
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             MinHeight="600"
+             MinWidth="900">
+	<Grid Background="#F5F7FA" Margin="20">
+		<TabControl>
+			<!-- Tab Đăng nhập -->
+			<TabItem Header="🔑 Đăng nhập">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="20">
+						<TextBlock Text="Chức năng: Đăng nhập"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Foreground="#2B6BEA"
+                                   Margin="0,0,0,15"/>
+						<Border Background="#F9FBFF" CornerRadius="8" Padding="12" BorderBrush="#2B6BEA" BorderThickness="1">
+							<StackPanel>
+								<Viewbox Stretch="Uniform" Height="600">
+									<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/Login.png"/>
+								</Viewbox>
+								<TextBlock Text="Người dùng nhập mã PIN gồm 6 số để truy cập hệ thống."
+                                           FontSize="14" Foreground="#333" Margin="0,10"/>
+								<Expander Header="Hướng dẫn sử dụng" IsExpanded="True" Margin="0,10,0,0">
+									<StackPanel Margin="12,0,0,0">
+										<TextBlock Text="• Mở phần mềm sẽ hiển thị màn hình Đăng nhập" FontSize="14"/>
+										<TextBlock Text="• Nhập mã PIN" FontSize="14"/>
+										<TextBlock Text="• Sau khi đăng nhập thành công, chuyển đến màn hình chính." FontSize="14"/>
+									</StackPanel>
+								</Expander>
+							</StackPanel>
+						</Border>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<!-- Tab Quên PIN -->
+			<TabItem Header="❗ Quên PIN">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="20">
+						<TextBlock Text="Chức năng: Quên mã PIN"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Foreground="#2B6BEA"
+                                   Margin="0,0,0,15"/>
+						<Border Background="#F9FBFF" CornerRadius="8" Padding="12" BorderBrush="#2B6BEA" BorderThickness="1">
+							<StackPanel>
+								<Viewbox Stretch="Uniform" Height="600">
+									<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/ForgotPIN.png"/>
+								</Viewbox>
+								<TextBlock Text="Cho phép người dùng tạo lại mã PIN khi không nhớ."
+                                           FontSize="14" Foreground="#333" Margin="0,10"/>
+								<Expander Header="Hướng dẫn sử dụng" IsExpanded="True" Margin="0,10,0,0">
+									<StackPanel Margin="12,0,0,0">
+										<TextBlock Text="• Bước 1: Chọn chức năng Quên PIN trên màn hình đăng nhập." FontSize="14"/>
+										<TextBlock Text="• Bước 2: Nhập thông tin xác thực (câu hỏi bảo mật, mật khẩu phụ)." FontSize="14"/>
+										<TextBlock Text="• Bước 3: Nhấn Tạo mã PIN mới để hoàn tất." FontSize="14"/>
+									</StackPanel>
+								</Expander>
+							</StackPanel>
+						</Border>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<!-- Tab Dashboard -->
+			<TabItem Header="📊 Dashboard">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="20">
+						<TextBlock Text="Chức năng: Dashboard"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Foreground="#2B6BEA"
+                                   Margin="0,0,0,15"/>
+						<Border Background="#F9FBFF" CornerRadius="8" Padding="12" BorderBrush="#2B6BEA" BorderThickness="1">
+							<StackPanel>
+								<Viewbox Stretch="Uniform" Height="600">
+									<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/Dashboard.png"/>
+								</Viewbox>
+								<TextBlock Text="Dashboard cung cấp cái nhìn tổng quan về tiến độ xử lý văn bản và thống kê hoạt động."
+                                           FontSize="14" Foreground="#333" Margin="0,10"/>
+								<Expander Header="Hướng dẫn sử dụng" IsExpanded="True" Margin="0,10,0,0">
+									<StackPanel Margin="12,0,0,0">
+										<TextBlock Text="• Bước 1: Truy cập Dashboard từ menu chính." FontSize="14"/>
+										<TextBlock Text="• Bước 2: Xem tiến độ theo tháng/quý/năm." FontSize="14"/>
+										<TextBlock Text="• Bước 3: Nhấn vào từng mục để xem chi tiết." FontSize="14"/>
+									</StackPanel>
+								</Expander>
+							</StackPanel>
+						</Border>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<!-- Tab Phân tích -->
+			<TabItem Header="📈 Phân tích">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="20">
+						<TextBlock Text="Chức năng: Phân tích"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Foreground="#2B6BEA"
+                                   Margin="0,0,0,15"/>
+						<Border Background="#F9FBFF" CornerRadius="8" Padding="12" BorderBrush="#2B6BEA" BorderThickness="1">
+							<StackPanel>
+								<Viewbox Stretch="Uniform" Height="600">
+									<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/Analytic.png"/>
+								</Viewbox>
+								<TextBlock Text="Màn hình Phân tích cung cấp biểu đồ và số liệu thống kê."
+                                           FontSize="14" Foreground="#333" Margin="0,10"/>
+								<Expander Header="Hướng dẫn sử dụng" IsExpanded="True" Margin="0,10,0,0">
+									<StackPanel Margin="12,0,0,0">
+										<TextBlock Text="• Bước 1: Truy cập mục Phân tích từ menu chính." FontSize="14"/>
+										<TextBlock Text="• Bước 2: Xem biểu đồ thống kê theo năm." FontSize="14"/>
+									</StackPanel>
+								</Expander>
+							</StackPanel>
+						</Border>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<!-- Tab Văn bản đến -->
+			<TabItem Header="📥 Văn bản đến">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="20">
+						<TextBlock Text="Chức năng: Văn bản đến" FontSize="22" FontWeight="Bold" Foreground="#2B6BEA" Margin="0,0,0,15"/>
+						<Border Background="#F9FBFF" CornerRadius="8" Padding="12" BorderBrush="#2B6BEA" BorderThickness="1">
+							<StackPanel>
+								<TextBlock Text="Quản lý văn bản đến giúp người dùng tiếp nhận, phân loại và xử lý các văn bản được gửi đến đơn vị." FontSize="14" Foreground="#333" Margin="0,10"/>
+								<Expander Header="Hướng dẫn sử dụng" IsExpanded="True" Margin="0,10,0,0">
+									<StackPanel Margin="12,0,0,0">
+										<TextBlock Text="• Bước 1: Truy cập mục Văn bản đến từ menu." FontSize="14"/>
+										<Viewbox Height="300">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/IncomingDocument.png"/>
+										</Viewbox>
+										<TextBlock Text="• Bước 2: Nhập thông tin và nhấn nút lưu." FontSize="14"/>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/IncomingDocument2-2.png"/>
+										</Viewbox>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/IncomingDocument2-3.png"/>
+										</Viewbox>
+										<TextBlock Text="• Bước 3: Xuất Excel và lưu file." FontSize="14"/>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/IncomingDocument3.png"/>
+										</Viewbox>
+										<TextBlock Text="Màn hình file Excel khi tải về" FontSize="14"/>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/IncomingDocument3-1.png"/>
+										</Viewbox>
+									</StackPanel>
+								</Expander>
+							</StackPanel>
+						</Border>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<!-- Tab Văn bản đi -->
+			<TabItem Header="📤 Văn bản đi">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="20">
+						<TextBlock Text="Chức năng: Văn bản đi" FontSize="22" FontWeight="Bold" Foreground="#2B6BEA" Margin="0,0,0,15"/>
+						<Border Background="#F9FBFF" CornerRadius="8" Padding="12" BorderBrush="#2B6BEA" BorderThickness="1">
+							<StackPanel>
+								<TextBlock Text="Cho phép soạn thảo, phê duyệt và gửi văn bản đến các đơn vị khác." FontSize="14" Foreground="#333" Margin="0,10"/>
+								<Expander Header="Hướng dẫn sử dụng" IsExpanded="True" Margin="0,10,0,0">
+									<StackPanel Margin="12,0,0,0">
+										<TextBlock Text="• Bước sử dụng tương tự Văn bản đến" FontSize="14"/>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/OutgoingDocument.png"/>
+										</Viewbox>
+									</StackPanel>
+								</Expander>
+							</StackPanel>
+						</Border>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<!-- Tab Tiến độ công việc -->
+			<TabItem Header="📈 Tiến độ công việc">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="20">
+						<TextBlock Text="Chức năng: Tiến độ công việc" FontSize="22" FontWeight="Bold" Foreground="#2B6BEA" Margin="0,0,0,15"/>
+						<Border Background="#F9FBFF" CornerRadius="8" Padding="12" BorderBrush="#2B6BEA" BorderThickness="1">
+							<StackPanel>
+								<Viewbox Height="300">
+									<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress.png"/>
+								</Viewbox>
+								<TextBlock Text="Theo dõi trạng thái xử lý văn bản theo từng bước, phòng ban và người phụ trách." FontSize="14" Foreground="#333" Margin="0,10"/>
+								<Expander Header="Hướng dẫn sử dụng" IsExpanded="True" Margin="0,10,0,0">
+									<StackPanel Margin="12,0,0,0">
+										<TextBlock Text="• Trường hợp 1: Lưu thông tin theo Quý" FontSize="14"/>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress2-1.png"/>
+										</Viewbox>
+										<TextBlock Text="• Trường hợp 2: Lựa chọn Tháng" FontSize="14"/>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress3.png"/>
+										</Viewbox>
+										<TextBlock Text="• Trường hợp 3: Lựa chọn Năm" FontSize="14"/>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress4.png"/>
+										</Viewbox>
+										<TextBlock Text="• Trường hợp 4: Đột xuất" FontSize="14"/>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress5.png"/>
+										</Viewbox>
+										<TextBlock Text="• Trường hợp 5: Chuyên đề" FontSize="14"/>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/WorkProgress6.png"/>
+										</Viewbox>
+									</StackPanel>
+								</Expander>
+							</StackPanel>
+						</Border>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<!-- Tab Người tiếp nhận -->
+			<TabItem Header="👤 Người tiếp nhận">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="20">
+						<TextBlock Text="Chức năng: Người tiếp nhận" FontSize="22" FontWeight="Bold" Foreground="#2B6BEA" Margin="0,0,0,15"/>
+						<Border Background="#F9FBFF" CornerRadius="8" Padding="12" BorderBrush="#2B6BEA" BorderThickness="1">
+							<StackPanel>
+								<Viewbox Height="250">
+									<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/RecevingOfficer.png"/>
+								</Viewbox>
+								<TextBlock Text="Xác định ai là người phụ trách tiếp nhận văn bản đến." FontSize="14" Foreground="#333" Margin="0,10"/>
+								<Expander Header="Hướng dẫn sử dụng" IsExpanded="True" Margin="0,10,0,0">
+									<StackPanel Margin="12,0,0,0">
+										<TextBlock Text="• Bước 1: Truy cập mục Người tiếp nhận từ menu." FontSize="14"/>
+										<TextBlock Text="• Bước 2: Chọn chức năng sửa." FontSize="14"/>
+										<TextBlock Text="• Bước 3: Lọc dữ liệu trong danh sách." FontSize="14"/>
+										<TextBlock Text="• Bước 4: Chọn chức năng xóa." FontSize="14"/>
+									</StackPanel>
+								</Expander>
+							</StackPanel>
+						</Border>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<!-- Tab Người ký duyệt -->
+			<TabItem Header="✍️ Người ký duyệt">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="20">
+						<TextBlock Text="Chức năng: Người ký duyệt" FontSize="22" FontWeight="Bold" Foreground="#2B6BEA" Margin="0,0,0,15"/>
+						<Border Background="#F9FBFF" CornerRadius="8" Padding="12" BorderBrush="#2B6BEA" BorderThickness="1">
+							<StackPanel>
+								<Viewbox Height="300">
+									<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/Signer.png"/>
+								</Viewbox>
+								<TextBlock Text="Người ký duyệt là người có thẩm quyền phê duyệt văn bản trước khi ban hành hoặc chuyển tiếp." FontSize="14" Foreground="#333" Margin="0,10"/>
+								<Expander Header="Hướng dẫn sử dụng" IsExpanded="True" Margin="0,10,0,0">
+									<StackPanel Margin="12,0,0,0">
+										<TextBlock Text="• Bước 1: Truy cập mục Người ký duyệt từ menu." FontSize="14"/>
+										<TextBlock Text="• Bước 2: Thêm người ký, sau đó hiển thị trong màn hình Văn bản đến/đi." FontSize="14"/>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/Signer2-1.png"/>
+										</Viewbox>
+										<Viewbox Height="250">
+											<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/Signer2-2.png"/>
+										</Viewbox>
+									</StackPanel>
+								</Expander>
+							</StackPanel>
+						</Border>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<!-- Tab Người nhận -->
+			<TabItem Header="📬 Người nhận">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="20">
+						<TextBlock Text="Chức năng: Người nhận" FontSize="22" FontWeight="Bold" Foreground="#2B6BEA" Margin="0,0,0,15"/>
+						<Border Background="#F9FBFF" CornerRadius="8" Padding="12" BorderBrush="#2B6BEA" BorderThickness="1">
+							<StackPanel>
+								<Viewbox Height="300">
+									<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/Recipient.png"/>
+								</Viewbox>
+								<TextBlock Text="Người nhận là người cuối cùng tiếp nhận văn bản sau khi đã được xử lý và ký duyệt." FontSize="14" Foreground="#333" Margin="0,10"/>
+								<Expander Header="Hướng dẫn sử dụng" IsExpanded="True" Margin="0,10,0,0">
+									<StackPanel Margin="12,0,0,0">
+										<TextBlock Text="• Bước 1: Truy cập mục Người nhận từ menu." FontSize="14"/>
+										<TextBlock Text="• Bước 2: Thực hiện các chức năng tương tự như các màn hình trước." FontSize="14"/>
+									</StackPanel>
+								</Expander>
+							</StackPanel>
+						</Border>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+			<!-- Tab Cán bộ -->
+			<TabItem Header="👥 Cán bộ">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="20">
+						<TextBlock Text="Chức năng: Cán bộ" FontSize="22" FontWeight="Bold" Foreground="#2B6BEA" Margin="0,0,0,15"/>
+						<Border Background="#F9FBFF" CornerRadius="8" Padding="12" BorderBrush="#2B6BEA" BorderThickness="1">
+							<StackPanel>
+								<Viewbox Height="300">
+									<Image Height="500" Source="pack://application:,,,/Assets/Image/Guideline/Person.png"/>
+								</Viewbox>
+								<TextBlock Text="Chức năng Cán bộ cho phép xác định các cá nhân liên quan đến văn bản, giúp theo dõi trách nhiệm và phối hợp xử lý hiệu quả." FontSize="14" Foreground="#333" Margin="0,10"/>
+								<Expander Header="Hướng dẫn sử dụng" IsExpanded="True" Margin="0,10,0,0">
+									<StackPanel Margin="12,0,0,0">
+										<TextBlock Text="• Bước 1: Truy cập mục Người liên quan từ menu bên trái." FontSize="14"/>
+										<TextBlock Text="• Bước 2: Thực hiện các chức năng thêm/sửa/xóa tương tự như các màn hình khác." FontSize="14"/>
+									</StackPanel>
+								</Expander>
+							</StackPanel>
+						</Border>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+		</TabControl>
+		<!-- Footer -->
+		<TextBlock Text="© 2026 DocumentHub. All rights reserved." FontSize="12" Foreground="#888" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,0"/>
+	</Grid>
 </UserControl>
