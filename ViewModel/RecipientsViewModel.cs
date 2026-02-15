@@ -38,12 +38,13 @@ namespace DocumentHub.ViewModel
             DeleteCommand = new RelayCommand(param => DeleteRecipient(param as Recipient));
             SaveCommand = new RelayCommand(param => SaveRecipient());
             SelectedRecipient = new Recipient();
-
+            OnPropertyChanged(nameof(SelectedRecipient));
             //pagination
             GoToFirstPageCommand = new RelayCommand(_ => { CurrentPage = 1; });
             GoToLastPageCommand = new RelayCommand(_ => { CurrentPage = TotalPages; });
             NextPageCommand = new RelayCommand(_ => { if (CurrentPage < TotalPages) CurrentPage++; });
             PreviousPageCommand = new RelayCommand(_ => { if (CurrentPage > 1) CurrentPage--; });
+           
             LoadRecipientList();
             ApplyFilter();
         }
@@ -105,7 +106,7 @@ namespace DocumentHub.ViewModel
                         return;
                     }
 
-                    db.ConstructionStaff.Add(new ConstructionStaff { FullName = normalizedName });
+                   db.Recipients.Add(new Recipient { Name = normalizedName });
                 }
 
                 db.SaveChanges();
@@ -113,8 +114,10 @@ namespace DocumentHub.ViewModel
                 Notify?.Invoke(SelectedRecipient.Id > 0 ? "Sửa nơi nhận thành công" : "Thêm cán bộ thành công", true);
 
                 LoadRecipientList();
-                SelectedRecipient = new Recipient();
                 ApplyFilter();
+                SelectedRecipient = new Recipient();
+                OnPropertyChanged(nameof(SelectedRecipient));
+
             }
             catch (Exception ex)
             {
@@ -221,7 +224,9 @@ namespace DocumentHub.ViewModel
                 }
 
                 LoadRecipientList();
+                ApplyFilter();
                 SelectedRecipient = new Recipient();
+                OnPropertyChanged(nameof(SelectedRecipient));
             }
             catch (Exception ex)
             {

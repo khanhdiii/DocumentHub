@@ -108,6 +108,7 @@ namespace DocumentHub.ViewModel
             DeleteCommand = new RelayCommand(param => DeleteSigner(param as Signer));
             EditCommand = new RelayCommand(param => EditSigner(param as Signer));
             SelectedSigner = new Signer();
+            OnPropertyChanged(nameof(SelectedSigner));
 
             // Pagination commands
             GoToFirstPageCommand = new RelayCommand(_ => { CurrentPage = 1; ApplyFilter(); });
@@ -126,8 +127,6 @@ namespace DocumentHub.ViewModel
             var signerFromDb = db.Signers.ToList();
             SignerList = new ObservableCollection<Signer>(signerFromDb);
             OnPropertyChanged(nameof(SignerList));
-
-            ApplyFilter();
         }
 
         /*Function Save*/
@@ -169,7 +168,9 @@ namespace DocumentHub.ViewModel
                     Notify?.Invoke("Thêm người ký thành công", true);
 
                 LoadSignerList();
+                ApplyFilter();
                 SelectedSigner = new Signer();
+                OnPropertyChanged(nameof(SelectedSigner));
             }
             catch (Exception ex)
             {
@@ -230,6 +231,7 @@ namespace DocumentHub.ViewModel
                 }
 
                 LoadSignerList();
+                ApplyFilter();
                 SelectedSigner = new Signer();
             }
             catch (Exception ex)

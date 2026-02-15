@@ -49,7 +49,8 @@ namespace DocumentHub.ViewModel
             DeleteCommand = new RelayCommand(param => DeleteStaff(param as ReceivingOfficer));
             SaveCommand = new RelayCommand(param => SaveStaff());
             SelectedStaff = new ReceivingOfficer();
-
+            OnPropertyChanged(nameof(SelectedStaff));
+            
             //pagination
             GoToFirstPageCommand = new RelayCommand(_ => { CurrentPage = 1; ApplyFilter(); });
             GoToLastPageCommand = new RelayCommand(_ => { CurrentPage = TotalPages; ApplyFilter(); });
@@ -68,7 +69,6 @@ namespace DocumentHub.ViewModel
             StaffList = new ObservableCollection<ReceivingOfficer>(staffFromDb);
             OnPropertyChanged(nameof(StaffList));
 
-            ApplyFilter();
         }
 
         /*Function Save*/
@@ -77,7 +77,7 @@ namespace DocumentHub.ViewModel
 
             if (SelectedStaff == null || string.IsNullOrWhiteSpace(SelectedStaff.FullName))
             {
-                Notify?.Invoke("Vui lòng nhập tên cán bộ tiếp nhận  .", false);
+                Notify?.Invoke("Vui lòng nhập tên cán bộ tiếp nhận.", false);
                 return;
             }
 
@@ -130,8 +130,10 @@ namespace DocumentHub.ViewModel
 
                 // Load List View Table from DB
                 LoadStaffList();
-                SelectedStaff = new ReceivingOfficer();
                 ApplyFilter();
+                SelectedStaff = new ReceivingOfficer();
+                OnPropertyChanged(nameof(SelectedStaff));
+
             }
             catch (Exception ex)
             {
@@ -225,7 +227,10 @@ namespace DocumentHub.ViewModel
                 }
 
                 LoadStaffList();
+                ApplyFilter();
                 SelectedStaff = new ReceivingOfficer();
+                OnPropertyChanged(nameof(SelectedStaff));
+
             }
             catch (Exception ex)
             {

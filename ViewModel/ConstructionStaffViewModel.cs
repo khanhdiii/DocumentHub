@@ -37,7 +37,7 @@ namespace DocumentHub.ViewModel
             DeleteCommand = new RelayCommand(param => DeleteStaff(param as ConstructionStaff));
             SaveCommand = new RelayCommand(param => SaveStaff());
             SelectedStaff = new ConstructionStaff();
-
+            OnPropertyChanged(nameof(SelectedStaff));
             //pagination
             GoToFirstPageCommand = new RelayCommand(_ => { CurrentPage = 1; });
             GoToLastPageCommand = new RelayCommand(_ => { CurrentPage = TotalPages; });
@@ -55,8 +55,6 @@ namespace DocumentHub.ViewModel
             var staffFromDb = db.ConstructionStaff.ToList();
             StaffList = new ObservableCollection<ConstructionStaff>(staffFromDb);
             OnPropertyChanged(nameof(StaffList));
-
-            ApplyFilter();
         }
 
         /*Function Save*/
@@ -114,8 +112,9 @@ namespace DocumentHub.ViewModel
                 Notify?.Invoke(SelectedStaff.Id > 0 ? "Sửa cán bộ thành công" : "Thêm cán bộ thành công", true);
 
                 LoadStaffList();
-                SelectedStaff = new ConstructionStaff();
                 ApplyFilter();
+                SelectedStaff = new ConstructionStaff();
+                OnPropertyChanged(nameof(SelectedStaff));
             }
             catch (Exception ex)
             {
@@ -218,7 +217,9 @@ namespace DocumentHub.ViewModel
                 }
 
                 LoadStaffList();
+                ApplyFilter();
                 SelectedStaff = new ConstructionStaff();
+                OnPropertyChanged(nameof(SelectedStaff));
             }
             catch (Exception ex)
             {
