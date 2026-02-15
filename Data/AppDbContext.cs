@@ -61,12 +61,10 @@ namespace DocumentHub.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var dbPath = @"D:\DocumentHub\app.db";
-
+           var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "app.db");
             options.UseSqlite($"Data Source={dbPath}");
+
         }
-
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
