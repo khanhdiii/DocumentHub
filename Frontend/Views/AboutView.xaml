@@ -2,152 +2,160 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
-             MinHeight="400"
+             MinHeight="700"
              MinWidth="600">
   <Grid Background="#F5F7FA">
-    <Border CornerRadius="16"
-            BorderBrush="#2B6BEA"
-            BorderThickness="1.5"
-            Padding="28"
-            Background="White"
-            Margin="20">
-      <StackPanel>
-        <!-- Title -->
-        <TextBlock Text="📘 Về chúng tôi"
-                   FontSize="30"
-                   FontWeight="Bold"
-                   Foreground="#2B6BEA"
-                   Margin="0,0,0,25"
-                   TextAlignment="Center" />
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+      <Border CornerRadius="16"
+              BorderBrush="#2B6BEA"
+              BorderThickness="1.5"
+              Padding="28"
+              Background="White"
+              Margin="20">
+        <StackPanel>
+          <!-- Title -->
+          <TextBlock Text="📘 Về chúng tôi"
+                     FontSize="30"
+                     FontWeight="Bold"
+                     Foreground="#2B6BEA"
+                     Margin="0,0,0,25"
+                     TextAlignment="Center" />
 
-        <!-- Introduction -->
-        <TextBlock TextWrapping="Wrap"
-                   FontSize="15"
-                   Foreground="#444"
-                   Margin="0,0,0,25">
-          <Run Text="DocumentHub là nền tảng quản lý văn bản giúp đơn giản hóa quy trình xử lý, lưu trữ và phân tích tài liệu. " />
-          <Run Text="Chúng tôi cam kết mang đến giải pháp hiện đại, an toàn và hiệu quả. " />
-          <Run Text="Được thực hiện bởi Nhóm 3 thành viên của khóa văn bằng 2 - TTHL, BDNV &amp; GDNN  số 2 2025-2026" />
-        </TextBlock>
-
-        <!-- Contact -->
-        <GroupBox Header="Thông tin liên hệ"
-                  Foreground="#2B6BEA"
-                  FontWeight="Bold"
-                  Margin="0,0,0,25">
-          <StackPanel>
-            <!-- Block 1 -->
-            <StackPanel Margin="12,6,0,0">
-              <TextBlock Text="👤 Học viên: Huỳnh Duy Khánh (T05) - Fullstack - Trưởng dự án"
-                         FontSize="14"
-                         Foreground="#333"
-                         Margin="0,6" />
-              <TextBlock Text="📍 Đại đội: A7-B3-C3-D2"
-                         FontSize="14"
-                         Foreground="#333"
-                         Margin="0,6" />
-              <TextBlock Text="🎓 Khóa huấn luyện: 2025-2026"
-                         FontSize="14"
-                         Foreground="#333"
-                         Margin="0,6" />
-              <TextBlock Text="📧 Email: khanhfrontend@gmail.com"
-                         FontSize="14"
-                         Foreground="#2B6BEA"
-                         Margin="0,6" />
-              <TextBlock Text="📞 Điện thoại: +84 369 150 448"
-                         FontSize="14"
-                         Foreground="#2B6BEA"
-                         Margin="0,6" />
-            </StackPanel>
-
-            <!-- Block 2 -->
-            <StackPanel Margin="12,30,0,0">
-              <TextBlock Text="👤 Học viên: Nguyễn Chí Triễn (T04) - Hỗ trợ technical"
-                         FontSize="14"
-                         Foreground="#333"
-                         Margin="0,6" />
-              <TextBlock Text="📍 Đại đội: A6-B3-C3-D2"
-                         FontSize="14"
-                         Foreground="#333"
-                         Margin="0,6" />
-            </StackPanel>
-
-            <!-- Block 3 -->
-            <StackPanel Margin="12,6,0,0">
-              <TextBlock Text="👤 Học viên: Nguyễn Xuân Hùng (T04) - Hỗ trợ database"
-                         FontSize="14"
-                         Foreground="#333"
-                         Margin="0,6" />
-              <TextBlock Text="📍 Đại đội: A7-B3-C3-D2"
-                         FontSize="14"
-                         Foreground="#333"
-                         Margin="0,6" />
-            </StackPanel>
-          </StackPanel>
-        </GroupBox>
-
-        <!-- Thanks -->
-        <Border Background="#EAF2FF"
-                CornerRadius="8"
-                Padding="12"
-                Margin="0,0,0,20">
+          <!-- Introduction -->
           <TextBlock TextWrapping="Wrap"
                      FontSize="15"
-                     Foreground="#2B6BEA"
-                     FontStyle="Italic">
-            🙏 Xin gửi lời cảm ơn chân thành đến tất cả các thầy đã đồng hành và hỗ trợ DocumentHub trong suốt quá trình phát triển.
+                     Foreground="#444"
+                     Margin="0,0,0,25">
+            <Run Text="DocumentHub là nền tảng quản lý văn bản giúp đơn giản hóa quy trình xử lý, lưu trữ và phân tích tài liệu. " />
+            <Run Text="Chúng tôi cam kết mang đến giải pháp hiện đại, an toàn và hiệu quả. " />
+            <Run Text="Được thực hiện bởi Nhóm 3 thành viên của khóa văn bằng 2 - TTHL, BDNV &amp; GDNN  số 2 2025-2026" />
           </TextBlock>
-        </Border>
 
-        <!-- List Teach support -->
-        <GroupBox Header="Thầy hỗ trợ"
-                  Foreground="#2B6BEA"
-                  FontWeight="Bold"
-                  Margin="0,0,0,25">
-          <StackPanel Margin="12,6,0,0">
+          <!-- Contact -->
+          <GroupBox Header="Thông tin liên hệ"
+                    Foreground="#2B6BEA"
+                    FontWeight="Bold"
+                    Margin="0,0,0,25">
+            <StackPanel>
+              <!-- Block 1 -->
+              <StackPanel Margin="12,6,0,0">
+                <TextBlock Text="👤 Học viên: Huỳnh Duy Khánh (T05) - Fullstack - Trưởng dự án"
+                           FontSize="14"
+                           Foreground="#333"
+                           Margin="0,6" />
+                <TextBlock Text="📍 Đại đội: A7-B3-C3-D2"
+                           FontSize="14"
+                           Foreground="#333"
+                           Margin="0,6" />
+                <TextBlock Text="🎓 Khóa huấn luyện: 2025-2026"
+                           FontSize="14"
+                           Foreground="#333"
+                           Margin="0,6" />
+                <TextBlock Text="📧 Email: khanhfrontend@gmail.com"
+                           FontSize="14"
+                           Foreground="#2B6BEA"
+                           Margin="0,6" />
+                <TextBlock Text="📞 Điện thoại: +84 369 150 448"
+                           FontSize="14"
+                           Foreground="#2B6BEA"
+                           Margin="0,6" />
+              </StackPanel>
+
+              <!-- Block 2 -->
+              <StackPanel Margin="12,30,0,0">
+                <TextBlock Text="👤 Học viên: Nguyễn Chí Triễn (T04) - Hỗ trợ technical"
+                           FontSize="14"
+                           Foreground="#333"
+                           Margin="0,6" />
+                <TextBlock Text="📍 Đại đội: A6-B3-C3-D2"
+                           FontSize="14"
+                           Foreground="#333"
+                           Margin="0,6" />
+              </StackPanel>
+
+              <!-- Block 3 -->
+              <StackPanel Margin="12,6,0,0">
+                <TextBlock Text="👤 Học viên: Nguyễn Xuân Hùng (T04) - Hỗ trợ database"
+                           FontSize="14"
+                           Foreground="#333"
+                           Margin="0,6" />
+                <TextBlock Text="📍 Đại đội: A7-B3-C3-D2"
+                           FontSize="14"
+                           Foreground="#333"
+                           Margin="0,6" />
+              </StackPanel>
+            </StackPanel>
+          </GroupBox>
+
+          <!-- Thanks -->
+          <Border Background="#EAF2FF"
+                  CornerRadius="8"
+                  Padding="12"
+                  Margin="0,0,0,20">
             <TextBlock TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="#333"
-                       Margin="0,4">
-      • Đặc biệt xin cảm ơn Thiếu tá Bùi Thành Trung – Người thầy đã luôn tận tình chăm sóc, dìu dắt và hỗ trợ chúng tôi vượt qua mọi khó khăn, vướng mắc trong suốt quá trình thực hiện dự án DocumentHub. Sự tận tâm và đồng hành của thầy là nguồn động lực to lớn giúp nhóm hoàn thành tốt nhiệm vụ.
-            </TextBlock>
-          </StackPanel>
-        </GroupBox>
-
-        <!-- Support Section -->
-        <Border Background="#FFF9F9F9"
-                CornerRadius="8"
-                Padding="12"
-                Margin="0,0,0,25"
-                BorderBrush="#2B6BEA"
-                BorderThickness="1">
-          <StackPanel HorizontalAlignment="Center">
-            <TextBlock Text="💖 Ủng hộ tôi"
-                       FontSize="18"
-                       FontWeight="Bold"
+                       FontSize="15"
                        Foreground="#2B6BEA"
-                       Margin="0,0,0,12"
-                       TextAlignment="Center"/>
-            <TextBlock Text="Nếu bạn thấy DocumentHub hữu ích, hãy quét mã QR bên dưới để ủng hộ tôi."
-                       FontSize="14"
-                       Foreground="#444"
-                       TextAlignment="Center"
-                       Margin="0,0,0,12"/>
-            <Image Source="/Assets/Image/About/qr.jpg"
-                   Width="180"
-                   Height="180"
-                   Stretch="Uniform"
-                   HorizontalAlignment="Center"/>
-          </StackPanel>
-        </Border>
+                       FontStyle="Italic">
+              🙏 Xin gửi lời cảm ơn chân thành đến tất cả các thầy đã đồng hành và hỗ trợ DocumentHub trong suốt quá trình phát triển.
+            </TextBlock>
+          </Border>
 
-        <!-- Footer -->
-        <TextBlock Text="© Văn bằng 2 - TTHL, BDNV &amp; GDNN  số 2 2025-2026. All rights reserved"
-                   FontSize="12"
-                   Foreground="#888"
-                   HorizontalAlignment="Center"
-                   Margin="0,10,0,0" />
-      </StackPanel>
-    </Border>
+          <!-- List Teach support -->
+          <GroupBox Header="Thầy hỗ trợ"
+                    Foreground="#2B6BEA"
+                    FontWeight="Bold"
+                    Margin="0,0,0,25">
+            <StackPanel Margin="12,6,0,0">
+              <TextBlock TextWrapping="Wrap"
+                         FontSize="14"
+                         Foreground="#333"
+                         Margin="0,4">
+        • Đặc biệt xin cảm ơn Thiếu tá Bùi Thành Trung – Người thầy đã luôn tận tình chăm sóc, dìu dắt và hỗ trợ chúng tôi vượt qua mọi khó khăn, vướng mắc trong suốt quá trình thực hiện dự án DocumentHub. Sự tận tâm và đồng hành của thầy là nguồn động lực to lớn giúp nhóm hoàn thành tốt nhiệm vụ.
+              </TextBlock>
+            </StackPanel>
+          </GroupBox>
+
+          <!-- Support Section -->
+          <Border Background="#FFF9F9F9"
+                  CornerRadius="8"
+                  Padding="12"
+                  Margin="0,0,0,25"
+                  BorderBrush="#2B6BEA"
+                  BorderThickness="1">
+            <StackPanel HorizontalAlignment="Center">
+              <TextBlock Text="💖 Ủng hộ tôi"
+                         FontSize="20"
+                         FontWeight="Bold"
+                         Foreground="#2B6BEA"
+                         Margin="0,0,0,12"
+                         TextAlignment="Center"/>
+              <TextBlock Text="Nếu bạn thấy DocumentHub hữu ích, hãy quét mã QR bên dưới để ủng hộ tôi."
+                         FontSize="14"
+                         Foreground="#444"
+                         TextAlignment="Center"
+                         Margin="0,0,0,12"/>
+              <Image Source="/Assets/Image/About/qr.jpg"
+                     Width="300"
+                     Height="300"
+                     Stretch="Uniform"
+                     Margin="10"
+                     HorizontalAlignment="Center"/>
+              <TextBlock Text="Xin chân thành cảm ơn sự ủng hộ của bạn!"
+                         FontSize="14"
+                         Foreground="#2B6BEA"
+                         Margin="0,12,0,0"
+                         TextAlignment="Center"/>
+            </StackPanel>
+          </Border>
+
+          <!-- Footer -->
+          <TextBlock Text="© Văn bằng 2 - TTHL, BDNV &amp; GDNN  số 2 2025-2026. All rights reserved"
+                     FontSize="12"
+                     Foreground="#888"
+                     HorizontalAlignment="Center"
+                     Margin="0,10,0,0" />
+        </StackPanel>
+      </Border>
+    </ScrollViewer>
   </Grid>
 </UserControl>
