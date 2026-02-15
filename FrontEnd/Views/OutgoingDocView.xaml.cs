@@ -19,9 +19,8 @@ namespace FrontEnd.Views
 
             Loaded += (s, e) =>
             {
-                if (DataContext is ConstructionStaffViewModel vm)
+                if (DataContext is OutgoingDocViewModel vm)
                 {
-                    vm.Notify -= ShowNotification;
                     vm.Notify += ShowNotification;
                 }
             };
