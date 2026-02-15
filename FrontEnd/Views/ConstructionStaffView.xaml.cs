@@ -32,7 +32,6 @@ namespace DocumentHub.FrontEnd.Views
             {
                 if (DataContext is ConstructionStaffViewModel vm)
                 {
-                    vm.Notify -= ShowNotification;
                     vm.Notify += ShowNotification;
                 }
             };

@@ -127,7 +127,6 @@ namespace DocumentHub.ViewModel
             StaffList = new ObservableCollection<Person>(staffFromDb);
             OnPropertyChanged(nameof(StaffList));
 
-            ApplyFilter();
         }
 
         private void SaveStaff()
@@ -169,8 +168,9 @@ namespace DocumentHub.ViewModel
                 Notify?.Invoke(SelectedStaff.Id > 0 ? "Sửa cán bộ thành công" : "Thêm cán bộ thành công", true);
 
                 LoadStaffList();
-                SelectedStaff = new Person();
                 ApplyFilter();
+                SelectedStaff = new Person();
+                OnPropertyChanged(nameof(SelectedStaff));
             }
             catch (Exception ex)
             {
@@ -228,7 +228,9 @@ namespace DocumentHub.ViewModel
                 }
 
                 LoadStaffList();
+                ApplyFilter();
                 SelectedStaff = new Person();
+                OnPropertyChanged(nameof(SelectedStaff));
             }
             catch (Exception ex)
             {

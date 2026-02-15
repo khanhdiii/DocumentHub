@@ -30,7 +30,6 @@ namespace DocumentHub.FrontEnd.Views
             {
                 if (DataContext is SignerViewModel vm)
                 {
-                    vm.Notify -= ShowNotification;
                     vm.Notify += ShowNotification;
                 }
             };

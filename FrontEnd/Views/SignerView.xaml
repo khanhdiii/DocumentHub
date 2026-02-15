@@ -9,10 +9,6 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
 
-  <!--  ViewModel  -->
-  <UserControl.DataContext>
-    <vm:SignerViewModel />
-  </UserControl.DataContext>
 
   <UserControl.Resources>
     <!--  Modern color palette  -->

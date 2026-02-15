@@ -10,9 +10,6 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
 
-    <UserControl.DataContext>
-        <vm:ConstructionStaffViewModel />
-    </UserControl.DataContext>
 
     <UserControl.Resources>
         <!--  Modern color palette  -->
@@ -296,7 +293,7 @@
                                    Text="Cán bộ xử lý" />
                         <TextBox Grid.Column="1"
                                  Style="{StaticResource ModernTextBox}"
-                                 Text="{Binding SelectedStaff.FullName, Mode=TwoWay}"
+                                 Text="{Binding SelectedStaff.FullName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Width="NaN" />
                     </Grid>
 

@@ -10,10 +10,6 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
 
-  <UserControl.DataContext>
-    <vm:RecipientsViewModel />
-  </UserControl.DataContext>
-
   <UserControl.Resources>
     <!--  Modern color palette  -->
     <Color x:Key="PrimaryColor">#FF2B6BEA</Color>

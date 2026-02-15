@@ -19,7 +19,6 @@ namespace DocumentHub.FrontEnd.Views
             {
                 if (DataContext is WorkProgressViewModel vm)
                 {
-                    vm.Notify -= ShowNotification;
                     vm.Notify += ShowNotification;
                 }
             };
