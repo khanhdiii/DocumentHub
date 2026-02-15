@@ -20,6 +20,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="app.db"> <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> </None>
+	</ItemGroup>
+	<ItemGroup>
+	
 		<Resource Include="Assets\Image\backgroundred.jpg">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
