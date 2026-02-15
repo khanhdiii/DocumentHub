@@ -7,6 +7,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
 		<EnableXamlMarkupCompile>false</EnableXamlMarkupCompile>
+		<ApplicationIcon>Assets\Image\DocumentHub.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -16,7 +17,6 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="Notifications.Wpf.Core" Version="2.0.1" />
 		<PackageReference Include="PdfSharp-MigraDoc-GDI" Version="6.2.3" />
-
 	</ItemGroup>
 
 	<ItemGroup>
@@ -187,6 +187,9 @@
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Assets\Image\Guideline\WorkProgress7.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+				<Resource Include="Assets\Image\DocumentHub.ico">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 	</ItemGroup>
