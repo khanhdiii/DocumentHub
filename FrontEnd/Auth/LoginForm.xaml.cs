@@ -201,7 +201,6 @@ namespace DocumentHub.FrontEnd.Auth
 
         private void ForgotPIN_Click(object sender, RoutedEventArgs e)
         {
-            // Open ForgotPIN
             var forgotPinWindow = new ForgotPIN(0); 
             forgotPinWindow.Show();
 
@@ -212,6 +211,13 @@ namespace DocumentHub.FrontEnd.Auth
         {
             var changePinWindow = new ChangePIN();
             changePinWindow.Show();
+
+            this.Close();
+        }
+        private void RegisterPIN_Click(object sender, RoutedEventArgs e)
+        {
+           var registerPinWindow = new RegisterForm();
+            registerPinWindow.Show();
 
             this.Close();
         }

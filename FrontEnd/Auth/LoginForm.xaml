@@ -219,40 +219,49 @@
 
             </Grid>
         </Border>
-        <TextBlock Text="Quên mã PIN"
-                   Foreground="#FFF3413C"
-                   FontSize="14"
-                   FontWeight="Bold"
-                   Cursor="Hand"
-                   HorizontalAlignment="Left"
-                   Margin="425,310,0,74"
-                   MouseLeftButtonUp="ForgotPIN_Click"
-                   Height="30"
-                   FontFamily="Montserrat" />
+       <UniformGrid Rows="1" Columns="4" 
+             HorizontalAlignment="Center" 
+             Margin="0,310,0,0"
+             Grid.ColumnSpan="2">
 
-        <TextBlock Text="Đổi mã PIN"
-                   Foreground="#FFF3413C"
-                   FontSize="14"
-                   FontWeight="Bold"
-                   Cursor="Hand"
-                   HorizontalAlignment="Left"
-                   Margin="14,309,0,75"
-                   MouseLeftButtonUp="ChangePIN_Click"
-                   Height="30"
-                   Grid.Column="1"
-                   FontFamily="Montserrat" />
-        <Button Width="40"
-                Height="40"
-                FontFamily="Segoe MDL2 Assets"
-                Content="&#xE897;"
-                ToolTip="Hướng dẫn sử dụng"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Background="Transparent"
-                Foreground="#FFF3413C"
-                FontWeight="SemiBold"
-                Margin="0,0,120,23"
-                Click="OpenGuide_Click" />
+    <TextBlock Text="Đăng ký PIN"
+               Foreground="#FFF3413C"
+               FontSize="14"
+               FontWeight="Bold"
+               Cursor="Hand"
+               MouseLeftButtonUp="RegisterPIN_Click"
+               Height="30"
+               FontFamily="Montserrat" />
+
+    <TextBlock Text="Quên mã PIN"
+               Foreground="#FFF3413C"
+               FontSize="14"
+               FontWeight="Bold"
+               Cursor="Hand"
+               MouseLeftButtonUp="ForgotPIN_Click"
+               Height="30"
+               FontFamily="Montserrat" />
+
+    <TextBlock Text="Đổi mã PIN"
+               Foreground="#FFF3413C"
+               FontSize="14"
+               FontWeight="Bold"
+               Cursor="Hand"
+               MouseLeftButtonUp="ChangePIN_Click"
+               Height="30"
+               FontFamily="Montserrat" />
+
+    <TextBlock Text="Hướng dẫn sử dụng"
+               Foreground="#FFF3413C"
+               FontSize="14"
+               FontWeight="Bold"
+               Cursor="Hand"
+               MouseLeftButtonUp="OpenGuide_Click"
+               Height="30"
+               FontFamily="Montserrat" />
+</UniformGrid>
+
+
 
         <Label Content="© Văn bằng 2 - K02 TTHL, BDNV &amp; GDNN  số 2 2025-2026"
                HorizontalAlignment="Left"
