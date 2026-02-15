@@ -261,17 +261,15 @@
                FontFamily="Montserrat" />
 </UniformGrid>
 
+      <Label Content="© Văn bằng 2 - K02 TTHL, BDNV &amp; GDNN  số 2 2025-2026"
+       HorizontalAlignment="Center"
+       VerticalAlignment="Bottom"
+       FontFamily="Montserrat"
+       Grid.ColumnSpan="2"
+       FontWeight="Bold"
+       Foreground="Black"
+       Margin="0,0,0,10"/>
 
-
-        <Label Content="© Văn bằng 2 - K02 TTHL, BDNV &amp; GDNN  số 2 2025-2026"
-               HorizontalAlignment="Left"
-               Margin="423,388,0,0"
-               VerticalAlignment="Top"
-               RenderTransformOrigin="2.048,-0.815"
-               FontFamily="Montserrat"
-               Grid.ColumnSpan="2"
-               FontWeight="Bold"
-               Foreground="Black" />
 
     </Grid>
 </Window>
