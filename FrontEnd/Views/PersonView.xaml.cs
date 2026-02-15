@@ -31,7 +31,6 @@ namespace DocumentHub.FrontEnd.Views
             {
                 if (DataContext is ReceivingOfficerViewModel vm)
                 {
-                    vm.Notify -= ShowNotification;
                     vm.Notify += ShowNotification;
                 }
             };
