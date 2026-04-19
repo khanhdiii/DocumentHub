@@ -48,12 +48,13 @@ namespace DocumentHub.ViewModel
         {
             DeleteCommand = new RelayCommand(param => DeleteStaff(param as ReceivingOfficer));
             SaveCommand = new RelayCommand(param => SaveStaff());
+            EditCommand = new RelayCommand(param => EditStaff(param as ReceivingOfficer));
             SelectedStaff = new ReceivingOfficer();
             OnPropertyChanged(nameof(SelectedStaff));
             
             //pagination
             GoToFirstPageCommand = new RelayCommand(_ => { CurrentPage = 1; ApplyFilter(); });
-            GoToLastPageCommand = new RelayCommand(_ => { CurrentPage = TotalPages; ApplyFilter(); });
+            GoToLastPageCommand = new RelayCommand(_ => { CurrentPage = TotalPages == 0 ? 1 : TotalPages; ApplyFilter(); });
             NextPageCommand = new RelayCommand(_ => { if (CurrentPage < TotalPages) CurrentPage++; ApplyFilter(); });
             PreviousPageCommand = new RelayCommand(_ => { if (CurrentPage > 1) CurrentPage--; ApplyFilter(); });
 
@@ -159,7 +160,9 @@ namespace DocumentHub.ViewModel
             TotalPages = (int)Math.Ceiling((double)query.Count() / PageSize);
 
             if (CurrentPage > TotalPages)
-                CurrentPage = TotalPages == 0 ? 1 : TotalPages;
+                _currentPage = TotalPages == 0 ? 1 : TotalPages;
+            else if (CurrentPage < 1)
+                _currentPage = 1;
 
             // Take date page
             var paged = query
@@ -261,11 +264,10 @@ namespace DocumentHub.ViewModel
             get => _currentPage;
             set
             {
-                if (_currentPage != value)
-                {
-                    _currentPage = value;
-                    OnPropertyChanged(nameof(CurrentPage));
-                }
+                if (_currentPage == value)
+                    return;
+                _currentPage = value;
+                OnPropertyChanged(nameof(CurrentPage));
             }
         }
 

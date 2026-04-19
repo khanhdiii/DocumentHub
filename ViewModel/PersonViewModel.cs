@@ -87,12 +87,11 @@ namespace DocumentHub.ViewModel
             get => _currentPage;
             set
             {
-                if (_currentPage != value)
-                {
-                    _currentPage = value;
-                    OnPropertyChanged(nameof(CurrentPage));
-                    ApplyFilter();
-                }
+                if (_currentPage == value)
+                    return;
+                _currentPage = value;
+                OnPropertyChanged(nameof(CurrentPage));
+                ApplyFilter();
             }
         }
 
@@ -254,9 +253,9 @@ namespace DocumentHub.ViewModel
             TotalPages = (int)Math.Ceiling((double)query.Count() / PageSize);
 
             if (CurrentPage > TotalPages)
-                CurrentPage = TotalPages == 0 ? 1 : TotalPages;
-            if (CurrentPage < 1)
-                CurrentPage = 1;
+                _currentPage = TotalPages == 0 ? 1 : TotalPages;
+            else if (CurrentPage < 1)
+                _currentPage = 1;
 
             var paged = query
                 .Skip((CurrentPage - 1) * PageSize)

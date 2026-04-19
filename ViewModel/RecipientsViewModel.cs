@@ -37,11 +37,12 @@ namespace DocumentHub.ViewModel
         {
             DeleteCommand = new RelayCommand(param => DeleteRecipient(param as Recipient));
             SaveCommand = new RelayCommand(param => SaveRecipient());
+            EditCommand = new RelayCommand(param => EditRecipient(param as Recipient));
             SelectedRecipient = new Recipient();
             OnPropertyChanged(nameof(SelectedRecipient));
             //pagination
             GoToFirstPageCommand = new RelayCommand(_ => { CurrentPage = 1; });
-            GoToLastPageCommand = new RelayCommand(_ => { CurrentPage = TotalPages; });
+            GoToLastPageCommand = new RelayCommand(_ => { CurrentPage = TotalPages == 0 ? 1 : TotalPages; });
             NextPageCommand = new RelayCommand(_ => { if (CurrentPage < TotalPages) CurrentPage++; });
             PreviousPageCommand = new RelayCommand(_ => { if (CurrentPage > 1) CurrentPage--; });
            
@@ -157,7 +158,9 @@ namespace DocumentHub.ViewModel
             TotalPages = (int)Math.Ceiling((double)query.Count() / PageSize);
 
             if (CurrentPage > TotalPages)
-                CurrentPage = TotalPages == 0 ? 1 : TotalPages;
+                _currentPage = TotalPages == 0 ? 1 : TotalPages;
+            else if (CurrentPage < 1)
+                _currentPage = 1;
 
             //paginationg
             var paged = query
@@ -244,6 +247,8 @@ namespace DocumentHub.ViewModel
             get => _currentPage;
             set
             {
+                if (_currentPage == value)
+                    return;
                 _currentPage = value;
                 OnPropertyChanged(nameof(CurrentPage));
                 ApplyFilter();
