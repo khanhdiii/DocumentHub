@@ -1,3 +1,4 @@
+using System;
 using DocumentHub.Model;
 using DocumentHub.ViewModel;
 using System.IO;
@@ -61,9 +62,11 @@ namespace DocumentHub.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-           var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "app.db");
+            var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var appFolder = Path.Combine(localAppData, "DocumentHub");
+            Directory.CreateDirectory(appFolder);
+            var dbPath = Path.Combine(appFolder, "app.db");
             options.UseSqlite($"Data Source={dbPath}");
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

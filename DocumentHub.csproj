@@ -20,8 +20,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="app.db"> <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> </None>
-		<None Update="Assets\Questions\SecurityQuestions.json"> <CopyToOutputDirectory>Always</CopyToOutputDirectory> </None>
+		<None Update="app.db">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Questions\SecurityQuestions.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<Resource Include="Assets\Image\About\qr.jpg">

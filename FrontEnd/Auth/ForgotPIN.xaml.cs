@@ -172,7 +172,8 @@ namespace DocumentHub.FrontEnd.Auth
 
         private void LoadQuestions()
         {
-            string path = "/DocumentHub/Assets/Questions/SecurityQuestions.json";
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string path = Path.Combine(baseDir, "Assets", "Questions", "SecurityQuestions.json");
 
             if (!File.Exists(path))
             {
