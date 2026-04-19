@@ -342,6 +342,11 @@
         <!--  DataGrid  -->
         <DataGrid AutoGenerateColumns="False"
                   CanUserAddRows="False"
+                  EnableRowVirtualization="True"
+                  EnableColumnVirtualization="True"
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  ScrollViewer.CanContentScroll="True"
+                  SelectionMode="Single"
                   ItemsSource="{Binding FilteredRecipientList}"
                   SelectedItem="{Binding SelectedRecipient, Mode=TwoWay}"
                   Style="{StaticResource ModernDataGrid}">

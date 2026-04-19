@@ -352,13 +352,15 @@
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
                     EnableRowVirtualization="True"
+                    EnableColumnVirtualization="True"
+                    VirtualizingStackPanel.IsVirtualizing="True"
                     FontFamily="Montserrat"
                     HorizontalScrollBarVisibility="Visible"
                     IsReadOnly="False"
                     ItemsSource="{Binding FilteredStaffList}"
                     SelectedItem="{Binding SelectedStaff, Mode=TwoWay}"
-                    ScrollViewer.CanContentScroll="False"
-                    SelectionMode="Extended"
+                    ScrollViewer.CanContentScroll="True"
+                    SelectionMode="Single"
                     Style="{StaticResource ModernDataGrid}"
                     VerticalScrollBarVisibility="Auto">
             <DataGrid.Resources>
