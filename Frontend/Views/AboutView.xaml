@@ -47,6 +47,11 @@
                            FontSize="14"
                            Foreground="#333"
                            Margin="0,6" />
+
+                <TextBlock Text="🏫 T05: D5S-VB2A-ĐTHS3-T05"
+                           FontSize="14"
+                           Foreground="#333"
+                           Margin="0,6" />           
                 <TextBlock Text="🎓 Khóa huấn luyện: 2025-2026"
                            FontSize="14"
                            Foreground="#333"
@@ -111,8 +116,8 @@
                          TextAlignment="Center"
                          Margin="0,0,0,12"/>
               <Image Source="/Assets/Image/About/qr.jpg"
-                     Width="300"
-                     Height="300"
+                     Width="400"
+                     Height="400"
                      Stretch="Uniform"
                      Margin="10"
                      HorizontalAlignment="Center"/>

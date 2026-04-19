@@ -62,8 +62,8 @@ namespace DocumentHub.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var appFolder = Path.Combine(localAppData, "DocumentHub");
+            // Lưu database cùng với ứng dụng (trong folder chạy) để dữ liệu di động
+            var appFolder = AppDomain.CurrentDomain.BaseDirectory;
             Directory.CreateDirectory(appFolder);
             var dbPath = Path.Combine(appFolder, "app.db");
             options.UseSqlite($"Data Source={dbPath}");
