@@ -60,30 +60,6 @@
                            Foreground="#2B6BEA"
                            Margin="0,6" />
               </StackPanel>
-
-              <!-- Block 2 -->
-              <StackPanel Margin="12,30,0,0">
-                <TextBlock Text="👤 Học viên: Nguyễn Chí Triễn (T04) - Hỗ trợ technical"
-                           FontSize="14"
-                           Foreground="#333"
-                           Margin="0,6" />
-                <TextBlock Text="📍 Đại đội: A6-B3-C3-D2"
-                           FontSize="14"
-                           Foreground="#333"
-                           Margin="0,6" />
-              </StackPanel>
-
-              <!-- Block 3 -->
-              <StackPanel Margin="12,6,0,0">
-                <TextBlock Text="👤 Học viên: Nguyễn Xuân Hùng (T04) - Hỗ trợ database"
-                           FontSize="14"
-                           Foreground="#333"
-                           Margin="0,6" />
-                <TextBlock Text="📍 Đại đội: A7-B3-C3-D2"
-                           FontSize="14"
-                           Foreground="#333"
-                           Margin="0,6" />
-              </StackPanel>
             </StackPanel>
           </GroupBox>
 
