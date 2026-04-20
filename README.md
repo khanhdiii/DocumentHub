@@ -135,3 +135,7 @@ Nếu bạn muốn đóng góp, vui lòng tạo issue hoặc pull request trên 
 ## Giấy phép
 
 Dự án này sử dụng giấy phép MIT. Xem file LICENSE để biết thêm chi tiết (nếu có).
+
+Coding by Huỳnh Duy Khánh D5S-VB2A-DDTHS3-T05 
+
+Đại đội 3 VB22 K02 2025-2026
